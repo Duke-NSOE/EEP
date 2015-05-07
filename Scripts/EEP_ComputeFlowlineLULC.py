@@ -45,13 +45,13 @@ msg("Converting stream cells to NLCD classes")
 streamNLCD = sa.Con(streamRaster,nlcdRaster)
 
 # Tabulate Areas
-msg("cross tabulating NLCD classes for each NHD catchment")
+msg("Cross tabulating NLCD classes for each NHD catchment")
 sa.TabulateArea(catchRaster,"VALUE",streamNLCD,"VALUE",flowlineTbl)
 
 # Rename fields
 msg("Renaming fields...")
-arcpy.AlterField_management(flowlineTbl,"VALUE","COMID","COMID")
-msg("  setting VALUE to COMID")
+msg("  setting VALUE to GRIDCODE")
+arcpy.AlterField_management(flowlineTbl,"VALUE","GRIDCODE","GRIDCODE")
 for nlcdClass in [11,21,22,23,24,31,41,42,43,52,71,81,82,90,95]:
     fldName = "VALUE_{}".format(nlcdClass)
     outName = "NLCD_{}".format(nlcdClass)
