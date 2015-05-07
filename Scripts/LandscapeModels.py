@@ -93,7 +93,3 @@ def getFlowlines(HUC6,outFC,token,ssl):
     recordCount = arcpy.GetCount_management(Flowlines)
     msg('{} records returned'.format(recordCount))
     return 
-
-token = getToken('john.fay','MapB0y')
-getFlowlines(HUC6,Flowlines,token[0],token[-1])
-
