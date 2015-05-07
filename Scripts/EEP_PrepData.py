@@ -72,7 +72,7 @@ selRecs = arcpy.Select_analysis(WBD_HUC6,"in_memory/tmpFC","HUC6 = '{}'".format(
 msg(" Projecting HUC6 feature --> HUC6")
 arcpy.Project_management(selRecs,"HUC6",outCoordSys)
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(WBD_HUC6,"FROM_ARCGIS","HUC6","ENABLED")
+arcpy.MetadataImporter_conversion(WBD_HUC6,"HUC6")
 arcpy.SetParameterAsText(2,os.path.join(outGDBPth,"HUC6"))
 
 ## WDB Snapshot (HUC12)
@@ -81,7 +81,7 @@ selRecs = arcpy.Select_analysis(WBD_Snapshot,"in_memory/tmpFC","HUC_12 LIKE '{}%
 msg(" Projecting HUC12 features --> HUC12")
 arcpy.Project_management(selRecs,"HUC12",outCoordSys)
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(WBD_Snapshot,"FROM_ARCGIS","HUC12","ENABLED")
+arcpy.MetadataImporter_conversion(WBD_Snapshot,"HUC12")
 arcpy.SetParameterAsText(3,os.path.join(outGDBPth,"HUC12"))
 
 ## NHD Flowlines
@@ -90,7 +90,7 @@ selRecs = arcpy.Select_analysis(NHD_Flowlines,"in_memory/tmpFC","REACHCODE LIKE 
 msg(" Projecting Flowline features")
 arcpy.Project_management(selRecs,"NHDFlowlines",outCoordSys)
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(NHD_Flowlines,"FROM_ARCGIS","NHDFlowlines","ENABLED")
+arcpy.MetadataImporter_conversion(NHD_Flowlines,"NHDFlowlines")
 arcpy.SetParameterAsText(4,os.path.join(outGDBPth,"NHDFlowlines"))
 
 ## NHD Flowline midpoints
@@ -107,7 +107,7 @@ msg(" Projecting Catchment features --> NHDCatchments")
 selRecs = arcpy.CopyFeatures_management(CatchLyr,"in_memory/tmpFC")
 arcpy.Project_management(selRecs,"NHDCatchments",outCoordSys)
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(NHD_CatchPolys,"FROM_ARCGIS","NHDCatchments","ENABLED")
+arcpy.MetadataImporter_conversion(NHD_CatchPolys,"NHDCatchments")
 arcpy.SetParameterAsText(6,os.path.join(outGDBPth,"NHDCatchments"))
 
 ## Mask Polygon
@@ -128,7 +128,7 @@ msg("  Extracting NHD Elev_cm (1 of 7)")
 r = arcpy.sa.ExtractByMask(Elev_cm,"Mask")
 r.save("Elev_cm")
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(Elev_cm,"FROM_ARCGIS","Elev_cm","ENABLED")
+arcpy.MetadataImporter_conversion(Elev_cm,"Elev_cm")
 arcpy.SetParameterAsText(9,os.path.join(outGDBPth,"Elev_cm"))
 
 ## FlowDir
@@ -136,7 +136,7 @@ msg("  Extracting NHD FlowDir (2 of 7)")
 r = arcpy.sa.ExtractByMask(NHD_fdr,"mask")
 r.save("flowdir")
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(NHD_fdr,"FROM_ARCGIS","flowdir","ENABLED")
+arcpy.MetadataImporter_conversion(NHD_fdr,"flowdir")
 arcpy.SetParameterAsText(10,os.path.join(outGDBPth,"flowdir"))
 
 ## FlowDirNull
@@ -144,7 +144,7 @@ msg("  Extracting NHD FlowDirNull (3 of 7)")
 r = arcpy.sa.ExtractByMask(NHD_fdrnull,"mask")
 r.save("fdrnull")
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(NHD_fdrnull,"FROM_ARCGIS","fdrnull","ENABLED")
+arcpy.MetadataImporter_conversion(NHD_fdrnull,"fdrnull")
 arcpy.SetParameterAsText(11,os.path.join(outGDBPth,"fdrnull"))
 
 ## Cat
@@ -152,7 +152,7 @@ msg("  Extracting NHD Catchment raster (4 of 7)")
 r = arcpy.sa.ExtractByMask(NHD_cat,"mask")
 r.save("cat")
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(NHD_cat,"FROM_ARCGIS","cat","ENABLED")
+arcpy.MetadataImporter_conversion(NHD_cat,"cat")
 arcpy.SetParameterAsText(12,os.path.join(outGDBPth,"cat"))
 
 ## NLCD
@@ -160,7 +160,7 @@ msg("  Extracting NLCD land cover (5 of 7)")
 r = arcpy.sa.ExtractByMask(NLCD_cov,"mask")
 r.save("nlcd_2011")
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(NLCD_cov,"FROM_ARCGIS","nlcd_2011","ENABLED")
+arcpy.MetadataImporter_conversion(NLCD_cov,"nlcd_2011")
 msg(" Updating colormap")
 arcpy.AddColormap_management("nlcd_2011",NLCD_cov)
 arcpy.SetParameterAsText(13,os.path.join(outGDBPth,"nlcd_2011"))
@@ -170,7 +170,7 @@ msg("  Extracting NLCD canopy cover (6 of 7)")
 r = arcpy.sa.ExtractByMask(NLCD_canopy,"mask")
 r.save("canopycov")
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(NLCD_canopy,"FROM_ARCGIS","canopycov","ENABLED")
+arcpy.MetadataImporter_conversion(NLCD_canopy,"canopycov")
 arcpy.SetParameterAsText(14,os.path.join(outGDBPth,"canopycov"))
 
 ## Impervious
@@ -178,7 +178,7 @@ msg("  Extracting NLCD impervious (7 of 7)")
 r = arcpy.sa.ExtractByMask(NLCD_imperv,"mask")
 r.save("impervious")
 msg(" Updating metadata")
-arcpy.ImportMetadata_conversion(NLCD_imperv,"FROM_ARCGIS","impervious","ENABLED")
+arcpy.MetadataImporter_conversion(NLCD_imperv,"impervious")
 msg(" Updating colormap")
 arcpy.AddColormap_management("impervious",NLCD_imperv)
 arcpy.SetParameterAsText(15,os.path.join(outGDBPth,"impervious"))
