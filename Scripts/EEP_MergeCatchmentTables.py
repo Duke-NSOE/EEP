@@ -7,26 +7,25 @@
 
 import os, arcpy
 
-# HUC GDB
-HUC_GDB = arcpy.GetParameterAsText(0) #'C:\\Temp\\EEP_March20th\\Data\\EEP_030501.gdb'
-OutTable = arcpy.GetParameterAsText(1) #os.path.join(HUC_GDB,"AllAttribs")
+# Input variables:
+NHDCatchments = arcpy.GetParameterAsText(0)
+Landscape_Stats = arcpy.GetParameterAsText(1)
+FlowlineLULC = arcpy.GetParameterAsText(2)
+ShadeStats = arcpy.GetParameterAsText(3)
+StreamTemp = arcpy.GetParameterAsText(4)
+RiparianStats = arcpy.GetParameterAsText(5)
+RoadXings = arcpy.GetParameterAsText(6)
+HabitatTable = arcpy.GetParameterAsText(7)
 
-# Set the workspace
-arcpy.env.workspace = HUC_GDB
-
-# Local variables:
-Landscape_Stats = "Landscape"
-FlowlineNLCD = "FlowlineLULC"
-RiparianStats = "RiparianStats"
-ShadeStats = "ShadeStats"
-#HabitatTable = "HabitatTable"
 #GeologyTable = "GeologyTable"
-StreamTemp = "StreamTemp"
 #NPDESCount = "NPDESCount"
 #AnimalOpsCount = "AnimalOpsCount"
-RoadXings = "RoadCrossings"
-#NHDCatchments = "NHDCatchments"
-#AllAttriibutes = "AllAttriibutes"
+
+# Output variables:
+outputFC = arcpy.GetParameterAsText(8)
+
+# Set environment variables
+arcpy.env.overwriteOutput = True
 
 # ---Functions---
 def msg(txt,type="message"):
@@ -38,60 +37,65 @@ def msg(txt,type="message"):
     elif type == "error":
         arcpy.AddError(txt)
 
-# Process: Select
+# Copy the catchment feature class
 msg("Creating output catchment feature class")
-arcpy.Select_analysis(NHDCatchments, OutTable,"")
+arcpy.Select_analysis(NHDCatchments, outputFC,"")
+
+# Create attribute indices
+msg("Creating attribute indices for faster processing")
+arcpy.AddIndex_management(outputFC,"GRIDCODE;FEATUREID","TagIndex","UNIQUE","NON_ASCENDING")
 
 # Process: Join Field
-msg(" Joining Habitat Table...1/10")
-arcpy.JoinField_management(OutTable, "FEATUREID", HabitatTable, "COMID", "LENGTHKM;REACHCODE;WBAREACOMI;FTYPE;FCODE;StreamOrde;Pathlength;ArbolateSu;AreaSqKM;TotDASqKM;SLOPE;Q0001E;V0001E;Qincr0001E;TEMP0001;PPT0001;PET0001;QLOSS0001;Q0001E_01;Q0001E_02;Q0001E_03;Q0001E_04;Q0001E_05;Q0001E_06;Q0001E_07;Q0001E_08;Q0001E_09;Q0001E_10;Q0001E_11;Q0001E_12;TempV;PrecipV;RunOffV;MinMonthly;NLCD11P;NLCD12P;NLCD21P;NLCD22P;NLCD23P;NLCD24P;NLCD31P;NLCD41P;NLCD42P;NLCD43P;NLCD51P;NLCD52P;NLCD71P;NLCD72P;NLCD73P;NLCD74P;NLCD81P;NLCD82P;NLCD90P;NLCD95P;NLCD11PC;NLCD12PC;NLCD21PC;NLCD22PC;NLCD23PC;NLCD24PC;NLCD31PC;NLCD41PC;NLCD42PC;NLCD43PC;NLCD51PC;NLCD52PC;NLCD71PC;NLCD72PC;NLCD73PC;NLCD74PC;NLCD81PC;NLCD82PC;NLCD90PC;NLCD95PC")
+msg(" Joining Habitat Table...1/7")
+arcpy.JoinField_management(outputFC, "FEATUREID", HabitatTable, "COMID", "LENGTHKM;REACHCODE;WBAREACOMI;FTYPE;FCODE;StreamOrde;Pathlength;ArbolateSu;AreaSqKM;TotDASqKM;SLOPE;Q0001E;V0001E;Qincr0001E;TEMP0001;PPT0001;PET0001;QLOSS0001;Q0001E_01;Q0001E_02;Q0001E_03;Q0001E_04;Q0001E_05;Q0001E_06;Q0001E_07;Q0001E_08;Q0001E_09;Q0001E_10;Q0001E_11;Q0001E_12;TempV;PrecipV;RunOffV;MinMonthly;NLCD11P;NLCD12P;NLCD21P;NLCD22P;NLCD23P;NLCD24P;NLCD31P;NLCD41P;NLCD42P;NLCD43P;NLCD51P;NLCD52P;NLCD71P;NLCD72P;NLCD73P;NLCD74P;NLCD81P;NLCD82P;NLCD90P;NLCD95P;NLCD11PC;NLCD12PC;NLCD21PC;NLCD22PC;NLCD23PC;NLCD24PC;NLCD31PC;NLCD41PC;NLCD42PC;NLCD43PC;NLCD51PC;NLCD52PC;NLCD71PC;NLCD72PC;NLCD73PC;NLCD74PC;NLCD81PC;NLCD82PC;NLCD90PC;NLCD95PC")
 
 # Process: Join Field (2)
-msg(" Joining Landscape Stats...2/10")
-arcpy.JoinField_management(OutTable, "GRIDCODE", Landscape_Stats, "COMID", "FEATUREID;runoff_SUM;flooding_SUM;slope_MEAN;road_density_MEAN;tfactor_MEAN;water_table_MEAN;erodability_MEAN;wetlands_SUM;surface_water_SUM;flood_risk_SUM")
+msg(" Joining Landscape Stats...2/7")
+arcpy.JoinField_management(outputFC, "GRIDCODE", Landscape_Stats, "COMID", "FEATUREID;runoff_SUM;flooding_SUM;slope_MEAN;road_density_MEAN;tfactor_MEAN;water_table_MEAN;erodability_MEAN;wetlands_SUM;surface_water_SUM;flood_risk_SUM")
 
 # Process: Join Field (3)
-msg(" Joining FlowlineNLCD...3/10")
-arcpy.JoinField_management(OutTable, "GRIDCODE", FlowlineNLCD, "VALUE", "VALUE_11;VALUE_21;VALUE_22;VALUE_23;VALUE_24;VALUE_31;VALUE_41;VALUE_42;VALUE_43;VALUE_52;VALUE_71;VALUE_81;VALUE_82;VALUE_90;VALUE_95")
+msg(" Joining FlowlineLULC...3/7")
+arcpy.JoinField_management(outputFC, "GRIDCODE", FlowlineLULC, "GRIDCODE", "NLCD_11;NLCD_21;NLCD_22;NLCD_23;NLCD_24;NLCD_31;NLCD_41;NLCD_42;NLCD_43;NLCD_52;NLCD_71;NLCD_81;NLCD_82;NLCD_90;NLCD_95")
 
 # Process: Join Field (4)
-msg(" Joining RiparianStats...4/10")
-arcpy.JoinField_management(OutTable, "GRIDCODE", RiparianStats, "VALUE", "AreaRiparian;PctRipForest;PctRipWetland")
+msg(" Joining RiparianStats...4/7")
+arcpy.JoinField_management(outputFC, "GRIDCODE", RiparianStats, "GRIDCODE", "Other;Forest;Wetland;pctForest;pctWetland")
 
 # Process: Join Field (5)
-msg(" Joining Shadestats...5/10")
-arcpy.JoinField_management(OutTable, "FEATUREID", ShadeStats, "COMID", "ShadedFragments;ShadedLength;LongestShade;MeanShadeLength")
+msg(" Joining Shadestats...5/7")
+arcpy.JoinField_management(outputFC, "FEATUREID", ShadeStats, "COMID", "ShadedFragments;ShadedLength;LongestShade;MeanShadeLength")
 
 # Process: Join Field (6)
-msg(" Joining Streamtemp...6/10")
-arcpy.JoinField_management(OutTable, "FEATUREID", StreamTemp, "FEATUREID", "cold;cool;warm;TotLength")
+msg(" Joining Streamtemp...6/7")
+arcpy.JoinField_management(outputFC, "FEATUREID", StreamTemp, "FEATUREID", "cold;cool;warm;TotLength")
 
 # Process: Join Field (8)
-msg(" Joining Geology...7/10")
-arcpy.JoinField_management(OutTable, "FEATUREID", GeologyTable, "COMID", "TYPE")
+#msg(" Joining Geology...7/10")
+#arcpy.JoinField_management(outputFC, "FEATUREID", GeologyTable, "COMID", "TYPE")
 
 # Process: Join Field (7)
-msg(" Joining RoadXings...8/10")
-arcpy.JoinField_management(OutTable, "FEATUREID", RoadXings, "COMID", "Crossings")
+msg(" Joining RoadXings...7/7")
+arcpy.JoinField_management(outputFC, "FEATUREID", RoadXings, "COMID", "Crossings")
 
 # Process: Join Field (9)
-msg(" Joining AnimalOpsCount...9/10")
-arcpy.JoinField_management(OutTable, "FEATUREID", AnimalOpsCount, "FEATUREID", "AnimalOpsCount")
+#msg(" Joining AnimalOpsCount...9/10")
+#arcpy.JoinField_management(outputFC, "FEATUREID", AnimalOpsCount, "FEATUREID", "AnimalOpsCount")
 
 # Process: Join Field (10)
-msg(" Joining NPDESCount...10/10")
-arcpy.JoinField_management(OutTable, "FEATUREID", NPDESCount, "FEATUREID", "NPDESCount")
+#msg(" Joining NPDESCount...10/10")
+#arcpy.JoinField_management(outputFC, "FEATUREID", NPDESCount, "FEATUREID", "NPDESCount")
 
 # Process: Fix Null Values
-flds = arcpy.ListFields(OutTable)
+flds = arcpy.ListFields(outputFC)
 for fld in flds[8:]: #Skip the first 8 fields as they are ok
-    msg("Fixing null values in {}...".format(fld.name))
+    #msg("Searching for null values in {}...".format(fld.name))
     #Select records where value is null
-    lyr = arcpy.MakeFeatureLayer_management(OutTable, "LYR", "{} IS Null".format(fld.name))
+    lyr = arcpy.MakeFeatureLayer_management(outputFC, "LYR", "{} IS Null".format(fld.name))
     #Get the number of records to fix
     NullCount =  arcpy.GetCount_management("Lyr").getOutput(0)
     if int(NullCount) > 0:
-        msg("{} records to fix in {}".format(NullCount, fld.name))
+        msg("Fixing {} null records {}".format(NullCount, fld.name))
         #Set selected records to 0
         arcpy.CalculateField_management("Lyr",fld.name,"0")
     
+msg("Finished!")
