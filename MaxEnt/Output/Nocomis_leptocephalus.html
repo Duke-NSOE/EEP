@@ -1,0 +1,183 @@
+<title>Maxent model for Nocomis_leptocephalus</title>
+<CENTER><H1>Maxent model for Nocomis_leptocephalus</H1></CENTER>
+<br> This page contains some analysis of the Maxent model for Nocomis_leptocephalus, created Mon May 11 14:40:55 EDT 2015 using Maxent version 3.3.3k.  If you would like to do further analyses, the raw data used here is linked to at the end of this page.<br>
+<br><HR><H2>Analysis of omission/commission</H2>
+The following picture shows the omission rate and predicted area as a function of the cumulative threshold.  The omission rate is is calculated both on the training presence records, and (if test data are used) on the test records.  The omission rate should be close to the predicted omission, because of the definition of the cumulative threshold.
+<br><img src="plots\Nocomis_leptocephalus_omission.png"><br>
+<br> The next picture is the receiver operating characteristic (ROC) curve for the same data.  Note that the specificity is defined using predicted area, rather than true commission (see the paper by Phillips, Anderson and Schapire cited on the help page for discussion of what this means).  This implies that the maximum achievable AUC is less than 1.  If test data is drawn from the Maxent distribution itself, then the maximum possible test AUC would be 0.959 rather than 1; in practice the test AUC may exceed this bound.
+<br><img src="plots\Nocomis_leptocephalus_roc.png"><br>
+<br>
+<br>
+Some common thresholds and corresponding omission rates are as follows.  If test data are available, binomial probabilities are calculated exactly if the number of test samples is at most 25, otherwise using a normal approximation to the binomial.  These are 1-sided p-values for the null hypothesis that test points are predicted no better than by a random prediction with the same fractional predicted area.  The "Balance" threshold minimizes 6 * training omission rate + .04 * cumulative threshold + 1.6 * fractional predicted area.<br>
+<br><table border cols=4 cellpadding=3><tr><th>Cumulative threshold</th><th>Logistic threshold</th><th>Description</th><th>Fractional predicted area</th><th>Training omission rate</th><tr align=center><td>1.000</td><td>0.014</td><td>Fixed cumulative value 1</td><td>0.255</td><td>0.000</td><tr align=center><td>5.000</td><td>0.074</td><td>Fixed cumulative value 5</td><td>0.148</td><td>0.004</td><tr align=center><td>10.000</td><td>0.145</td><td>Fixed cumulative value 10</td><td>0.105</td><td>0.025</td><tr align=center><td>2.713</td><td>0.040</td><td>Minimum training presence</td><td>0.187</td><td>0.000</td><tr align=center><td>24.977</td><td>0.321</td><td>10 percentile training presence</td><td>0.053</td><td>0.100</td><tr align=center><td>18.879</td><td>0.248</td><td>Equal training sensitivity and specificity</td><td>0.068</td><td>0.067</td><tr align=center><td>14.977</td><td>0.207</td><td>Maximum training sensitivity plus specificity</td><td>0.082</td><td>0.046</td><tr align=center><td>2.661</td><td>0.039</td><td>Balance training omission, predicted area and threshold value</td><td>0.188</td><td>0.000</td><tr align=center><td>10.825</td><td>0.156</td><td>Equate entropy of thresholded and original distributions</td><td>0.101</td><td>0.033</td></table><br>
+<br>(A link to the Explain tool was not made for this model.  The model uses product features, while the Explain tool can only be used for additive models.)<br><br>
+<br><HR><H2>Response curves</H2>
+<br>These curves show how each environmental variable affects the Maxent prediction.
+The 
+curves show how the logistic prediction changes as each environmental variable is varied, keeping all other environmental variables at their average sample value. Click on a response curve to see a larger version.  Note that the curves can be hard to interpret if you have strongly correlated variables, as the model may depend on the correlations in ways that are not evident in the curves.  In other words, the curves show the marginal effect of changing exactly one variable, whereas the model may take advantage of sets of variables changing together.<br><br>
+<a href = "plots/Nocomis_leptocephalus_ArbolateSu.png"> <img src="plots/Nocomis_leptocephalus_ArbolateSu_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_AreaSqKM.png"> <img src="plots/Nocomis_leptocephalus_AreaSqKM_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_FCODE.png"> <img src="plots/Nocomis_leptocephalus_FCODE_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_LENGTHKM.png"> <img src="plots/Nocomis_leptocephalus_LENGTHKM_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_MeanShadeLength.png"> <img src="plots/Nocomis_leptocephalus_MeanShadeLength_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_MinMonthly.png"> <img src="plots/Nocomis_leptocephalus_MinMonthly_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD11P.png"> <img src="plots/Nocomis_leptocephalus_NLCD11P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD11PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD11PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD12P.png"> <img src="plots/Nocomis_leptocephalus_NLCD12P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD12PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD12PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD21P.png"> <img src="plots/Nocomis_leptocephalus_NLCD21P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD21PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD21PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD22P.png"> <img src="plots/Nocomis_leptocephalus_NLCD22P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD22PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD22PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD23P.png"> <img src="plots/Nocomis_leptocephalus_NLCD23P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD23PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD23PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD24P.png"> <img src="plots/Nocomis_leptocephalus_NLCD24P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD24PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD24PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD31P.png"> <img src="plots/Nocomis_leptocephalus_NLCD31P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD31PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD31PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD41P.png"> <img src="plots/Nocomis_leptocephalus_NLCD41P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD41PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD41PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD42P.png"> <img src="plots/Nocomis_leptocephalus_NLCD42P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD42PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD42PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD43P.png"> <img src="plots/Nocomis_leptocephalus_NLCD43P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD43PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD43PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD51P.png"> <img src="plots/Nocomis_leptocephalus_NLCD51P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD51PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD51PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD52P.png"> <img src="plots/Nocomis_leptocephalus_NLCD52P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD52PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD52PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD71P.png"> <img src="plots/Nocomis_leptocephalus_NLCD71P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD71PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD71PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD72P.png"> <img src="plots/Nocomis_leptocephalus_NLCD72P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD72PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD72PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD73P.png"> <img src="plots/Nocomis_leptocephalus_NLCD73P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD73PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD73PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD74P.png"> <img src="plots/Nocomis_leptocephalus_NLCD74P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD74PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD74PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD81P.png"> <img src="plots/Nocomis_leptocephalus_NLCD81P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD81PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD81PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD82P.png"> <img src="plots/Nocomis_leptocephalus_NLCD82P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD82PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD82PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD90P.png"> <img src="plots/Nocomis_leptocephalus_NLCD90P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD90PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD90PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD95P.png"> <img src="plots/Nocomis_leptocephalus_NLCD95P_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD95PC.png"> <img src="plots/Nocomis_leptocephalus_NLCD95PC_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_11.png"> <img src="plots/Nocomis_leptocephalus_NLCD_11_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_21.png"> <img src="plots/Nocomis_leptocephalus_NLCD_21_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_22.png"> <img src="plots/Nocomis_leptocephalus_NLCD_22_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_23.png"> <img src="plots/Nocomis_leptocephalus_NLCD_23_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_24.png"> <img src="plots/Nocomis_leptocephalus_NLCD_24_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_31.png"> <img src="plots/Nocomis_leptocephalus_NLCD_31_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_41.png"> <img src="plots/Nocomis_leptocephalus_NLCD_41_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_42.png"> <img src="plots/Nocomis_leptocephalus_NLCD_42_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_43.png"> <img src="plots/Nocomis_leptocephalus_NLCD_43_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_52.png"> <img src="plots/Nocomis_leptocephalus_NLCD_52_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_71.png"> <img src="plots/Nocomis_leptocephalus_NLCD_71_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_81.png"> <img src="plots/Nocomis_leptocephalus_NLCD_81_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_82.png"> <img src="plots/Nocomis_leptocephalus_NLCD_82_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_90.png"> <img src="plots/Nocomis_leptocephalus_NLCD_90_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_95.png"> <img src="plots/Nocomis_leptocephalus_NLCD_95_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_PET0001.png"> <img src="plots/Nocomis_leptocephalus_PET0001_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_PPT0001.png"> <img src="plots/Nocomis_leptocephalus_PPT0001_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Pathlength.png"> <img src="plots/Nocomis_leptocephalus_Pathlength_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_PrecipV.png"> <img src="plots/Nocomis_leptocephalus_PrecipV_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_01.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_01_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_02.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_02_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_03.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_03_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_04.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_04_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_05.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_05_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_06.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_06_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_07.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_07_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_08.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_08_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_09.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_09_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_10.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_10_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_11.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_11_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_12.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_12_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Qincr0001E.png"> <img src="plots/Nocomis_leptocephalus_Qincr0001E_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_RunOffV.png"> <img src="plots/Nocomis_leptocephalus_RunOffV_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_SLOPE.png"> <img src="plots/Nocomis_leptocephalus_SLOPE_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_ShadedLength.png"> <img src="plots/Nocomis_leptocephalus_ShadedLength_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_StreamOrde.png"> <img src="plots/Nocomis_leptocephalus_StreamOrde_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_TEMP0001.png"> <img src="plots/Nocomis_leptocephalus_TEMP0001_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_TempV.png"> <img src="plots/Nocomis_leptocephalus_TempV_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_TotDASqKM.png"> <img src="plots/Nocomis_leptocephalus_TotDASqKM_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_V0001E.png"> <img src="plots/Nocomis_leptocephalus_V0001E_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_erodability_MEAN.png"> <img src="plots/Nocomis_leptocephalus_erodability_MEAN_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_flood_risk_SUM.png"> <img src="plots/Nocomis_leptocephalus_flood_risk_SUM_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_flooding_SUM.png"> <img src="plots/Nocomis_leptocephalus_flooding_SUM_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_pctForest.png"> <img src="plots/Nocomis_leptocephalus_pctForest_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_pctWetland.png"> <img src="plots/Nocomis_leptocephalus_pctWetland_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_road_density_MEAN.png"> <img src="plots/Nocomis_leptocephalus_road_density_MEAN_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_slope_MEAN.png"> <img src="plots/Nocomis_leptocephalus_slope_MEAN_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_water_table_MEAN.png"> <img src="plots/Nocomis_leptocephalus_water_table_MEAN_thumb.png"></a>
+<br>
+<br>In contrast to the above marginal response curves, each of the following curves represents a different model, namely, a Maxent model created using only the corresponding variable.  These plots reflect the dependence of predicted suitability both on the selected variable and on dependencies induced by correlations between the selected variable and other variables.  They may be easier to interpret if there are strong correlations between variables.<br><br>
+<a href = "plots/Nocomis_leptocephalus_ArbolateSu_only.png"> <img src="plots/Nocomis_leptocephalus_ArbolateSu_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_AreaSqKM_only.png"> <img src="plots/Nocomis_leptocephalus_AreaSqKM_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_FCODE_only.png"> <img src="plots/Nocomis_leptocephalus_FCODE_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_LENGTHKM_only.png"> <img src="plots/Nocomis_leptocephalus_LENGTHKM_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_MeanShadeLength_only.png"> <img src="plots/Nocomis_leptocephalus_MeanShadeLength_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_MinMonthly_only.png"> <img src="plots/Nocomis_leptocephalus_MinMonthly_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD11P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD11P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD11PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD11PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD12P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD12P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD12PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD12PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD21P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD21P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD21PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD21PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD22P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD22P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD22PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD22PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD23P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD23P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD23PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD23PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD24P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD24P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD24PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD24PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD31P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD31P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD31PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD31PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD41P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD41P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD41PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD41PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD42P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD42P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD42PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD42PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD43P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD43P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD43PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD43PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD51P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD51P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD51PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD51PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD52P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD52P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD52PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD52PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD71P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD71P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD71PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD71PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD72P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD72P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD72PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD72PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD73P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD73P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD73PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD73PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD74P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD74P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD74PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD74PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD81P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD81P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD81PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD81PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD82P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD82P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD82PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD82PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD90P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD90P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD90PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD90PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD95P_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD95P_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD95PC_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD95PC_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_11_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_11_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_21_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_21_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_22_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_22_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_23_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_23_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_24_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_24_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_31_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_31_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_41_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_41_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_42_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_42_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_43_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_43_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_52_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_52_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_71_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_71_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_81_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_81_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_82_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_82_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_90_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_90_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_NLCD_95_only.png"> <img src="plots/Nocomis_leptocephalus_NLCD_95_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_PET0001_only.png"> <img src="plots/Nocomis_leptocephalus_PET0001_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_PPT0001_only.png"> <img src="plots/Nocomis_leptocephalus_PPT0001_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Pathlength_only.png"> <img src="plots/Nocomis_leptocephalus_Pathlength_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_PrecipV_only.png"> <img src="plots/Nocomis_leptocephalus_PrecipV_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_only.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_01_only.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_01_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_02_only.png"> <img src="plots/Nocomis_leptocephalus_Q0001E_02_only_thumb.png"></a>
+<a href = "plots/Nocomis_leptocephalus_Q0001E_03_only.png"> <img src="plots/Nocomis_leptoceph

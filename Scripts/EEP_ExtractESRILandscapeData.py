@@ -1,7 +1,7 @@
 # EEP_ExtractESRILandscapeData.py
 #
 # Description: Calculates zonal stats for various ESRI landscape layers. The layers and how to summarize are
-#    included in this script. Others can be added by first creating them and putting them into 
+#    included in this script. Others can be added by first creating them and putting them into the Services list
 
 # Import arcpy module
 import sys, os, arcpy

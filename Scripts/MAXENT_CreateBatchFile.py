@@ -8,16 +8,15 @@
 import sys, os, arcpy
 
 # Path variables
-dataPth = os.path.abspath(sys.path[0]+ "\\..\\Scratch")
+maxentPath = os.path.abspath(sys.path[0]+ "\\..\\Maxent")
 
 # Input variables
-sppFile = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\species.csv'
-csvFile = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\EnvVars.csv'
+sppFile = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\ME_species.csv'
+csvFile = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\ME_species.csv'
 species = 'Nocomis_leptocephalus'
-whereClause = ''
 
 # Output variables
-maxentFile = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\Maxent.bat'
+maxentFile = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\MaxEnt\{}.bat'.format(species)
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -31,29 +30,30 @@ def msg(txt,type="message"):
         
 ## ---Processes---
 dict = {}
-dict["outputdirectory"] = dataPth
+dict["outputdirectory"] = maxentPath + "\\Output"
 dict["samplesfile"] = sppFile
 dict["environmentallayers"] = csvFile
+dict["responsecurves"] = "true"
+dict["jackknife"] = "true"
+dict["togglespeciesselected"] = "background"
 
 # Fields to turn off
-offFlds = ("Shape_Length",
+offFlds = ("SOURCEFC",
+           "Shape_Length",
            "Shape_Area",
            "REACHCODE",
-           "FCODE",
+           "FTYPE",
            "QLOSS0001",
-           "AreaSqKM_1",
-           "FEATUREID_1",
            "Other",
            "Forest",
-           "Wetland",
-           "TotLength")
+           "Wetland")
 
 # Categorical fields
-catFlds = ("FTYPE",
+catFlds = ("FCODE",
            "StreamOrde")
 
 # Boilerplate
-runString = "java -mx2048m -jar maxent.jar "
+runString = "java -mx2048m -jar maxent.jar"
 
 # Add dictionary items
 for key,value in dict.items():

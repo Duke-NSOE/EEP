@@ -15,13 +15,13 @@ resultsTbl = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Data\EEP_030501.gdb\results'
 #arcpy.GetParameterAsText(0) #NHD catchment environment variables
 speciesTbl = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Data\EEP_030501.gdb\HabModel'
 # arcpy.GetParameterAsText(1) #NHD catchments tagged with species presence
-speciesName = "Rhinichthys_atratulus"
+speciesName = "Nocomis_leptocephalus"
 # arcpy.GetParameterAsText(3) #Species to model
 
 # Output variables
-speciesCSV = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\ME_species.csv'
+speciesCSV = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\MaxEnt\ME_species.csv'
 #arcpy.GetParameterAsText(3)    # MaxEnt species file
-backgroundCSV = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\ME_background.csv'
+backgroundCSV = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\MaxEnt\ME_background.csv'
 #arcpy.GetParameterAsText(4) # MaxEnt env vars file
 
 # Script varables
@@ -48,7 +48,7 @@ arcpy.CopyRows_management(resultsTbl,resultsCopyTbl)
 arcpy.JoinField_management(resultsCopyTbl,"GRIDCODE",sppOnlyTbl,"GRIDCODE","[{}]".format(speciesName))
 
 # Create a list of field names
-fldList = [species,"x","y"] #start the list with the MaxEnt format: {species, x, y}
+fldList = [speciesName,"x","y"] #start the list with the MaxEnt format: {species name, x, y}
 for fld in arcpy.ListFields(resultsTbl)[:EnvVarCount]:
     fldList.append(fld.name)
 

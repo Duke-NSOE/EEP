@@ -3,7 +3,9 @@
 # Description:
 #   Extracts stream segments within each NHD catchment falling beneath forest areas (NLCD 2011).
 #   Does so by extracting forested pixels from the NLCD 2011 dataset and converting them to
-#   polygons. Then tags each NHD flowline with 
+#   polygons. Then tags each NHD flowline with whether its forested or not. From this we calculate
+#   the total length under shade, the number of shaded stream segments, the mean length of
+#   the shaded stream segments, and the length of the longest shaded stream segment. 
 #
 # Spring 2015
 # John.Fay@duke.edu
@@ -39,7 +41,6 @@ def msg(txt,type="message"):
         arcpy.AddWarning(txt)
     elif type == "error":
         arcpy.AddError(txt)
-
 
 # ---Processes---
 msg("Extracting forest pixels from NLCD")

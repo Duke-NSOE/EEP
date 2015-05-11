@@ -1,0 +1,1886 @@
+Mon May 11 14:36:30 EDT 2015
+MaxEnt version 3.3.3k
+Reading file ME_species.csv
+readGrid: max memory 1908932608, total allocated 361758720, free 102918184, used 258840536, increment 258840536
+Warning: File ME_species.csv has value -9999, treating as no-data value
+Time since start: 8.218
+Reading samples from ME_species.csv
+Read samples: max memory 1908932608, total allocated 522715136, free 347727088, used 174988048, increment -83852488
+Adding samples to background in feature space
+Command line used:  responsecurves=true samplesfile=C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\ME_species.csv jackknife=true outputdirectory=C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\Output environmentallayers=C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\ME_species.csv togglespeciesselected=background togglelayerselected=SOURCEFC togglelayerselected=Shape_Length togglelayerselected=Shape_Area togglelayerselected=REACHCODE togglelayerselected=FTYPE togglelayerselected=QLOSS0001 togglelayerselected=Other togglelayerselected=Forest togglelayerselected=Wetland togglelayertype=FCODE togglelayertype=StreamOrde
+Command line to repeat: java density.MaxEnt nowarnings noprefixes responsecurves jackknife outputdirectory=C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\Output samplesfile=C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\ME_species.csv environmentallayers=C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\ME_species.csv -N FTYPE -N Forest -N Other -N QLOSS0001 -N REACHCODE -N SOURCEFC -N Shape_Area -N Shape_Length -N Wetland -t FCODE -t StreamOrde
+Species: Nocomis_leptocephalus
+Layers: ArbolateSu AreaSqKM FCODE LENGTHKM MeanShadeLength MinMonthly NLCD11P NLCD11PC NLCD12P NLCD12PC NLCD21P NLCD21PC NLCD22P NLCD22PC NLCD23P NLCD23PC NLCD24P NLCD24PC NLCD31P NLCD31PC NLCD41P NLCD41PC NLCD42P NLCD42PC NLCD43P NLCD43PC NLCD51P NLCD51PC NLCD52P NLCD52PC NLCD71P NLCD71PC NLCD72P NLCD72PC NLCD73P NLCD73PC NLCD74P NLCD74PC NLCD81P NLCD81PC NLCD82P NLCD82PC NLCD90P NLCD90PC NLCD95P NLCD95PC NLCD_11 NLCD_21 NLCD_22 NLCD_23 NLCD_24 NLCD_31 NLCD_41 NLCD_42 NLCD_43 NLCD_52 NLCD_71 NLCD_81 NLCD_82 NLCD_90 NLCD_95 PET0001 PPT0001 Pathlength PrecipV Q0001E Q0001E_01 Q0001E_02 Q0001E_03 Q0001E_04 Q0001E_05 Q0001E_06 Q0001E_07 Q0001E_08 Q0001E_09 Q0001E_10 Q0001E_11 Q0001E_12 Qincr0001E RunOffV SLOPE ShadedLength StreamOrde TEMP0001 TempV TotDASqKM V0001E erodability_MEAN flood_risk_SUM flooding_SUM pctForest pctWetland road_density_MEAN slope_MEAN water_table_MEAN
+Layertypes: Continuous Continuous Categorical Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Categorical Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous
+responsecurves: true
+jackknife: true
+outputdirectory: C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\Output
+samplesfile: C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\ME_species.csv
+environmentallayers: C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\ME_species.csv
+
+getSamples: max memory 1908932608, total allocated 778567680, free 281460112, used 497107568, increment 322119520
+Making features
+Time since start: 16.915
+makeFeatures: max memory 1908932608, total allocated 1042284544, free 522222520, used 520062024, increment 22954456
+Nocomis_leptocephalus: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 20.279
+240 samples
+Density: max memory 1908932608, total allocated 1042284544, free 202508656, used 839775888, increment 319713864
+linearPredictor: max memory 1908932608, total allocated 1042284544, free 202508656, used 839775888, increment 0
+Time since start: 22.778
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1042284544, free 202508656, used 839775888, increment 0
+Sequential: max memory 1908932608, total allocated 1042284544, free 202508656, used 839775888, increment 0
+Initial loss: 9.742731773656734
+Time since start: 260.08
+500: time = 237.298000 loss = 7.424687
+Resulting gain: 2.3180452608039372
+Time since start: 270.127
+Projecting...
+Writing file C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\Output\Nocomis_leptocephalus.csv
+Nocomis_leptocephalus response curves
+Time since start: 277.691
+Response curve: only ArbolateSu
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 690972336, used 774412624, increment -65363264
+Nocomis_leptocephalus ArbolateSu: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 690972336, used 774412624, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 690972336, used 774412624, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 690972336, used 774412624, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 690972336, used 774412624, increment 0
+Initial loss: 9.742731773656734
+Time since start: 281.223
+420: time = 3.489000 loss = 9.089579
+Resulting gain: 0.6531522833817718
+Nocomis_leptocephalus response curves
+Response curve: only AreaSqKM
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 678635360, used 786749600, increment 12336976
+Nocomis_leptocephalus AreaSqKM: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 678597048, used 786787912, increment 38312
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 678597048, used 786787912, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 678597048, used 786787912, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 678597048, used 786787912, increment 0
+Initial loss: 9.742731773656734
+Time since start: 283.211
+320: time = 1.877000 loss = 9.327247
+Resulting gain: 0.4154850048038288
+Nocomis_leptocephalus response curves
+Response curve: only FCODE
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 667061064, used 798323896, increment 11535984
+Nocomis_leptocephalus FCODE: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 667022896, used 798362064, increment 38168
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 667022896, used 798362064, increment 0
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 667022896, used 798362064, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 667022896, used 798362064, increment 0
+Initial loss: 9.742731773656734
+60: time = 0.124000 loss = 9.385329
+Resulting gain: 0.3574032520794237
+Nocomis_leptocephalus response curves
+Response curve: only LENGTHKM
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 666679656, used 798705304, increment 343240
+Nocomis_leptocephalus LENGTHKM: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 666679656, used 798705304, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 666679656, used 798705304, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 666679656, used 798705304, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 666679656, used 798705304, increment 0
+Initial loss: 9.742731773656734
+Time since start: 285.626
+460: time = 2.094000 loss = 9.213024
+Resulting gain: 0.5297079507445126
+Nocomis_leptocephalus response curves
+Response curve: only MeanShadeLength
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 654077616, used 811307344, increment 12602040
+Nocomis_leptocephalus MeanShadeLength: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 654077616, used 811307344, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 654077616, used 811307344, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 654077616, used 811307344, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 654077616, used 811307344, increment 0
+Initial loss: 9.742731773656734
+Time since start: 288.093
+240: time = 2.371000 loss = 9.447229
+Resulting gain: 0.2955031856729775
+Nocomis_leptocephalus response curves
+Response curve: only MinMonthly
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 642601728, used 822783232, increment 11475888
+Nocomis_leptocephalus MinMonthly: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 642601728, used 822783232, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 642601728, used 822783232, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 642601728, used 822783232, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 642601728, used 822783232, increment 0
+Initial loss: 9.742731773656734
+Time since start: 289.334
+320: time = 1.157000 loss = 9.245403
+Resulting gain: 0.4973290272730466
+Nocomis_leptocephalus response curves
+Response curve: only NLCD11P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 630990648, used 834394312, increment 11611080
+Nocomis_leptocephalus NLCD11P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 630952520, used 834432440, increment 38128
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 630952520, used 834432440, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 630952520, used 834432440, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 630952520, used 834432440, increment 0
+Initial loss: 9.742731773656734
+Time since start: 291.613
+300: time = 2.165000 loss = 9.549738
+Resulting gain: 0.19299385901082466
+Nocomis_leptocephalus response curves
+Response curve: only NLCD11PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 619570568, used 845814392, increment 11381952
+Nocomis_leptocephalus NLCD11PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 619570568, used 845814392, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 619570568, used 845814392, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 619570568, used 845814392, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 619570568, used 845814392, increment 0
+Initial loss: 9.742731773656734
+Time since start: 295.337
+380: time = 3.591000 loss = 9.203292
+Resulting gain: 0.5394399163035608
+Nocomis_leptocephalus response curves
+Response curve: only NLCD12P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 607690416, used 857694544, increment 11880152
+Nocomis_leptocephalus NLCD12P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 607690416, used 857694544, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 607690416, used 857694544, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 607690416, used 857694544, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 607690416, used 857694544, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD12PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 607652320, used 857732640, increment 38096
+Nocomis_leptocephalus NLCD12PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 607614008, used 857770952, increment 38312
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 607614008, used 857770952, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 607614008, used 857770952, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 607614008, used 857770952, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD21P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 597558688, used 867826272, increment 10055320
+Nocomis_leptocephalus NLCD21P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 597558688, used 867826272, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 597558688, used 867826272, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 597558688, used 867826272, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 597558688, used 867826272, increment 0
+Initial loss: 9.742731773656734
+Time since start: 296.482
+80: time = 0.839000 loss = 9.600818
+Resulting gain: 0.1419132886087624
+Nocomis_leptocephalus response curves
+Response curve: only NLCD21PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 587932128, used 877452832, increment 9626560
+Nocomis_leptocephalus NLCD21PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 587932128, used 877452832, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 587932128, used 877452832, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 587932128, used 877452832, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 587932128, used 877452832, increment 0
+Initial loss: 9.742731773656734
+Time since start: 297.915
+120: time = 1.321000 loss = 9.723076
+Resulting gain: 0.01965537206047152
+Nocomis_leptocephalus response curves
+Response curve: only NLCD22P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 577961296, used 887423664, increment 9970832
+Nocomis_leptocephalus NLCD22P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 577923168, used 887461792, increment 38128
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 577923168, used 887461792, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 577923168, used 887461792, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 577923168, used 887461792, increment 0
+Initial loss: 9.742731773656734
+Time since start: 299.198
+140: time = 1.167000 loss = 9.662252
+Resulting gain: 0.08048018327544249
+Nocomis_leptocephalus response curves
+Response curve: only NLCD22PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 576968960, used 888416000, increment 954208
+Nocomis_leptocephalus NLCD22PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 567820776, used 897564184, increment 9148184
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 567820776, used 897564184, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 567820776, used 897564184, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 567820776, used 897564184, increment 0
+Initial loss: 9.742731773656734
+Time since start: 301.765
+220: time = 2.466000 loss = 9.618263
+Resulting gain: 0.12446865590210088
+Nocomis_leptocephalus response curves
+Response curve: only NLCD23P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 566180616, used 899204344, increment 1640160
+Nocomis_leptocephalus NLCD23P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 557056944, used 908328016, increment 9123672
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 557056944, used 908328016, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 557056944, used 908328016, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 557056944, used 908328016, increment 0
+Initial loss: 9.742731773656734
+80: time = 0.626000 loss = 9.676650
+Resulting gain: 0.06608137942830439
+Nocomis_leptocephalus response curves
+Response curve: only NLCD23PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 556522904, used 908862056, increment 534040
+Nocomis_leptocephalus NLCD23PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 556484592, used 908900368, increment 38312
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 556484592, used 908900368, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 556484592, used 908900368, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 556484592, used 908900368, increment 0
+Initial loss: 9.742731773656734
+Time since start: 305.119
+240: time = 2.505000 loss = 9.601224
+Resulting gain: 0.1415082569886401
+Nocomis_leptocephalus response curves
+Response curve: only NLCD24P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 545522512, used 919862448, increment 10962080
+Nocomis_leptocephalus NLCD24P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 545484376, used 919900584, increment 38136
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 545484376, used 919900584, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 545484376, used 919900584, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 545484376, used 919900584, increment 0
+Initial loss: 9.742731773656734
+100: time = 0.461000 loss = 9.703334
+Resulting gain: 0.03939824100537059
+Nocomis_leptocephalus response curves
+Response curve: only NLCD24PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 535816952, used 929568008, increment 9667424
+Nocomis_leptocephalus NLCD24PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 535778824, used 929606136, increment 38128
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 535778824, used 929606136, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 535778824, used 929606136, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 535778824, used 929606136, increment 0
+Initial loss: 9.742731773656734
+Time since start: 308.626
+360: time = 2.815000 loss = 9.643460
+Resulting gain: 0.0992713243847323
+Nocomis_leptocephalus response curves
+Response curve: only NLCD31P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 524012680, used 941372280, increment 11766144
+Nocomis_leptocephalus NLCD31P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 524012680, used 941372280, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 524012680, used 941372280, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 524012680, used 941372280, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 524012680, used 941372280, increment 0
+Initial loss: 9.742731773656734
+80: time = 0.531000 loss = 9.719840
+Resulting gain: 0.02289147913231737
+Nocomis_leptocephalus response curves
+Response curve: only NLCD31PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 523554544, used 941830416, increment 458136
+Nocomis_leptocephalus NLCD31PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 514461856, used 950923104, increment 9092688
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 514461856, used 950923104, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 514461856, used 950923104, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 514461856, used 950923104, increment 0
+Initial loss: 9.742731773656734
+Time since start: 311.991
+300: time = 2.611000 loss = 9.369410
+Resulting gain: 0.37332142569469795
+Nocomis_leptocephalus response curves
+Response curve: only NLCD41P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 512134328, used 953250632, increment 2327528
+Nocomis_leptocephalus NLCD41P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 503010656, used 962374304, increment 9123672
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 503010656, used 962374304, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 503010656, used 962374304, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 503010656, used 962374304, increment 0
+Initial loss: 9.742731773656734
+Time since start: 316.486
+500: time = 4.404000 loss = 9.387495
+Resulting gain: 0.35523647122591484
+Nocomis_leptocephalus response curves
+Response curve: only NLCD41PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 499652864, used 965732096, increment 3357792
+Nocomis_leptocephalus NLCD41PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 490598272, used 974786688, increment 9054592
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 490598272, used 974786688, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 490598272, used 974786688, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 490598272, used 974786688, increment 0
+Initial loss: 9.742731773656734
+Time since start: 319.531
+300: time = 2.934000 loss = 9.237382
+Resulting gain: 0.5053492861502598
+Nocomis_leptocephalus response curves
+Response curve: only NLCD42P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 488270608, used 977114352, increment 2327664
+Nocomis_leptocephalus NLCD42P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 479163616, used 986221344, increment 9106992
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 479163616, used 986221344, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 479163616, used 986221344, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 479163616, used 986221344, increment 0
+Initial loss: 9.742731773656734
+Time since start: 322.014
+280: time = 2.383000 loss = 9.443381
+Resulting gain: 0.29935054696993646
+Nocomis_leptocephalus response curves
+Response curve: only NLCD42PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 477103008, used 988281952, increment 2060608
+Nocomis_leptocephalus NLCD42PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 467912176, used 997472784, increment 9190832
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 467912176, used 997472784, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 467912176, used 997472784, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 467912176, used 997472784, increment 0
+Initial loss: 9.742731773656734
+Time since start: 324.803
+280: time = 2.667000 loss = 9.356059
+Resulting gain: 0.38667244250433797
+Nocomis_leptocephalus response curves
+Response curve: only NLCD43P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 465813248, used 999571712, increment 2098928
+Nocomis_leptocephalus NLCD43P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 465813248, used 999571712, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 465813248, used 999571712, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 465813248, used 999571712, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 465813248, used 999571712, increment 0
+Initial loss: 9.742731773656734
+100: time = 0.828000 loss = 9.636374
+Resulting gain: 0.10635760820107087
+Nocomis_leptocephalus response curves
+Time since start: 325.819
+Response curve: only NLCD43PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 456033368, used 1009351592, increment 9779880
+Nocomis_leptocephalus NLCD43PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 456033368, used 1009351592, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 456033368, used 1009351592, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 456033368, used 1009351592, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 456033368, used 1009351592, increment 0
+Initial loss: 9.742731773656734
+Time since start: 327.109
+120: time = 1.250000 loss = 9.609572
+Resulting gain: 0.13316008979664495
+Nocomis_leptocephalus response curves
+Response curve: only NLCD51P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 446136464, used 1019248496, increment 9896904
+Nocomis_leptocephalus NLCD51P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 446136464, used 1019248496, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 446136464, used 1019248496, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 446136464, used 1019248496, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 446136464, used 1019248496, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD51PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 446060200, used 1019324760, increment 76264
+Nocomis_leptocephalus NLCD51PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 437005608, used 1028379352, increment 9054592
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 437005608, used 1028379352, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 437005608, used 1028379352, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 437005608, used 1028379352, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD52P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 436967472, used 1028417488, increment 38136
+Nocomis_leptocephalus NLCD52P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 436967472, used 1028417488, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 436967472, used 1028417488, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 436967472, used 1028417488, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 436967472, used 1028417488, increment 0
+Initial loss: 9.742731773656734
+Time since start: 328.11
+80: time = 0.693000 loss = 9.451063
+Resulting gain: 0.2916687723447442
+Nocomis_leptocephalus response curves
+Response curve: only NLCD52PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 426378176, used 1039006784, increment 10589296
+Nocomis_leptocephalus NLCD52PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 426340048, used 1039044912, increment 38128
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 426340048, used 1039044912, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 426340048, used 1039044912, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 426340048, used 1039044912, increment 0
+Initial loss: 9.742731773656734
+Time since start: 329.23
+100: time = 1.010000 loss = 9.551733
+Resulting gain: 0.1909982851128298
+Nocomis_leptocephalus response curves
+Response curve: only NLCD71P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 416595576, used 1048789384, increment 9744472
+Nocomis_leptocephalus NLCD71P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 416595576, used 1048789384, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 416595576, used 1048789384, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 416595576, used 1048789384, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 416595576, used 1048789384, increment 0
+Initial loss: 9.742731773656734
+Time since start: 330.527
+140: time = 1.183000 loss = 9.562917
+Resulting gain: 0.17981491964826013
+Nocomis_leptocephalus response curves
+Response curve: only NLCD71PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 406510128, used 1058874832, increment 10085448
+Nocomis_leptocephalus NLCD71PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 406510128, used 1058874832, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 406510128, used 1058874832, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 406510128, used 1058874832, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 406510128, used 1058874832, increment 0
+Initial loss: 9.742731773656734
+Time since start: 332.666
+180: time = 2.041000 loss = 9.467408
+Resulting gain: 0.2753233355331943
+Nocomis_leptocephalus response curves
+Response curve: only NLCD72P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 405136008, used 1060248952, increment 1374120
+Nocomis_leptocephalus NLCD72P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 396081416, used 1069303544, increment 9054592
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 396081416, used 1069303544, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 396081416, used 1069303544, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 396081416, used 1069303544, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD72PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 396043320, used 1069341640, increment 38096
+Nocomis_leptocephalus NLCD72PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 396005008, used 1069379952, increment 38312
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 396005008, used 1069379952, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 396005008, used 1069379952, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 396005008, used 1069379952, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD73P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 386909880, used 1078475080, increment 9095128
+Nocomis_leptocephalus NLCD73P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 386909880, used 1078475080, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 386909880, used 1078475080, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 386909880, used 1078475080, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 386909880, used 1078475080, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD73PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 386871752, used 1078513208, increment 38128
+Nocomis_leptocephalus NLCD73PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 377817160, used 1087567800, increment 9054592
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 377817160, used 1087567800, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 377817160, used 1087567800, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 377817160, used 1087567800, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD74P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 377779040, used 1087605920, increment 38120
+Nocomis_leptocephalus NLCD74P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 377740920, used 1087644040, increment 38120
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 377740920, used 1087644040, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 377740920, used 1087644040, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 377740920, used 1087644040, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD74PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 368645800, used 1096739160, increment 9095120
+Nocomis_leptocephalus NLCD74PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 368645800, used 1096739160, increment 0
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 368645800, used 1096739160, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 368645800, used 1096739160, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 368645800, used 1096739160, increment 0
+Initial loss: 9.742731773656734
+20: time = 0.001000 loss = 9.742732
+Resulting gain: 0.0
+Nocomis_leptocephalus response curves
+Response curve: only NLCD81P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 368607664, used 1096777296, increment 38136
+Nocomis_leptocephalus NLCD81P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 359514888, used 1105870072, increment 9092776
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 359514888, used 1105870072, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 359514888, used 1105870072, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 359514888, used 1105870072, increment 0
+Initial loss: 9.742731773656734
+Time since start: 334.833
+160: time = 1.470000 loss = 9.522933
+Resulting gain: 0.21979905195704852
+Nocomis_leptocephalus response curves
+Response curve: only NLCD81PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 358369360, used 1107015600, increment 1145528
+Nocomis_leptocephalus NLCD81PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 349314768, used 1116070192, increment 9054592
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 349314768, used 1116070192, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 349314768, used 1116070192, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 349314768, used 1116070192, increment 0
+Initial loss: 9.742731773656734
+Time since start: 336.432
+140: time = 1.495000 loss = 9.696447
+Resulting gain: 0.04628485052599807
+Nocomis_leptocephalus response curves
+Response curve: only NLCD82P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1465384960, free 348284128, used 1117100832, increment 1030640
+Nocomis_leptocephalus NLCD82P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1465384960, free 348245816, used 1117139144, increment 38312
+linearPredictor: max memory 1908932608, total allocated 1465384960, free 341542120, used 1123842840, increment 6703696
+FeaturedSpace: max memory 1908932608, total allocated 1465384960, free 341542120, used 1123842840, increment 0
+Sequential: max memory 1908932608, total allocated 1465384960, free 341542120, used 1123842840, increment 0
+Initial loss: 9.742731773656734
+200: time = 0.831000 loss = 9.692911
+Resulting gain: 0.049820478376698674
+Nocomis_leptocephalus response curves
+Time since start: 337.455
+Response curve: only NLCD82PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 799144992, used 674104288, increment -449738552
+Nocomis_leptocephalus NLCD82PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 799144992, used 674104288, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 799144992, used 674104288, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 799144992, used 674104288, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 799144992, used 674104288, increment 0
+Initial loss: 9.742731773656734
+Time since start: 339.512
+280: time = 2.010000 loss = 9.465024
+Resulting gain: 0.27770761834923086
+Nocomis_leptocephalus response curves
+Response curve: only NLCD90P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 787553336, used 685695944, increment 11591656
+Nocomis_leptocephalus NLCD90P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 787553336, used 685695944, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 787553336, used 685695944, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 787553336, used 685695944, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 787553336, used 685695944, increment 0
+Initial loss: 9.742731773656734
+Time since start: 341.107
+220: time = 1.491000 loss = 9.429268
+Resulting gain: 0.3134639071122134
+Nocomis_leptocephalus response curves
+Response curve: only NLCD90PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 777297712, used 695951568, increment 10255624
+Nocomis_leptocephalus NLCD90PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 777297712, used 695951568, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 777297712, used 695951568, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 777297712, used 695951568, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 777297712, used 695951568, increment 0
+Initial loss: 9.742731773656734
+Time since start: 344.689
+440: time = 3.469000 loss = 9.063592
+Resulting gain: 0.6791399590508238
+Nocomis_leptocephalus response curves
+Response curve: only NLCD95P
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 765916328, used 707332952, increment 11381384
+Nocomis_leptocephalus NLCD95P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 765916328, used 707332952, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 765916328, used 707332952, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 765916328, used 707332952, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 765916328, used 707332952, increment 0
+Initial loss: 9.742731773656734
+140: time = 0.652000 loss = 9.662375
+Resulting gain: 0.08035694415770145
+Nocomis_leptocephalus response curves
+Response curve: only NLCD95PC
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 765164040, used 708085240, increment 752288
+Nocomis_leptocephalus NLCD95PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 756415480, used 716833800, increment 8748560
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 756415480, used 716833800, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 756415480, used 716833800, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 756415480, used 716833800, increment 0
+Initial loss: 9.742731773656734
+Time since start: 347.349
+320: time = 1.744000 loss = 9.436953
+Resulting gain: 0.3057786628662864
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_11
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 754158560, used 719090720, increment 2256920
+Nocomis_leptocephalus NLCD_11: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 754158560, used 719090720, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 754158560, used 719090720, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 754158560, used 719090720, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 754158560, used 719090720, increment 0
+Initial loss: 9.742731773656734
+60: time = 0.471000 loss = 9.673470
+Resulting gain: 0.06926176345623603
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_21
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 744071456, used 729177824, increment 10087104
+Nocomis_leptocephalus NLCD_21: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 744071456, used 729177824, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 744071456, used 729177824, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 744071456, used 729177824, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 744071456, used 729177824, increment 0
+Initial loss: 9.742731773656734
+Time since start: 348.579
+140: time = 0.529000 loss = 9.268275
+Resulting gain: 0.4744566568069555
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_22
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 734434424, used 738814856, increment 9637032
+Nocomis_leptocephalus NLCD_22: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 734434424, used 738814856, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 734434424, used 738814856, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 734434424, used 738814856, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 734434424, used 738814856, increment 0
+Initial loss: 9.742731773656734
+60: time = 0.449000 loss = 9.566344
+Resulting gain: 0.17638783089216226
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_23
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 734058304, used 739190976, increment 376120
+Nocomis_leptocephalus NLCD_23: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 734058304, used 739190976, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 734058304, used 739190976, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 734058304, used 739190976, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 734058304, used 739190976, increment 0
+Initial loss: 9.742731773656734
+Time since start: 349.752
+60: time = 0.489000 loss = 9.723353
+Resulting gain: 0.019378396471310566
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_24
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 723973584, used 749275696, increment 10084720
+Nocomis_leptocephalus NLCD_24: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 723973584, used 749275696, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 723973584, used 749275696, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 723973584, used 749275696, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 723973584, used 749275696, increment 0
+Initial loss: 9.742731773656734
+120: time = 0.507000 loss = 9.723125
+Resulting gain: 0.019606628311212404
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_31
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 714336320, used 758912960, increment 9637264
+Nocomis_leptocephalus NLCD_31: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 714336320, used 758912960, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 714336320, used 758912960, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 714336320, used 758912960, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 714336320, used 758912960, increment 0
+Initial loss: 9.742731773656734
+Time since start: 350.989
+60: time = 0.493000 loss = 9.708815
+Resulting gain: 0.033916804987249805
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_41
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 713960208, used 759289072, increment 376112
+Nocomis_leptocephalus NLCD_41: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 713960208, used 759289072, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 713960208, used 759289072, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 713960208, used 759289072, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 713960208, used 759289072, increment 0
+Initial loss: 9.742731773656734
+260: time = 0.631000 loss = 9.103874
+Resulting gain: 0.6388574818903408
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_42
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 702954432, used 770294848, increment 11005776
+Nocomis_leptocephalus NLCD_42: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 702954432, used 770294848, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 702954432, used 770294848, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 702954432, used 770294848, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 702954432, used 770294848, increment 0
+Initial loss: 9.742731773656734
+Time since start: 352.382
+140: time = 0.568000 loss = 9.694365
+Resulting gain: 0.048366684356841105
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_43
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 693451032, used 779798248, increment 9503400
+Nocomis_leptocephalus NLCD_43: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 693451032, used 779798248, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 693451032, used 779798248, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 693451032, used 779798248, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 693451032, used 779798248, increment 0
+Initial loss: 9.742731773656734
+140: time = 0.640000 loss = 9.625693
+Resulting gain: 0.11703919437306176
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_52
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 692322488, used 780926792, increment 1128544
+Nocomis_leptocephalus NLCD_52: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 683573928, used 789675352, increment 8748560
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 683573928, used 789675352, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 683573928, used 789675352, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 683573928, used 789675352, increment 0
+Initial loss: 9.742731773656734
+Time since start: 353.961
+240: time = 0.698000 loss = 9.518724
+Resulting gain: 0.22400791520005292
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_71
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 681693304, used 791555976, increment 1880624
+Nocomis_leptocephalus NLCD_71: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 681693304, used 791555976, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 681693304, used 791555976, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 681693304, used 791555976, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 681693304, used 791555976, increment 0
+Initial loss: 9.742731773656734
+180: time = 0.754000 loss = 9.551805
+Resulting gain: 0.1909266950640287
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_81
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 671230088, used 802019192, increment 10463216
+Nocomis_leptocephalus NLCD_81: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 671230088, used 802019192, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 671230088, used 802019192, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 671230088, used 802019192, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 671230088, used 802019192, increment 0
+Initial loss: 9.742731773656734
+Time since start: 355.502
+140: time = 0.546000 loss = 9.310394
+Resulting gain: 0.43233783483436383
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_82
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 670101528, used 803147752, increment 1128560
+Nocomis_leptocephalus NLCD_82: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 661352968, used 811896312, increment 8748560
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 661352968, used 811896312, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 661352968, used 811896312, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 661352968, used 811896312, increment 0
+Initial loss: 9.742731773656734
+60: time = 0.328000 loss = 9.741756
+Resulting gain: 9.756300245342686E-4
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_90
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 660976848, used 812272432, increment 376120
+Nocomis_leptocephalus NLCD_90: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 660976848, used 812272432, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 660976848, used 812272432, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 660976848, used 812272432, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 660976848, used 812272432, increment 0
+Initial loss: 9.742731773656734
+100: time = 0.388000 loss = 9.726599
+Resulting gain: 0.016132589890641924
+Nocomis_leptocephalus response curves
+Response curve: only NLCD_95
+Making features
+Time since start: 356.504
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 650513632, used 822735648, increment 10463216
+Nocomis_leptocephalus NLCD_95: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 650513632, used 822735648, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 650513632, used 822735648, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 650513632, used 822735648, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 650513632, used 822735648, increment 0
+Initial loss: 9.742731773656734
+80: time = 0.386000 loss = 9.728596
+Resulting gain: 0.014135881529709238
+Nocomis_leptocephalus response curves
+Response curve: only PET0001
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 649614296, used 823634984, increment 899336
+Nocomis_leptocephalus PET0001: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 640796656, used 832452624, increment 8817640
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 640796656, used 832452624, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 640796656, used 832452624, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 640796656, used 832452624, increment 0
+Initial loss: 9.742731773656734
+Time since start: 359.07
+220: time = 2.025000 loss = 8.928448
+Resulting gain: 0.8142836053955733
+Nocomis_leptocephalus response curves
+Response curve: only PPT0001
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 639291808, used 833957472, increment 1504848
+Nocomis_leptocephalus PPT0001: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 630543248, used 842706032, increment 8748560
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 630543248, used 842706032, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 630543248, used 842706032, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 630543248, used 842706032, increment 0
+Initial loss: 9.742731773656734
+Time since start: 360.548
+140: time = 1.376000 loss = 9.445190
+Resulting gain: 0.29754151916862526
+Nocomis_leptocephalus response curves
+Response curve: only Pathlength
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 629414528, used 843834752, increment 1128720
+Nocomis_leptocephalus Pathlength: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 620596888, used 852652392, increment 8817640
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 620596888, used 852652392, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 620596888, used 852652392, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 620596888, used 852652392, increment 0
+Initial loss: 9.742731773656734
+120: time = 0.766000 loss = 8.964832
+Resulting gain: 0.777899426334324
+Nocomis_leptocephalus response curves
+Response curve: only PrecipV
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 619844472, used 853404808, increment 752416
+Nocomis_leptocephalus PrecipV: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 611063144, used 862186136, increment 8781328
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 611063144, used 862186136, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 611063144, used 862186136, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 611063144, used 862186136, increment 0
+Initial loss: 9.742731773656734
+Time since start: 362.55
+140: time = 1.049000 loss = 9.445228
+Resulting gain: 0.297504016684476
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 610310912, used 862938368, increment 752232
+Nocomis_leptocephalus Q0001E: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 601177856, used 872071424, increment 9133056
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 601177856, used 872071424, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 601177856, used 872071424, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 601177856, used 872071424, increment 0
+Initial loss: 9.742731773656734
+Time since start: 365.387
+380: time = 2.730000 loss = 8.918125
+Resulting gain: 0.8246069003435306
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_01
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 598544272, used 874705008, increment 2633584
+Nocomis_leptocephalus Q0001E_01: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 589704944, used 883544336, increment 8839328
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 589704944, used 883544336, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 589704944, used 883544336, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 589704944, used 883544336, increment 0
+Initial loss: 9.742731773656734
+Time since start: 368.872
+420: time = 3.384000 loss = 8.987177
+Resulting gain: 0.7555549321651611
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_02
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 586695960, used 886553320, increment 3008984
+Nocomis_leptocephalus Q0001E_02: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 577811160, used 895438120, increment 8884800
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 577811160, used 895438120, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 577811160, used 895438120, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 577811160, used 895438120, increment 0
+Initial loss: 9.742731773656734
+Time since start: 372.595
+440: time = 3.608000 loss = 8.989247
+Resulting gain: 0.7534852001854908
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_03
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 574425456, used 898823824, increment 3385704
+Nocomis_leptocephalus Q0001E_03: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 574425456, used 898823824, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 574425456, used 898823824, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 574425456, used 898823824, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 574425456, used 898823824, increment 0
+Initial loss: 9.742731773656734
+Time since start: 376.047
+400: time = 3.332000 loss = 8.977927
+Resulting gain: 0.764804490248336
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_04
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 562667872, used 910581408, increment 11757584
+Nocomis_leptocephalus Q0001E_04: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 562667872, used 910581408, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 562667872, used 910581408, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 562667872, used 910581408, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 562667872, used 910581408, increment 0
+Initial loss: 9.742731773656734
+Time since start: 378.607
+320: time = 2.452000 loss = 8.915490
+Resulting gain: 0.8272414207225864
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_05
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 551662048, used 921587232, increment 11005824
+Nocomis_leptocephalus Q0001E_05: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 551662048, used 921587232, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 551662048, used 921587232, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 551662048, used 921587232, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 551662048, used 921587232, increment 0
+Initial loss: 9.742731773656734
+Time since start: 380.852
+320: time = 2.133000 loss = 8.857074
+Resulting gain: 0.8856577799147551
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_06
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 539317872, used 933931408, increment 12344176
+Nocomis_leptocephalus Q0001E_06: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 539317872, used 933931408, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 539317872, used 933931408, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 539317872, used 933931408, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 539317872, used 933931408, increment 0
+Initial loss: 9.742731773656734
+Time since start: 383.48
+400: time = 2.521000 loss = 8.880559
+Resulting gain: 0.8621726773413254
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_07
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 527933688, used 945315592, increment 11384184
+Nocomis_leptocephalus Q0001E_07: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 527557384, used 945691896, increment 376304
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 527557384, used 945691896, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 527557384, used 945691896, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 527557384, used 945691896, increment 0
+Initial loss: 9.742731773656734
+Time since start: 386.04
+380: time = 2.465000 loss = 8.915809
+Resulting gain: 0.8269225992811879
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_08
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 516173376, used 957075904, increment 11384008
+Nocomis_leptocephalus Q0001E_08: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 516173376, used 957075904, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 516173376, used 957075904, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 516173376, used 957075904, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 516173376, used 957075904, increment 0
+Initial loss: 9.742731773656734
+Time since start: 388.113
+320: time = 1.971000 loss = 8.943409
+Resulting gain: 0.7993225734837388
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_09
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 505031632, used 968217648, increment 11141744
+Nocomis_leptocephalus Q0001E_09: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 505031632, used 968217648, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 505031632, used 968217648, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 505031632, used 968217648, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 505031632, used 968217648, increment 0
+Initial loss: 9.742731773656734
+Time since start: 390.041
+300: time = 1.816000 loss = 8.937832
+Resulting gain: 0.804900243122546
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_10
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 502774600, used 970474680, increment 2257032
+Nocomis_leptocephalus Q0001E_10: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 493957920, used 979291360, increment 8816680
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 493957920, used 979291360, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 493957920, used 979291360, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 493957920, used 979291360, increment 0
+Initial loss: 9.742731773656734
+Time since start: 392.972
+400: time = 2.832000 loss = 8.883391
+Resulting gain: 0.8593406237132726
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_11
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 490948816, used 982300464, increment 3009104
+Nocomis_leptocephalus Q0001E_11: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 482131176, used 991118104, increment 8817640
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 482131176, used 991118104, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 482131176, used 991118104, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 482131176, used 991118104, increment 0
+Initial loss: 9.742731773656734
+Time since start: 395.62
+380: time = 2.545000 loss = 8.684298
+Resulting gain: 1.0584339355862777
+Nocomis_leptocephalus response curves
+Response curve: only Q0001E_12
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 479498184, used 993751096, increment 2632992
+Nocomis_leptocephalus Q0001E_12: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 470749624, used 1002499656, increment 8748560
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 470749624, used 1002499656, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 470749624, used 1002499656, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 470749624, used 1002499656, increment 0
+Initial loss: 9.742731773656734
+Time since start: 398.051
+320: time = 2.320000 loss = 8.867503
+Resulting gain: 0.875228503993922
+Nocomis_leptocephalus response curves
+Response curve: only Qincr0001E
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 468492528, used 1004756752, increment 2257096
+Nocomis_leptocephalus Qincr0001E: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 459735776, used 1013513504, increment 8756752
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 459735776, used 1013513504, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 459735776, used 1013513504, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 459735776, used 1013513504, increment 0
+Initial loss: 9.742731773656734
+Time since start: 400.01
+200: time = 1.870000 loss = 9.307975
+Resulting gain: 0.4347563018580942
+Nocomis_leptocephalus response curves
+Response curve: only RunOffV
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 458231120, used 1015018160, increment 1504656
+Nocomis_leptocephalus RunOffV: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 449366632, used 1023882648, increment 8864488
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 449366632, used 1023882648, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 449366632, used 1023882648, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 449366632, used 1023882648, increment 0
+Initial loss: 9.742731773656734
+Time since start: 402.451
+260: time = 2.336000 loss = 9.252302
+Resulting gain: 0.49043000033370454
+Nocomis_leptocephalus response curves
+Response curve: only SLOPE
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 447485664, used 1025763616, increment 1880968
+Nocomis_leptocephalus SLOPE: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 438626808, used 1034622472, increment 8858856
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 438626808, used 1034622472, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 438626808, used 1034622472, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 438626808, used 1034622472, increment 0
+Initial loss: 9.742731773656734
+Time since start: 403.477
+120: time = 0.941000 loss = 9.468714
+Resulting gain: 0.27401814935819857
+Nocomis_leptocephalus response curves
+Response curve: only ShadedLength
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 437874528, used 1035374752, increment 752280
+Nocomis_leptocephalus ShadedLength: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 437874528, used 1035374752, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 437874528, used 1035374752, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 437874528, used 1035374752, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 437874528, used 1035374752, increment 0
+Initial loss: 9.742731773656734
+Time since start: 406.283
+300: time = 2.698000 loss = 9.166888
+Resulting gain: 0.575843534945145
+Nocomis_leptocephalus response curves
+Response curve: only StreamOrde
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 426869104, used 1046380176, increment 11005424
+Nocomis_leptocephalus StreamOrde: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 426869104, used 1046380176, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 426869104, used 1046380176, increment 0
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 426869104, used 1046380176, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 426869104, used 1046380176, increment 0
+Initial loss: 9.742731773656734
+180: time = 0.422000 loss = 9.387632
+Resulting gain: 0.3550993484879932
+Nocomis_leptocephalus response curves
+Response curve: only TEMP0001
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 416990952, used 1056258328, increment 9878152
+Nocomis_leptocephalus TEMP0001: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 416990952, used 1056258328, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 416990952, used 1056258328, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 416990952, used 1056258328, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 416990952, used 1056258328, increment 0
+Initial loss: 9.742731773656734
+Time since start: 408.272
+160: time = 1.392000 loss = 8.894234
+Resulting gain: 0.8484978784474411
+Nocomis_leptocephalus response curves
+Response curve: only TempV
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 406977792, used 1066271488, increment 10013160
+Nocomis_leptocephalus TempV: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 406977792, used 1066271488, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 406977792, used 1066271488, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 406977792, used 1066271488, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 406977792, used 1066271488, increment 0
+Initial loss: 9.742731773656734
+Time since start: 409.583
+160: time = 1.225000 loss = 8.893985
+Resulting gain: 0.8487471172373429
+Nocomis_leptocephalus response curves
+Response curve: only TotDASqKM
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 405849208, used 1067400072, increment 1128584
+Nocomis_leptocephalus TotDASqKM: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 397031568, used 1076217712, increment 8817640
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 397031568, used 1076217712, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 397031568, used 1076217712, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 397031568, used 1076217712, increment 0
+Initial loss: 9.742731773656734
+Time since start: 412.996
+380: time = 3.307000 loss = 9.096583
+Resulting gain: 0.6461487619321744
+Nocomis_leptocephalus response curves
+Response curve: only V0001E
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 394021880, used 1079227400, increment 3009688
+Nocomis_leptocephalus V0001E: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 385212632, used 1088036648, increment 8809248
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 385212632, used 1088036648, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 385212632, used 1088036648, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 385212632, used 1088036648, increment 0
+Initial loss: 9.742731773656734
+Time since start: 415.643
+280: time = 2.541000 loss = 8.787176
+Resulting gain: 0.9555561882295045
+Nocomis_leptocephalus response curves
+Response curve: only erodability_MEAN
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 383331680, used 1089917600, increment 1880952
+Nocomis_leptocephalus erodability_MEAN: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 374460552, used 1098788728, increment 8871128
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 374460552, used 1098788728, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 374460552, used 1098788728, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 374460552, used 1098788728, increment 0
+Initial loss: 9.742731773656734
+Time since start: 416.852
+120: time = 1.115000 loss = 9.591835
+Resulting gain: 0.15089724738425403
+Nocomis_leptocephalus response curves
+Response curve: only flood_risk_SUM
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 373708304, used 1099540976, increment 752248
+Nocomis_leptocephalus flood_risk_SUM: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 364959744, used 1108289536, increment 8748560
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 364959744, used 1108289536, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 364959744, used 1108289536, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 364959744, used 1108289536, increment 0
+Initial loss: 9.742731773656734
+Time since start: 417.903
+280: time = 0.942000 loss = 9.052774
+Resulting gain: 0.6899576105230825
+Nocomis_leptocephalus response curves
+Response curve: only flooding_SUM
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 362702616, used 1110546664, increment 2257128
+Nocomis_leptocephalus flooding_SUM: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 362702616, used 1110546664, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 362702616, used 1110546664, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 362702616, used 1110546664, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 362702616, used 1110546664, increment 0
+Initial loss: 9.742731773656734
+Time since start: 420.15
+300: time = 2.146000 loss = 9.314764
+Resulting gain: 0.4279677290936874
+Nocomis_leptocephalus response curves
+Response curve: only pctForest
+Making features
+makeFeatures: max memory 1908932608, total allocated 1473249280, free 351696552, used 1121552728, increment 11006064
+Nocomis_leptocephalus pctForest: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1473249280, free 351696552, used 1121552728, increment 0
+linearPredictor: max memory 1908932608, total allocated 1473249280, free 351696552, used 1121552728, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1473249280, free 351696552, used 1121552728, increment 0
+Sequential: max memory 1908932608, total allocated 1473249280, free 351696552, used 1121552728, increment 0
+Initial loss: 9.742731773656734
+Time since start: 421.384
+160: time = 1.119000 loss = 9.537429
+Resulting gain: 0.20530233480801385
+Nocomis_leptocephalus response curves
+Response curve: only pctWetland
+Making features
+makeFeatures: max memory 1908932608, total allocated 1375731712, free 702329888, used 673401824, increment -448150904
+Nocomis_leptocephalus pctWetland: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1375731712, free 702329888, used 673401824, increment 0
+linearPredictor: max memory 1908932608, total allocated 1375731712, free 702329888, used 673401824, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1375731712, free 702329888, used 673401824, increment 0
+Sequential: max memory 1908932608, total allocated 1375731712, free 702329888, used 673401824, increment 0
+Initial loss: 9.742731773656734
+160: time = 0.858000 loss = 9.455948
+Resulting gain: 0.28678400982084895
+Nocomis_leptocephalus response curves
+Time since start: 422.444
+Response curve: only road_density_MEAN
+Making features
+makeFeatures: max memory 1908932608, total allocated 1375731712, free 701537656, used 674194056, increment 792232
+Nocomis_leptocephalus road_density_MEAN: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1375731712, free 693514848, used 682216864, increment 8022808
+linearPredictor: max memory 1908932608, total allocated 1375731712, free 693514848, used 682216864, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1375731712, free 693514848, used 682216864, increment 0
+Sequential: max memory 1908932608, total allocated 1375731712, free 693514848, used 682216864, increment 0
+Initial loss: 9.742731773656734
+Time since start: 424.428
+200: time = 1.953000 loss = 9.630502
+Resulting gain: 0.11223013487912858
+Nocomis_leptocephalus response curves
+Response curve: only slope_MEAN
+Making features
+makeFeatures: max memory 1908932608, total allocated 1375731712, free 683974864, used 691756848, increment 9539984
+Nocomis_leptocephalus slope_MEAN: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1375731712, free 683974864, used 691756848, increment 0
+linearPredictor: max memory 1908932608, total allocated 1375731712, free 683974864, used 691756848, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1375731712, free 683974864, used 691756848, increment 0
+Sequential: max memory 1908932608, total allocated 1375731712, free 683974864, used 691756848, increment 0
+Initial loss: 9.742731773656734
+Time since start: 428.443
+380: time = 3.908000 loss = 9.251807
+Resulting gain: 0.490925270316378
+Nocomis_leptocephalus response curves
+Response curve: only water_table_MEAN
+Making features
+makeFeatures: max memory 1908932608, total allocated 1375731712, free 673643416, used 702088296, increment 10331448
+Nocomis_leptocephalus water_table_MEAN: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+240 samples
+Density: max memory 1908932608, total allocated 1375731712, free 673643416, used 702088296, increment 0
+linearPredictor: max memory 1908932608, total allocated 1375731712, free 673643416, used 702088296, increment 0
+FeaturedSpace: max memory 1908932608, total allocated 1375731712, free 673643416, used 702088296, increment 0
+Sequential: max memory 1908932608, total allocated 1375731712, free 673643416, used 702088296, increment 0
+Initial loss: 9.742731773656734
+100: time = 0.668000 loss = 9.388185
+Resulting gain: 0.35454720125006034
+Nocomis_leptocephalus response curves
+Time since start: 465.419
+Jackknife: leave ArbolateSu out
+Making features
+Time since start: 473.025
+makeFeatures: max memory 1908932608, total allocated 1622147072, free 471038072, used 1151109000, increment 449020704
+Nocomis_leptocephalus ArbolateSu: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 476.667
+240 samples
+Density: max memory 1908932608, total allocated 1773666304, free 475381568, used 1298284736, increment 147175736
+linearPredictor: max memory 1908932608, total allocated 1773666304, free 475381568, used 1298284736, increment 0
+Time since start: 479.074
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1773666304, free 475381568, used 1298284736, increment 0
+Sequential: max memory 1908932608, total allocated 1773666304, free 475381568, used 1298284736, increment 0
+Initial loss: 9.742731773656734
+Time since start: 716.177
+500: time = 237.102000 loss = 7.428978
+Time since start: 718.166
+Jackknife: leave AreaSqKM out
+Making features
+Time since start: 726.743
+makeFeatures: max memory 1908932608, total allocated 1871708160, free 725199104, used 1146509056, increment -151775680
+Nocomis_leptocephalus AreaSqKM: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 729.994
+240 samples
+Density: max memory 1908932608, total allocated 1871708160, free 541810288, used 1329897872, increment 183388816
+linearPredictor: max memory 1908932608, total allocated 1871708160, free 541810288, used 1329897872, increment 0
+Time since start: 732.333
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1871708160, free 541810288, used 1329897872, increment 0
+Sequential: max memory 1908932608, total allocated 1871708160, free 541810288, used 1329897872, increment 0
+Initial loss: 9.742731773656734
+Time since start: 963.904
+500: time = 231.571000 loss = 7.424911
+Time since start: 965.802
+Jackknife: leave FCODE out
+Making features
+Time since start: 973.094
+makeFeatures: max memory 1908932608, total allocated 1839202304, free 683069752, used 1156132552, increment -173765320
+Nocomis_leptocephalus FCODE: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 976.205
+240 samples
+Density: max memory 1908932608, total allocated 1839202304, free 464786624, used 1374415680, increment 218283128
+linearPredictor: max memory 1908932608, total allocated 1839202304, free 464786624, used 1374415680, increment 0
+Time since start: 978.617
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1839202304, free 464786624, used 1374415680, increment 0
+Sequential: max memory 1908932608, total allocated 1839202304, free 464786624, used 1374415680, increment 0
+Initial loss: 9.742731773656734
+Time since start: 1219.981
+500: time = 241.363000 loss = 7.433823
+Time since start: 1221.97
+Jackknife: leave LENGTHKM out
+Making features
+Time since start: 1229.597
+makeFeatures: max memory 1908932608, total allocated 1785200640, free 638840128, used 1146360512, increment -228055168
+Nocomis_leptocephalus LENGTHKM: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 1232.893
+240 samples
+Density: max memory 1908932608, total allocated 1785200640, free 392583664, used 1392616976, increment 246256464
+linearPredictor: max memory 1908932608, total allocated 1785200640, free 392583664, used 1392616976, increment 0
+Time since start: 1235.325
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1785200640, free 392583664, used 1392616976, increment 0
+Sequential: max memory 1908932608, total allocated 1785200640, free 392583664, used 1392616976, increment 0
+Initial loss: 9.742731773656734
+Time since start: 1473.525
+500: time = 238.199000 loss = 7.435511
+Time since start: 1475.406
+Jackknife: leave MeanShadeLength out
+Making features
+Time since start: 1482.084
+makeFeatures: max memory 1908932608, total allocated 1735917568, free 591638704, used 1144278864, increment -248338112
+Nocomis_leptocephalus MeanShadeLength: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 1485.789
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 599228432, used 1309704176, increment 165425312
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 599228432, used 1309704176, increment 0
+Time since start: 1488.039
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 599228432, used 1309704176, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 599228432, used 1309704176, increment 0
+Initial loss: 9.742731773656734
+Time since start: 1711.329
+500: time = 223.289000 loss = 7.428273
+Time since start: 1713.255
+Jackknife: leave MinMonthly out
+Making features
+Time since start: 1721.035
+makeFeatures: max memory 1908932608, total allocated 1709178880, free 563665944, used 1145512936, increment -164191240
+Nocomis_leptocephalus MinMonthly: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 1724.789
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 568133176, used 1340799432, increment 195286496
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 568133176, used 1340799432, increment 0
+Time since start: 1727.077
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 568133176, used 1340799432, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 568133176, used 1340799432, increment 0
+Initial loss: 9.742731773656734
+Time since start: 1953.401
+500: time = 226.323000 loss = 7.426454
+Time since start: 1955.262
+Jackknife: leave NLCD11P out
+Making features
+Time since start: 1962.628
+makeFeatures: max memory 1908932608, total allocated 1713897472, free 566739200, used 1147158272, increment -193641160
+Nocomis_leptocephalus NLCD11P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 1966.107
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 538267376, used 1370665232, increment 223506960
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 538267376, used 1370665232, increment 0
+Time since start: 1968.439
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 538267376, used 1370665232, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 538267376, used 1370665232, increment 0
+Initial loss: 9.742731773656734
+Time since start: 2194.02
+500: time = 225.580000 loss = 7.427268
+Time since start: 2195.906
+Jackknife: leave NLCD11PC out
+Making features
+Time since start: 2202.938
+makeFeatures: max memory 1908932608, total allocated 1707606016, free 560981480, used 1146624536, increment -224040696
+Nocomis_leptocephalus NLCD11PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 2206.912
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 617247056, used 1291685552, increment 145061016
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 617247056, used 1291685552, increment 0
+Time since start: 2209.236
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 617247056, used 1291685552, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 617247056, used 1291685552, increment 0
+Initial loss: 9.742731773656734
+Time since start: 2435.737
+500: time = 226.501000 loss = 7.427838
+Time since start: 2437.568
+Jackknife: leave NLCD12P out
+Making features
+Time since start: 2444.304
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 751911560, used 1157021048, increment -134664504
+Nocomis_leptocephalus NLCD12P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 2447.677
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 574873184, used 1334059424, increment 177038376
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 574873184, used 1334059424, increment 0
+Time since start: 2449.883
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 574873184, used 1334059424, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 574873184, used 1334059424, increment 0
+Initial loss: 9.742731773656734
+Time since start: 2676.468
+500: time = 226.585000 loss = 7.421629
+Time since start: 2678.318
+Jackknife: leave NLCD12PC out
+Making features
+Time since start: 2685.211
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 753630248, used 1155302360, increment -178757064
+Nocomis_leptocephalus NLCD12PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 2688.352
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 540206280, used 1368726328, increment 213423968
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 540206280, used 1368726328, increment 0
+Time since start: 2690.576
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 540206280, used 1368726328, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 540206280, used 1368726328, increment 0
+Initial loss: 9.742731773656734
+Time since start: 2920.086
+500: time = 229.509000 loss = 7.421629
+Time since start: 2921.966
+Jackknife: leave NLCD21P out
+Making features
+Time since start: 2930.47
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 761325040, used 1147607568, increment -221118760
+Nocomis_leptocephalus NLCD21P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 2933.845
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 521323528, used 1387609080, increment 240001512
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 521323528, used 1387609080, increment 0
+Time since start: 2936.059
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 521323528, used 1387609080, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 521323528, used 1387609080, increment 0
+Initial loss: 9.742731773656734
+Time since start: 3164.712
+500: time = 228.652000 loss = 7.424662
+Time since start: 3166.605
+Jackknife: leave NLCD21PC out
+Making features
+Time since start: 3174.214
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 765442072, used 1143490536, increment -244118544
+Nocomis_leptocephalus NLCD21PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 3177.775
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 603736936, used 1305195672, increment 161705136
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 603736936, used 1305195672, increment 0
+Time since start: 3179.893
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 603736936, used 1305195672, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 603736936, used 1305195672, increment 0
+Initial loss: 9.742731773656734
+Time since start: 3397.285
+500: time = 217.391000 loss = 7.431322
+Time since start: 3399.012
+Jackknife: leave NLCD22P out
+Making features
+Time since start: 3406.275
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 762417832, used 1146514776, increment -158680896
+Nocomis_leptocephalus NLCD22P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 3409.649
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 570762616, used 1338169992, increment 191655216
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 570762616, used 1338169992, increment 0
+Time since start: 3411.853
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 570762616, used 1338169992, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 570762616, used 1338169992, increment 0
+Initial loss: 9.742731773656734
+Time since start: 3634.348
+500: time = 222.495000 loss = 7.432528
+Time since start: 3636.187
+Jackknife: leave NLCD22PC out
+Making features
+Time since start: 3643.757
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 761928096, used 1147004512, increment -191165480
+Nocomis_leptocephalus NLCD22PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 3646.959
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 545944104, used 1362988504, increment 215983992
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 545944104, used 1362988504, increment 0
+Time since start: 3649.231
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 545944104, used 1362988504, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 545944104, used 1362988504, increment 0
+Initial loss: 9.742731773656734
+Time since start: 3871.012
+500: time = 221.781000 loss = 7.427157
+Time since start: 3872.838
+Jackknife: leave NLCD23P out
+Making features
+Time since start: 3879.661
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 762784936, used 1146147672, increment -216840832
+Nocomis_leptocephalus NLCD23P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 3883.112
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 620990992, used 1287941616, increment 141793944
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 620990992, used 1287941616, increment 0
+Time since start: 3885.326
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 620990992, used 1287941616, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 620990992, used 1287941616, increment 0
+Initial loss: 9.742731773656734
+Time since start: 4113.587
+500: time = 228.261000 loss = 7.424483
+Time since start: 4115.485
+Jackknife: leave NLCD23PC out
+Making features
+Time since start: 4122.343
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 763551584, used 1145381024, increment -142560592
+Nocomis_leptocephalus NLCD23PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 4125.7
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 596544488, used 1312388120, increment 167007096
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 596544488, used 1312388120, increment 0
+Time since start: 4127.869
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 596544488, used 1312388120, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 596544488, used 1312388120, increment 0
+Initial loss: 9.742731773656734
+Time since start: 4347.967
+500: time = 220.098000 loss = 7.424856
+Time since start: 4349.887
+Jackknife: leave NLCD24P out
+Making features
+Time since start: 4356.671
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 763206192, used 1145726416, increment -166661704
+Nocomis_leptocephalus NLCD24P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 4360.106
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 561786704, used 1347145904, increment 201419488
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 561786704, used 1347145904, increment 0
+Time since start: 4362.375
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 561786704, used 1347145904, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 561786704, used 1347145904, increment 0
+Initial loss: 9.742731773656734
+Time since start: 4590.166
+500: time = 227.791000 loss = 7.421915
+Time since start: 4592.05
+Jackknife: leave NLCD24PC out
+Making features
+Time since start: 4599.36
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 764260984, used 1144671624, increment -202474280
+Nocomis_leptocephalus NLCD24PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 4602.612
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 537015336, used 1371917272, increment 227245648
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 537015336, used 1371917272, increment 0
+Time since start: 4604.932
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 537015336, used 1371917272, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 537015336, used 1371917272, increment 0
+Initial loss: 9.742731773656734
+Time since start: 4835.665
+500: time = 230.732000 loss = 7.423288
+Time since start: 4837.663
+Jackknife: leave NLCD31P out
+Making features
+Time since start: 4846.345
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 762485264, used 1146447344, increment -225469928
+Nocomis_leptocephalus NLCD31P: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 4850.105
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 615596680, used 1293335928, increment 146888584
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 615596680, used 1293335928, increment 0
+Time since start: 4852.398
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 615596680, used 1293335928, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 615596680, used 1293335928, increment 0
+Initial loss: 9.742731773656734
+Time since start: 5085.121
+500: time = 232.723000 loss = 7.429634
+Time since start: 5087.003
+Jackknife: leave NLCD31PC out
+Making features
+Time since start: 5095.335
+makeFeatures: max memory 1908932608, total allocated 1908932608, free 764355424, used 1144577184, increment -148758744
+Nocomis_leptocephalus NLCD31PC: 
+Regularization values: linear/quadratic/product: 0.050, categorical: 0.250, threshold: 1.000, hinge: 0.500
+Time since start: 5098.88
+240 samples
+Density: max memory 1908932608, total allocated 1908932608, free 590211024, used 1318721584, increment 174144400
+linearPredictor: max memory 1908932608, total allocated 1908932608, free 590211024, used 1318721584, increment 0
+Time since start: 5101.139
+Deactivating (FCODE=0.0)
+Deactivating (FCODE=33400.0)
+Deactivating (FCODE=33600.0)
+Deactivating (StreamOrde=0.0)
+Deactivating (StreamOrde=7.0)
+FeaturedSpace: max memory 1908932608, total allocated 1908932608, free 590211024, used 1318721584, increment 0
+Sequential: max memory 1908932608, total allocated 1908932608, free 590211024, used 1318721584, increment 0
+Initial loss: 9.742731773656734
