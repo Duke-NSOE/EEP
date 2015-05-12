@@ -1,7 +1,10 @@
 # EEP_ComputeFlowlineShadeStats.py
 #
 # Description:
-#   Computes the number of road crossings within each NHD Catchment
+#   Computes the number of road crossings within each NHD Catchment. Intersects
+#   the supplied roads polyline feature class with the streams feature class,
+#   and catchment polygons. Then summarizes the resulting table to
+#   generate a table listing the frequency of intersections within each catchment. 
 #
 # Spring 2015
 # John.Fay@duke.edu
@@ -9,19 +12,18 @@
 import sys, os, arcpy
 
 # Input variables
-catchmentFC = arcpy.GetParameterAsText(0)
-flowlineFC = arcpy.GetParameterAsText(1)
-roadsFC = arcpy.GetParameterAsText(2)
+catchmentFC = arcpy.GetParameterAsText(0)   # NHD Catchment polygons
+flowlineFC = arcpy.GetParameterAsText(1)    # NHD Flowlines
+roadsFC = arcpy.GetParameterAsText(2)       # NC DOT (or other) road features
 
 # Output variables
-roadXingTbl = arcpy.GetParameterAsText(3)
+roadXingTbl = arcpy.GetParameterAsText(3)   # Ouptut table
 
 # Script variables
 xingsFC = "in_memory/Xings"
 
 # Environment variables
 arcpy.env.overwriteOutput = True
-
 
 # ---Functions---
 def msg(txt,type="message"):
