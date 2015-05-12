@@ -55,7 +55,7 @@ def msg(txt,type="message"):
 ## Set the name
 outGDB = "EEP_"+HUC_ID + ".gdb"
 outGDBPth = os.path.join(dataPth,outGDB)
-## Check to see that the datbase doesn't already exist; exit if it does
+## Check to see that the database doesn't already exist; exit if it does
 if os.path.exists(outGDBPth):
     msg(outGDBPth + " already exists.\nExiting.","error")
     sys.exit()

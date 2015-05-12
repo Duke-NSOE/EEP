@@ -40,11 +40,9 @@ def msg(txt,type="message"):
 # ---Procedures---
 ## Tag each stream habitat feature with the NHD Feature ID
 msg("Tagging thermal stream features with catchment IDs")
-#arcpy.Identity_analysis(thermalFC,catchmentsFC,termalFC_1,"NO_FID", "#", "NO_RELATIONSHIPS")
 arcpy.Intersect_analysis("{} #;{} # ".format(thermalFC,catchmentsFC), thermalFC_1,"NO_FID","","LINE")
-## Select 
 
-## Summarize stats for each thermal class
+## Summarize stats for each thermal class (labeled as the "HABITAT" field
 msg("Tabuluating stream temperature statistics for each catchment")
 arcpy.Statistics_analysis(thermalFC_1,thermalStats,[["LENGTH", "SUM"]],["HABITAT", "FEATUREID"])
 arcpy.Delete_management(thermalFC_1)

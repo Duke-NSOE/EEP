@@ -1,6 +1,6 @@
 # EEP_MergeCatchmentTables
 #
-# Joins all the tables created by the catchment models into a sigle, master table
+# Joins all the tables created by the catchment models into a single, master table
 #
 # May 2015
 # John.Fay@duke.du
