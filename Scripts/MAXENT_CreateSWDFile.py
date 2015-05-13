@@ -12,20 +12,14 @@ import sys, os, arcpy, csv
 arcpy.env.overwriteOutput = True
 
 # Input variables
-speciesTbl = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Data\EEP_030501.gdb\HabModel'
-# arcpy.GetParameterAsText(1) #NHD catchments tagged with species presence
-## speciesTbl conists of all ENDRIES surveyed catchments with a binary column for each species presence...
-resultsTbl = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Data\EEP_030501.gdb\results'
-
-speciesName = "Nocomis_leptocephalus"
-# arcpy.GetParameterAsText(3) #Species to model
+speciesTbl = arcpy.GetParameterAsText(0) # table of all ENDRIES surveyed catchments with a binary column for each species presence...
+speciesName = arcpy.GetParameterAsText(1) #Species to model; this should be a field in the above table
+resultsTbl = arcpy.GetParameterAsText(2) # table listing all the catchment attributes to be used as environment layer values
 
 # Output variables
-speciesCSV = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\MaxEnt\ME_species.csv'
-#arcpy.GetParameterAsText(3)    # MaxEnt species file
+speciesCSV = arcpy.GetParameterAsText(3) #Output SWD format CSV file to create
 
 # Script varables
-EnvVarCount = 107 ##<--Number of environment variables; after this it's species columns
 sppOnlyTbl = "in_memory/SppTble"
 resultsCopyTbl = "in_memory/Results2"
 counter = 0
@@ -57,7 +51,7 @@ arcpy.JoinField_management(resultsCopyTbl,"GRIDCODE",sppOnlyTbl,"GRIDCODE","{}".
 # Create a list of field names
 msg("Generating a list of environment variables for processing") 
 fldList = [] #[speciesName] #start the list with the MaxEnt format: {species name, x, y}
-for fld in arcpy.ListFields(resultsCopyTbl)[:EnvVarCount]:
+for fld in arcpy.ListFields(resultsCopyTbl):
     fldList.append(str(fld.name))
 
 ## WRITE THE SPECIES RECORDS TO THE FILE ##
@@ -65,16 +59,16 @@ msg("Iniitializing the output species file...")
 # Initialize the species output csv file & create the writer object
 msg("...Initializing the output CSV files")
 csvFile = open(speciesCSV,'wb')
-writer = csv.writer(csvFile)#, quoting=csv.QUOTE_NONNUMERIC)
+writer = csv.writer(csvFile)
 
 # Write header row to CSV file
 msg("...Writing headers to CSV file")
-writer.writerow(["Species","X","Y"] + fldList[3:])
+writer.writerow(["Species","X","Y"] + fldList[3:]) #<- the 3: is to skip the first three columns in the fldList
 
 # Create a search cursor for the resultsTbl
 msg("...Writing presence values to CSV file")
 whereClause = '"{}" = 1'.format(speciesName)
-cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList[1:],whereClause)
+cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList[1:],whereClause) #<- the 1: skips the first field
 for row in cursor:
     #write the species name + all the row data
     writer.writerow([speciesName] + list(row))
