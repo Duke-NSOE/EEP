@@ -20,8 +20,6 @@ arcpy.env.cellSize = CatchRaster
 # Get folders
 rootWS = os.path.dirname(sys.path[0])
 dataWS = os.path.join(rootWS,"Data")
-scratchWS = os.path.join(rootWS,"Scratch")
-layersDB = os.path.join(dataWS,"SiteLayers.gdb")
 
 # List of image service layers and the field name to be added
 Services = [(r'ESRILayers\ESRI Landscape 4\USA_Soils_Flooding_Frequency.ImageServer','flooding','SUM'),
