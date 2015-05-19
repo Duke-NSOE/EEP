@@ -1,10 +1,12 @@
 scratch/
 Data/EEP_030501.gdb/
-/Maxent/Output/*
 Scripts/Notes_jpfay.txt
-Maxent/Output/
 Scripts/RScripts/greenhead_shinter_mxdata.csv
 MaxEnt/Notropis_chlorocephalus.csv
 MaxEnt/Notropis_chlorocephalus.txt.xml
 *.asc
 
+MaxEnt/Output/*.*
+MaxEnt/Prk/*.*
+Scripts/RScripts/*.*
+*.mxe
