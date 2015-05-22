@@ -19,16 +19,17 @@ HUC6 = arcpy.GetParameterAsText(0)
 OutTable = arcpy.GetParameterAsText(1)
 
 # Program variables
-NHD_Flowlines = os.path.join(NHDsde,"NHDplusV2.SDE.NHDFlowline\NHDplusV2.SDE.NHDFlowline")
-PlusFlowlineVAA = os.path.join(NHDsde,"NHDplusV2.SDE.PlusFlowlineVAA")
-Elevslope = os.path.join(NHDsde,"NHDplusV2.SDE.elevslope")
-EROM_MA0001 = os.path.join(NHDsde,"NHDplusV2.SDE.NHD_EROM")
-NHDPrecipMA = os.path.join(NHDsde,"NHDplusV2.SDE.NHDPrecipMA")
-NHDRunoffMA = os.path.join(NHDsde,"NHDplusV2.SDE.NHDRunoffMA")
-NHDTempMA = os.path.join(NHDsde,"NHDplusV2.SDE.NHDTempMA")
-Incr_NLCD_2011 = os.path.join(NHDsde,"NHDplusV2.SDE.IncrNLCD2011")
-Cum_Tot_NLCD_2011 = os.path.join(NHDsde,"NHDplusV2.SDE.CumTotNLCD2011")
-
+NHD_Flowlines = os.path.join(NHDsde,"NHD.DBO.NHDFlowlines\NHD.DBO.NHDFlowlines")
+PlusFlowlineVAA = os.path.join(NHDsde,"NHD.DBO.PlusFlowlineVAA")
+Elevslope = os.path.join(NHDsde,"NHD.DBO.elevslope")
+EROM_MA0001 = os.path.join(NHDsde,"NHD.DBO.NHD_EROM")
+CumTotTempMA = os.path.join(NHDsde,"NHD.DBO.CumTotTempMA")
+IncrTemp = os.path.join(NHDsde,"NHD.DBO.IncrTemp")
+CumTotPrecipMA = os.path.join(NHDsde,"NHD.DBO.CumTotPrecipMA")
+IncrPrecip = os.path.join(NHDsde,"NHD.DBO.IncrPrecip")
+ROMA = os.path.join(NHDsde,"NHD.DBO.ROMA")
+Incr_NLCD_2011 = os.path.join(NHDsde,"NHD.DBO.IncrNLCD2011")
+Cum_Tot_NLCD_2011 = os.path.join(NHDsde,"NHD.DBO.CumTotNLCD2011")
 
 # ---Functions---
 def msg(txt,type="message"):
@@ -58,30 +59,49 @@ for fld in arcpy.ListFields(OutTable):
 msg("Adding an attribute index to speed processing")
 arcpy.AddIndex_management(OutTable,"COMID","COMID","UNIQUE","NON_ASCENDING")
 
-msg("Joining Flowline VAA (1 of 8)")
-msg("-->Stream order,Path length, Arbolate sum, Area (sq km), Total drainage area (sq km)")
-arcpy.JoinField_management(OutTable, "COMID", PlusFlowlineVAA, "ComID", "StreamOrde;Pathlength;ArbolateSu;AreaSqKM;TotDASqKM")
+# Status counter
+x = 1; total = 10
 
-msg("Joining Elevslope (2 of 8)")
-msg("-->Slope")
+# Join tables (send message/increase counter; join fields)
+## PlusFlowlineVAA
+msg("Joining Flowline VAA ({} of {})".format(x,total)); x += 1
+arcpy.JoinField_management(OutTable, "COMID", PlusFlowlineVAA, "ComID", "StreamOrde;Pathlength;ArbolateSu;TotDASqKM")
+
+## elevslope
+msg("Joining Elevslope ({} of {})".format(x,total)); x += 1
 arcpy.JoinField_management(OutTable, "COMID", Elevslope, "COMID", "SLOPE")
 
-msg("Joining EROM_MA001 (3 of 8)")
-msg("-->...")
-arcpy.JoinField_management(OutTable, "COMID", EROM_MA0001, "Comid", "Q0001E;V0001E;Qincr0001E;TEMP0001;PPT0001;PET0001;QLOSS0001;Q0001E_01;Q0001E_02;Q0001E_03;Q0001E_04;Q0001E_05;Q0001E_06;Q0001E_07;Q0001E_08;Q0001E_09;Q0001E_10;Q0001E_11;Q0001E_12")
+## EROM_MA0001
+msg("Joining EROM_MA0001 ({} of {})".format(x,total)); x += 1
+arcpy.JoinField_management(OutTable, "COMID", EROM_MA0001, "Comid",
+                           "Q0001E;V0001E;Qincr0001E;TEMP0001;PPT0001;PET0001;QLOSS0001;Q0001E_min;Q0001_max")
 
-msg("Joining NHDTempMA (4 of 8)")
-arcpy.JoinField_management(OutTable, "COMID", NHDTempMA, "FeatureID", "TempV")
+## CumTemp
+msg("Joining CumTotTempMA ({} of {})".format(x,total)); x += 1
+arcpy.JoinField_management(OutTable, "COMID", CumTotTempMA, "ComID", "TempVC")
 
-msg("Joining NHDPrecipMA (5 of 8)")
-arcpy.JoinField_management(OutTable, "COMID", NHDPrecipMA, "FeatureID", "PrecipV")
+## IncrTemp
+msg("Joining IncrTemp ({} of {})".format(x,total)); x += 1
+arcpy.JoinField_management(OutTable, "COMID", IncrTemp, "FeatureID","TempVMA;Temp_min;Temp_max")
 
-msg("Joining Mean Annual Runoff (6 of 8)")
-arcpy.JoinField_management(OutTable, "COMID", NHDRunoffMA, "FeatureID", "RunOffV;MinMonthly")
+## CumPrecip
+msg("Joining CumTotPrecipMA ({} of {})".format(x,total)); x += 1
+arcpy.JoinField_management(OutTable, "COMID", CumTotPrecipMA, "ComID", "PrecipVC")
 
-msg("Joining Incremental NLCD_2011 (7 of 8)")
-arcpy.JoinField_management(OutTable, "COMID", Incr_NLCD_2011, "FeatureID", "NLCD11P;NLCD12P;NLCD21P;NLCD22P;NLCD23P;NLCD24P;NLCD31P;NLCD41P;NLCD42P;NLCD43P;NLCD51P;NLCD52P;NLCD71P;NLCD72P;NLCD73P;NLCD74P;NLCD81P;NLCD82P;NLCD90P;NLCD95P")
+## IncrPrecip
+msg("Joining IncrPrecip ({} of {})".format(x,total)); x += 1
+arcpy.JoinField_management(OutTable, "COMID", IncrPrecip,"FeatureID","PrecipVMA;Precip_min;Precip_max")
 
-msg("Joining Cumulative Tot NLCD_2011 (8 of 8)")
-arcpy.JoinField_management(OutTable, "COMID", Cum_Tot_NLCD_2011, "ComID", "NLCD11PC;NLCD12PC;NLCD21PC;NLCD22PC;NLCD23PC;NLCD24PC;NLCD31PC;NLCD41PC;NLCD42PC;NLCD43PC;NLCD51PC;NLCD52PC;NLCD71PC;NLCD72PC;NLCD73PC;NLCD74PC;NLCD81PC;NLCD82PC;NLCD90PC;NLCD95PC")
+## ROMA (Runoff)
+msg("Joining Runoff data (ROMA) ({} of {})".format(x,total)); x += 1
+arcpy.JoinField_management(OutTable, "COMID", ROMA, "FeatureID","RunOffVMA;RunOff_min;RunOff_max")
+
+msg("Joining Incremental NLCD_2011 ({} of {})".format(x,total)); x += 1
+arcpy.JoinField_management(OutTable, "COMID", Incr_NLCD_2011, "FeatureID",
+                           "NLCD11P;NLCD21P;NLCD22P;NLCD23P;NLCD24P;NLCD31P;NLCD41P;NLCD42P;NLCD43P;NLCD52P;NLCD71P;NLCD81P;NLCD82P;NLCD90P;NLCD95P;NLCD1;NLCD2;NLCD3;NLCD4;NLCD5;NLCD7;NLCD8;NLCD9")
+
+msg("Joining Cumulative NLCD_2011 ({} of {})".format(x,total)); x += 1
+arcpy.JoinField_management(OutTable, "COMID", Cum_Tot_NLCD_2011, "ComID",
+                          "NLCD11PC;NLCD21PC;NLCD22PC;NLCD23PC;NLCD24PC;NLCD31PC;NLCD41PC;NLCD42PC;NLCD43PC;NLCD52PC;NLCD71PC;NLCD81PC;NLCD82PC;NLCD90PC;NLCD95PC;NLCD1;NLCD2;NLCD3;NLCD4;NLCD5;NLCD7;NLCD8;NLCD9")
+
 

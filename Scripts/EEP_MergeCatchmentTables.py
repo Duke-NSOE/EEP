@@ -16,13 +16,14 @@ StreamTemp = arcpy.GetParameterAsText(4)
 RiparianStats = arcpy.GetParameterAsText(5)
 RoadXings = arcpy.GetParameterAsText(6)
 HabitatTable = arcpy.GetParameterAsText(7)
+CanopyImpervTable = arcpy.GetParameterAsText(8)
 
 #GeologyTable = "GeologyTable"
 #NPDESCount = "NPDESCount"
 #AnimalOpsCount = "AnimalOpsCount"
 
 # Output variables:
-outputFC = arcpy.GetParameterAsText(8)
+outputFC = arcpy.GetParameterAsText(9)
 
 # Set environment variables
 arcpy.env.overwriteOutput = True
@@ -37,6 +38,14 @@ def msg(txt,type="message"):
     elif type == "error":
         arcpy.AddError(txt)
 
+def makeFldString(tbl):
+    '''Makes a string of all fields in a table'''
+    fldString = ""
+    for f in arcpy.ListFields(tbl):
+        if not f.name in ("COMID","OBJECTID"):
+            fldString += "; {}".format(f.name)
+    return fldString[:-1] #return all but the last semicolon
+
 # Copy the catchment feature class
 msg("Creating output catchment feature class")
 arcpy.Select_analysis(NHDCatchments, outputFC,"")
@@ -47,7 +56,9 @@ arcpy.AddIndex_management(outputFC,"GRIDCODE;FEATUREID","TagIndex","UNIQUE","NON
 
 # Process: Join Field
 msg(" Joining Habitat Table...1/7")
-arcpy.JoinField_management(outputFC, "FEATUREID", HabitatTable, "COMID", "LENGTHKM;REACHCODE;WBAREACOMI;FTYPE;FCODE;StreamOrde;Pathlength;ArbolateSu;TotDASqKM;SLOPE;Q0001E;V0001E;Qincr0001E;TEMP0001;PPT0001;PET0001;QLOSS0001;Q0001E_01;Q0001E_02;Q0001E_03;Q0001E_04;Q0001E_05;Q0001E_06;Q0001E_07;Q0001E_08;Q0001E_09;Q0001E_10;Q0001E_11;Q0001E_12;TempV;PrecipV;RunOffV;MinMonthly;NLCD11P;NLCD12P;NLCD21P;NLCD22P;NLCD23P;NLCD24P;NLCD31P;NLCD41P;NLCD42P;NLCD43P;NLCD51P;NLCD52P;NLCD71P;NLCD72P;NLCD73P;NLCD74P;NLCD81P;NLCD82P;NLCD90P;NLCD95P;NLCD11PC;NLCD12PC;NLCD21PC;NLCD22PC;NLCD23PC;NLCD24PC;NLCD31PC;NLCD41PC;NLCD42PC;NLCD43PC;NLCD51PC;NLCD52PC;NLCD71PC;NLCD72PC;NLCD73PC;NLCD74PC;NLCD81PC;NLCD82PC;NLCD90PC;NLCD95PC")
+fldString = makeFldString(HabitatTable)
+arcpy.JoinField_management(outputFC, "FEATUREID", HabitatTable, "COMID",fldString)
+#"LENGTHKM;REACHCODE;WBAREACOMI;FTYPE;FCODE;StreamOrde;Pathlength;ArbolateSu;TotDASqKM;SLOPE;Q0001E;V0001E;Qincr0001E;TEMP0001;PPT0001;PET0001;QLOSS0001;TempV;PrecipV;RunOffV;MinMonthly;NLCD11P;NLCD12P;NLCD21P;NLCD22P;NLCD23P;NLCD24P;NLCD31P;NLCD41P;NLCD42P;NLCD43P;NLCD51P;NLCD52P;NLCD71P;NLCD72P;NLCD73P;NLCD74P;NLCD81P;NLCD82P;NLCD90P;NLCD95P;NLCD11PC;NLCD12PC;NLCD21PC;NLCD22PC;NLCD23PC;NLCD24PC;NLCD31PC;NLCD41PC;NLCD42PC;NLCD43PC;NLCD51PC;NLCD52PC;NLCD71PC;NLCD72PC;NLCD73PC;NLCD74PC;NLCD81PC;NLCD82PC;NLCD90PC;NLCD95PC")
 
 # Process: Join Field (2)
 msg(" Joining Landscape Stats...2/7")
@@ -55,7 +66,7 @@ arcpy.JoinField_management(outputFC, "GRIDCODE", Landscape_Stats, "COMID", "runo
 
 # Process: Join Field (3)
 msg(" Joining FlowlineLULC...3/7")
-arcpy.JoinField_management(outputFC, "GRIDCODE", FlowlineLULC, "GRIDCODE", "NLCD_11;NLCD_21;NLCD_22;NLCD_23;NLCD_24;NLCD_31;NLCD_41;NLCD_42;NLCD_43;NLCD_52;NLCD_71;NLCD_81;NLCD_82;NLCD_90;NLCD_95")
+arcpy.JoinField_management(outputFC, "GRIDCODE", FlowlineLULC, "GRIDCODE", "FLNLCD_11;FLNLCD_21;FL_D_22;FL_D_23;FL_D_24;FL_D_31;FL_D_41;FL_D_42;FL_D_43;FL_D_52;FL_D_71;FL_D_81;FL_D_82;FL_D_90;FL_D_95")
 
 # Process: Join Field (4)
 msg(" Joining RiparianStats...4/7")
@@ -69,13 +80,13 @@ arcpy.JoinField_management(outputFC, "FEATUREID", ShadeStats, "COMID", "ShadedFr
 msg(" Joining Streamtemp...6/7")
 arcpy.JoinField_management(outputFC, "FEATUREID", StreamTemp, "FEATUREID", "cold;cool;warm;TotLength")
 
-# Process: Join Field (8)
-#msg(" Joining Geology...7/10")
-#arcpy.JoinField_management(outputFC, "FEATUREID", GeologyTable, "COMID", "TYPE")
-
 # Process: Join Field (7)
 msg(" Joining RoadXings...7/7")
 arcpy.JoinField_management(outputFC, "FEATUREID", RoadXings, "COMID", "Crossings")
+
+# Process: Join Field (8)
+msg(" Joining Canopy and Impervious Stats...7/10")
+arcpy.JoinField_management(outputFC, "GRIDCODE", CanopyImpervTable, "COMID", "PctCanopy;PctImpervious")
 
 # Process: Join Field (9)
 #msg(" Joining AnimalOpsCount...9/10")

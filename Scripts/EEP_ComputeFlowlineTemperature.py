@@ -52,6 +52,16 @@ msg("Cross tabulating statistics")
 arcpy.PivotTable_management(thermalStats,"FEATUREID", "HABITAT", "SUM_LENGTH", flowlineTemperatureTbl)
 arcpy.Delete_management(thermalStats)
 
+##Need to add fields, if they don't exist (i.e. if no streams of that type exist in the HUC6
+#make a list of fields
+flds = []
+for f in arcpy.ListFields(flowlineTemperatureTbl):
+    flds.append(f.name)
+#add the field if it doesn't exist
+if not "cold" in (flds): arcpy.AddField_management(flowlineTemperatureTbl,"cold","DOUBLE")
+if not "cool" in (flds): arcpy.AddField_management(flowlineTemperatureTbl,"cool","DOUBLE")
+if not "warm" in (flds): arcpy.AddField_management(flowlineTemperatureTbl,"warm","DOUBLE")
+
 ##Add total length field to table and calculate percentages
 msg("Converting percentages to absolute values")
 arcpy.AddField_management(flowlineTemperatureTbl,"TotLength", "DOUBLE", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")

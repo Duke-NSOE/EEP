@@ -18,14 +18,14 @@ arcpy.CheckOutExtension("spatial")
 dataPth = os.path.abspath(sys.path[0]+ "\\..\\Data")
 
 # Program variables
-WBD_HUC6 = os.path.join(dataPth,"NHD data.sde","NHDplusV2.SDE.WBDHU6")
-WBD_Snapshot = os.path.join(dataPth,"NHD data.sde","NHDplusV2.DBO.NationalWBDSnapshot")
-NHD_Flowlines = os.path.join(dataPth,"NHD data.sde","NHDplusV2.SDE.NHDFlowline")
-NHD_CatchPolys = os.path.join(dataPth,"NHD data.sde","NHDplusV2.SDE.CatchmentFeatures")
-Elev_cm = os.path.join(dataPth,"NHD data.sde","NHDplusV2.SDE.elev_cm")
-NHD_fdr = os.path.join(dataPth,"NHD data.sde","NHDplusV2.SDE.fdr")
-NHD_fdrnull = os.path.join(dataPth,"NHD data.sde","NHDplusV2.SDE.fdrnull")
-NHD_cat = os.path.join(dataPth,"NHD data.sde","NHDplusV2.SDE.cat")
+WBD_HUC6 = os.path.join(dataPth,"NHD data.sde","NHD.DBO.WBDHU6")
+WBD_Snapshot = os.path.join(dataPth,"NHD data.sde","NHD.DBO.NationalWBDSnapshot")
+NHD_Flowlines = os.path.join(dataPth,"NHD data.sde","NHD.DBO.NHDFlowlines")
+NHD_CatchPolys = os.path.join(dataPth,"NHD data.sde","NHD.DBO.CatchmentFeatures")
+Elev_cm = os.path.join(dataPth,"NHD data.sde","NHD.DBO.elev_cm")
+NHD_fdr = os.path.join(dataPth,"NHD data.sde","NHD.DBO.fdr")
+NHD_fdrnull = os.path.join(dataPth,"NHD data.sde","NHD.DBO.fdrnull")
+NHD_cat = os.path.join(dataPth,"NHD data.sde","NHD.DBO.cat")
 NLCD_cov = os.path.join(dataPth,"NLCD data.sde","USdata.DBO.nlcd_2011")
 NLCD_canopy = os.path.join(dataPth,"NLCD data.sde","USdata.DBO.nlcd2011_usfs_treecanopy_analytical_3_31_2014\\Band_1")
 NLCD_imperv = os.path.join(dataPth,"NLCD data.sde","USdata.DBO.nlcd_2011_impervious_2011_edition_2014_03_31")
@@ -57,8 +57,8 @@ outGDB = "EEP_"+HUC_ID + ".gdb"
 outGDBPth = os.path.join(dataPth,outGDB)
 ## Check to see that the database doesn't already exist; exit if it does
 if os.path.exists(outGDBPth):
-    msg(outGDBPth + " already exists.\nExiting.","error")
-    sys.exit()
+    msg(outGDBPth + " already exists.","warning")
+    #sys.exit()
 else: ## Create the output geodatabase
     msg("Creating output geodatabase: " + outGDB)
     arcpy.CreateFileGDB_management(dataPth,outGDB)
@@ -74,6 +74,7 @@ arcpy.Project_management(selRecs,"HUC6",outCoordSys)
 msg(" Updating metadata")
 arcpy.MetadataImporter_conversion(WBD_HUC6,"HUC6")
 arcpy.SetParameterAsText(2,os.path.join(outGDBPth,"HUC6"))
+arcpy.Delete_management("in_memory/tmpFC")
 
 ## WDB Snapshot (HUC12)
 msg("Selecting HUC12 features from WBD Snapshot")
@@ -83,6 +84,7 @@ arcpy.Project_management(selRecs,"HUC12",outCoordSys)
 msg(" Updating metadata")
 arcpy.MetadataImporter_conversion(WBD_Snapshot,"HUC12")
 arcpy.SetParameterAsText(3,os.path.join(outGDBPth,"HUC12"))
+arcpy.Delete_management("in_memory/tmpFC")
 
 ## NHD Flowlines
 msg("Selecting Flowline features from NHD+ v.2 --> NHDFlowlines")
@@ -92,6 +94,7 @@ arcpy.Project_management(selRecs,"NHDFlowlines",outCoordSys)
 msg(" Updating metadata")
 arcpy.MetadataImporter_conversion(NHD_Flowlines,"NHDFlowlines")
 arcpy.SetParameterAsText(4,os.path.join(outGDBPth,"NHDFlowlines"))
+arcpy.Delete_management("in_memory/tmpFC")
 
 ## NHD Flowline midpoints
 msg("Creating flowline midpoint feature class --> FlowlineMidPts")
@@ -109,6 +112,7 @@ arcpy.Project_management(selRecs,"NHDCatchments",outCoordSys)
 msg(" Updating metadata")
 arcpy.MetadataImporter_conversion(NHD_CatchPolys,"NHDCatchments")
 arcpy.SetParameterAsText(6,os.path.join(outGDBPth,"NHDCatchments"))
+arcpy.Delete_management("in_memory/tmpFC")
 
 ## Mask Polygon
 msg("Creating mask polygon from dissolved catchments...")
@@ -116,71 +120,41 @@ arcpy.Dissolve_management("NHDCatchments","MaskPoly")
 msg(" Setting analysis extent to mask polygon")
 arcpy.env.extent = "MaskPoly"
 arcpy.SetParameterAsText(7,os.path.join(outGDBPth,"MaskPoly"))
+arcpy.Delete_management("in_memory/tmpFC")
 
 ## Mask Raster
 msg("Creating mask raster from mask poly...")
 mask = arcpy.PolygonToRaster_conversion("MaskPoly","OBJECTID","Mask","CELL_CENTER","NONE",30)
 arcpy.SetParameterAsText(8,os.path.join(outGDBPth,"Mask"))
 
-## Elevation
+## Extract source rasters by the Mask raster
 msg("Extracting rasters. This can take a while...")
-msg("  Extracting NHD Elev_cm (1 of 7)")
-r = arcpy.sa.ExtractByMask(Elev_cm,"Mask")
-r.save("Elev_cm")
-msg(" Updating metadata")
-arcpy.MetadataImporter_conversion(Elev_cm,"Elev_cm")
-arcpy.SetParameterAsText(9,os.path.join(outGDBPth,"Elev_cm"))
-
-## FlowDir
-msg("  Extracting NHD FlowDir (2 of 7)")
-r = arcpy.sa.ExtractByMask(NHD_fdr,"mask")
-r.save("flowdir")
-msg(" Updating metadata")
-arcpy.MetadataImporter_conversion(NHD_fdr,"flowdir")
-arcpy.SetParameterAsText(10,os.path.join(outGDBPth,"flowdir"))
-
-## FlowDirNull
-msg("  Extracting NHD FlowDirNull (3 of 7)")
-r = arcpy.sa.ExtractByMask(NHD_fdrnull,"mask")
-r.save("fdrnull")
-msg(" Updating metadata")
-arcpy.MetadataImporter_conversion(NHD_fdrnull,"fdrnull")
-arcpy.SetParameterAsText(11,os.path.join(outGDBPth,"fdrnull"))
-
-## Cat
-msg("  Extracting NHD Catchment raster (4 of 7)")
-r = arcpy.sa.ExtractByMask(NHD_cat,"mask")
-r.save("cat")
-msg(" Updating metadata")
-arcpy.MetadataImporter_conversion(NHD_cat,"cat")
-arcpy.SetParameterAsText(12,os.path.join(outGDBPth,"cat"))
-
-## NLCD
-msg("  Extracting NLCD land cover (5 of 7)")
-r = arcpy.sa.ExtractByMask(NLCD_cov,"mask")
-r.save("nlcd_2011")
-msg(" Updating metadata")
-arcpy.MetadataImporter_conversion(NLCD_cov,"nlcd_2011")
-msg(" Updating colormap")
-arcpy.AddColormap_management("nlcd_2011",NLCD_cov)
-arcpy.SetParameterAsText(13,os.path.join(outGDBPth,"nlcd_2011"))
-
-## Canopy Cover
-msg("  Extracting NLCD canopy cover (6 of 7)")
-r = arcpy.sa.ExtractByMask(NLCD_canopy,"mask")
-r.save("canopycov")
-msg(" Updating metadata")
-arcpy.MetadataImporter_conversion(NLCD_canopy,"canopycov")
-arcpy.SetParameterAsText(14,os.path.join(outGDBPth,"canopycov"))
-
-## Impervious
-msg("  Extracting NLCD impervious (7 of 7)")
-r = arcpy.sa.ExtractByMask(NLCD_imperv,"mask")
-r.save("impervious")
-msg(" Updating metadata")
-arcpy.MetadataImporter_conversion(NLCD_imperv,"impervious")
-msg(" Updating colormap")
-arcpy.AddColormap_management("impervious",NLCD_imperv)
-arcpy.SetParameterAsText(15,os.path.join(outGDBPth,"impervious"))
+# Make a list of input/output pairs
+rasterList = ((Elev_cm,"Elev_cm"),
+              (NHD_fdr,"flowdir"),
+              (NHD_fdrnull,"fdrnull"),
+              (NHD_cat,"cat"),
+              (NLCD_cov,"nlcd_2011"),
+              (NLCD_canopy,"canopycov"),
+              (NLCD_imperv,"impervious"))
+# Status counter
+x = 1
+# Loop through the values...
+for (inRas,outRas) in rasterList:
+    msg("  Extracting {} ({} of 7)".format(inRas,x))
+    # Make a layer to avoid issues w/weird names in server datasets
+    rasterLyr = arcpy.MakeRasterLayer_management(inRas,"rasterLYR")
+    # Extract the inRas by the Mask created above
+    r = arcpy.sa.ExtractByMask(rasterLyr,mask)
+    # Save the output raster
+    r.save(outRas)
+    # Import the metadata from the source raster
+    msg(" Updating metadata")
+    arcpy.MetadataImporter_conversion(rasterLyr,outRas)
+    # Set the output parameter
+    parameterIndex = x + 8 #(offset by the 8 outputs above)
+    arcpy.SetParameterAsText(parameterIndex,os.path.join(outGDBPth,outRas))
+    #Increase the counter
+    x = x + 1
 
 msg("Finished!") 

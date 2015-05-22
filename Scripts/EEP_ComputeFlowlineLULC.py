@@ -54,7 +54,7 @@ msg("  setting VALUE to GRIDCODE")
 arcpy.AlterField_management(flowlineTbl,"VALUE","GRIDCODE","GRIDCODE")
 for nlcdClass in [11,21,22,23,24,31,41,42,43,52,71,81,82,90,95]:
     fldName = "VALUE_{}".format(nlcdClass)
-    outName = "NLCD_{}".format(nlcdClass)
+    outName = "FLNLCD_{}".format(nlcdClass)
     msg("  setting {} to {}".format(fldName, outName))
     arcpy.AlterField_management(flowlineTbl,fldName, outName, outName)
 

@@ -55,8 +55,8 @@ strmElevRaster = sa.Con(strmRaster,elevRaster)
 ## Create a watershed, using the stream elevation raster as the pour points.
 '''Cell values in this output are the elevation at the point where the given
    cell's location flows into the stream. This, in turn, can be compared to
-   the actual elevation at the cell's location to compute the vertical drop'''
-between the cell and where it drains into the stream
+   the actual elevation at the cell's location to compute the vertical drop
+   between the cell and where it drains into the stream'''
 msg("Calculating watersheds labeled with elevation")
 elevSheds = sa.Watershed(fdrnullRaster,strmElevRaster)
 
