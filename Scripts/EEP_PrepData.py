@@ -130,10 +130,10 @@ arcpy.SetParameterAsText(8,os.path.join(outGDBPth,"Mask"))
 ## Extract source rasters by the Mask raster
 msg("Extracting rasters. This can take a while...")
 # Make a list of input/output pairs
-rasterList = ((Elev_cm,"Elev_cm"),
+rasterList = ((NHD_cat,"cat"),
+              (Elev_cm,"Elev_cm"),
               (NHD_fdr,"flowdir"),
               (NHD_fdrnull,"fdrnull"),
-              (NHD_cat,"cat"),
               (NLCD_cov,"nlcd_2011"),
               (NLCD_canopy,"canopycov"),
               (NLCD_imperv,"impervious"))
@@ -142,15 +142,26 @@ x = 1
 # Loop through the values...
 for (inRas,outRas) in rasterList:
     msg("  Extracting {} ({} of 7)".format(inRas,x))
+    # Check to see whether the raster exists; skip if it does
+    if arcpy.Exists(outRas):
+        msg("  {} has already been created. Skipping".format(outRas),"warning")
+        # Set the output parameter
+        parameterIndex = x + 8 #(offset by the 8 outputs above)
+        arcpy.SetParameterAsText(parameterIndex,os.path.join(outGDBPth,outRas))
+        # Increase the counter
+        x = x + 1
+        #Skip to the next items in the list
+        continue
     # Make a layer to avoid issues w/weird names in server datasets
     rasterLyr = arcpy.MakeRasterLayer_management(inRas,"rasterLYR")
     # Extract the inRas by the Mask created above
+    msg("  Extracting data to output {}".format(outRas))
     r = arcpy.sa.ExtractByMask(rasterLyr,mask)
     # Save the output raster
     r.save(outRas)
     # Import the metadata from the source raster
     msg(" Updating metadata")
-    arcpy.MetadataImporter_conversion(rasterLyr,outRas)
+    arcpy.MetadataImporter_conversion(inRas,outRas)
     # Set the output parameter
     parameterIndex = x + 8 #(offset by the 8 outputs above)
     arcpy.SetParameterAsText(parameterIndex,os.path.join(outGDBPth,outRas))
