@@ -107,6 +107,6 @@ for fld in flds[8:]: #Skip the first 8 fields as they are ok
     if int(NullCount) > 0:
         msg("Fixing {} null records {}".format(NullCount, fld.name))
         #Set selected records to 0
-        arcpy.CalculateField_management("Lyr",fld.name,"0")
+        arcpy.CalculateField_management("Lyr",fld.name,"-9999")
     
 msg("Finished!")
