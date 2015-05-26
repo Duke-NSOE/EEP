@@ -130,10 +130,10 @@ arcpy.SetParameterAsText(8,os.path.join(outGDBPth,"Mask"))
 ## Extract source rasters by the Mask raster
 msg("Extracting rasters. This can take a while...")
 # Make a list of input/output pairs
-rasterList = ((NHD_cat,"cat"),
-              (Elev_cm,"Elev_cm"),
+rasterList = ((Elev_cm,"Elev_cm"),
               (NHD_fdr,"flowdir"),
               (NHD_fdrnull,"fdrnull"),
+              (NHD_cat,"cat"),
               (NLCD_cov,"nlcd_2011"),
               (NLCD_canopy,"canopycov"),
               (NLCD_imperv,"impervious"))
@@ -161,7 +161,10 @@ for (inRas,outRas) in rasterList:
     r.save(outRas)
     # Import the metadata from the source raster
     msg(" Updating metadata")
-    arcpy.MetadataImporter_conversion(inRas,outRas)
+    try:
+        arcpy.MetadataImporter_conversion(inRas,outRas)
+    except:
+        pass
     # Set the output parameter
     parameterIndex = x + 8 #(offset by the 8 outputs above)
     arcpy.SetParameterAsText(parameterIndex,os.path.join(outGDBPth,outRas))

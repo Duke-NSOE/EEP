@@ -74,7 +74,7 @@ arcpy.JoinField_management(OutTable, "COMID", Elevslope, "COMID", "SLOPE")
 ## EROM_MA0001
 msg("Joining EROM_MA0001 ({} of {})".format(x,total)); x += 1
 arcpy.JoinField_management(OutTable, "COMID", EROM_MA0001, "Comid",
-                           "Q0001E;V0001E;Qincr0001E;TEMP0001;PPT0001;PET0001;QLOSS0001;Q0001E_min;Q0001_max")
+                           "Q0001E;V0001E;Qincr0001E;TEMP0001;PPT0001;PET0001;QLOSS0001;Q0001E_min;Q0001E_max")
 
 ## CumTemp
 msg("Joining CumTotTempMA ({} of {})".format(x,total)); x += 1

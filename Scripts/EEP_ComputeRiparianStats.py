@@ -32,6 +32,7 @@ zonalWetlandTbl = "in_memory/ZonalWetland"
 arcpy.env.overwriteOutput = True
 arcpy.env.snapRaster = fldrRaster
 arcpy.env.cellSize = fldrRaster
+arcpy.env.mask = fldrRaster
 
 # ---Functions---
 def msg(txt,type="message"):
@@ -46,11 +47,14 @@ def msg(txt,type="message"):
 
 # ---Processes---
 ## Create a raster of stream cells, with values set to elevation
-msg("Creating a streams raster (inverting NHD FlowDirNull Raster")
+msg("Creating a streams raster (inverting NHD FlowDirNull Raster)")
 strmRaster = sa.IsNull(fdrnullRaster)
 
 msg("Assigning elevation values to stream cells")
-strmElevRaster = sa.Con(strmRaster,elevRaster)
+strmElevRaster1 = sa.Con(strmRaster,elevRaster)
+strmElevRaster = sa.Con(strmElevRaster1,strmElevRaster1,1,"VALUE >= 1")
+strmElevRaster.save("foo")
+msg("Saved to {}".format(strmElevRaster))
 
 ## Create a watershed, using the stream elevation raster as the pour points.
 '''Cell values in this output are the elevation at the point where the given
@@ -58,10 +62,16 @@ strmElevRaster = sa.Con(strmRaster,elevRaster)
    the actual elevation at the cell's location to compute the vertical drop
    between the cell and where it drains into the stream'''
 msg("Calculating watersheds labeled with elevation")
-elevSheds = sa.Watershed(fdrnullRaster,strmElevRaster)
+try:
+    elevSheds = sa.Watershed(fldrRaster,"foo","VALUE")
+except:
+    msg(arcpy.GetMessages(),"error")
+    sys.exit(1)
 
-msg("Identifying cells within {}m in elevation from stream cell")
+
+msg("Identifying cells within {}m in elevation from stream cell".format(zThreshold))
 elevDiff = sa.Minus(elevRaster,elevSheds)
+elevDiff.save()
 
 msg("Extracting land cover within riparian cells")
 riparianNLCD = sa.SetNull(elevDiff,nlcdRaster,'VALUE > {}'.format(zThreshold))
@@ -78,6 +88,8 @@ msg("...updating riparian wetland cells")
 forWetRaster = sa.Con(riparianNLCD,2,forestRaster,'VALUE IN (90, 95)')
 msg("...tabulating area of forest, wetland, and other in each catchment")
 sa.TabulateArea(catchRaster,"VALUE",forWetRaster,"VALUE",riparianTbl)
+
+## If no forest or riparian exists
 
 msg("...updating field names")
 arcpy.AlterField_management(riparianTbl,"VALUE","GRIDCODE","GRIDCODE")
