@@ -1,9 +1,8 @@
-# MAXENT_ResultsToBackground.py
+# MAXENT_CreateSWDFile.py
 #
 # Description: Creates a MaxEnt input CSV file in SWD (species with data) format. Includes a
-#  column listing the species/background along with columns for all the env vars. Inputs are
-#  limited to only catchments with any species data. We could include all [non-surveyed]
-#  catchments, but we need to exclude those where the species has been observed. 
+#  column listing the species/background along with columns for all the env vars. Records produced
+#  are limited to only catchments with recorded presences from any species in Endries' data.
 #
 # Spring 2015
 # John.Fay@duke.edu
@@ -63,12 +62,13 @@ writer = csv.writer(csvFile)
 
 # Write header row to CSV file
 msg("...Writing headers to CSV file")
-writer.writerow(["Species","X","Y"] + fldList[3:]) #<- the 3: is to skip the first three columns in the fldList
+writer.writerow(["Species","X","Y"] + fldList[3:-1]) #<- the 3: is to skip the first three columns in the fldList
 
 # Create a search cursor for the resultsTbl
 msg("...Writing presence values to CSV file")
 whereClause = '"{}" = 1'.format(speciesName)
-cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList[1:],whereClause) #<- the 1: skips the first field
+# Create a cursor including all but the first and last fields (species names)
+cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList[1:-1],whereClause) #<- the 1: skips the first & last field
 for row in cursor:
     #write the species name + all the row data
     writer.writerow([speciesName] + list(row))
@@ -79,7 +79,7 @@ counter = 0
 # Create a search cursor for the resultsTbl
 msg("...Writing background values to CSV file")
 whereClause = '"{}" IS Null'.format(speciesName)
-cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList[1:],whereClause)
+cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList[1:-1],whereClause)
 for row in cursor:
     #write the species name + all the row data
     writer.writerow(['background'] + list(row))

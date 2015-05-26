@@ -6,10 +6,9 @@
 #
 # Inputs include:
 #  (1) the MaxEnt samples with data format (SWD) CSV file, 
-#  (2) the species name [used to lable the output]
-#  (3) a list of field names to exclude by default in the analysis
-#  (4) a list of fields that should be set to categorical
-#  (5) a folder containing projection ASCII files
+#  (2) a list of field names to exclude by default in the analysis
+#  (3) a list of fields that should be set to categorical
+#  (4) a folder containing projection ASCII files
 #
 #  Model outputs will be sent to the Outputs folder in the MaxEnt directory.
 #
