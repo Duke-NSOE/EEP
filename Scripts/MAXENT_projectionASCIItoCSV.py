@@ -41,20 +41,30 @@ reader = csv.reader(file)
 for row in reader:
     featureIDs.append(row[1])
 file.close()
+featCount = len(featureIDs)
+msg("{} features to be processed".format(featCount))
 
 #Create a list of MaxEnt Likelihoods from the projection ASCII file         
 msg("Creating a list of habitat probabilities from the MaxEnt SWD file")
 valueIDs = ["HabProb"]
 file = open(prjFN,'r')
-reader = csv.reader(file)
+reader = csv.reader(file,delimiter=" ")
+## Skip the ASCII header rows
 for row in reader:
-    if row[0][0].isdigit():
-        valueIDs.append(row[0])
+    if not row[0] in ('ncols','nrows','xllcorner','yllcorner','cellsize','NODATA_value'):
+        #Replace NoData with zeros
+        if row[0] == '-9999': habProb = 0
+        else: habProb = row[0]
+        #write the value to the list
+        valueIDs.append(habProb)    
 file.close()
+valCount = len(valueIDs)
 
 #Write the lists to the output file
 file = open(outCSV,'wb')
 writer = csv.writer(file)
-for i in range(1,len(featureIDs)):
+## Write the header line
+writer.writerow(("GRIDCODE", "HabProb"))
+for i in range(2,len(featureIDs)):
     writer.writerow((featureIDs[i-1],valueIDs[i-1]))
 file.close()
