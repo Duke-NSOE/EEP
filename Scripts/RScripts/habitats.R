@@ -200,6 +200,19 @@ spp.mxdata <- spp.all
 spp.mxdata$spp[spp.mxdata$spp==1] <- "greenhead.shiner"
 spp.mxdata$spp[spp.mxdata$spp==0] <- "background"
 write.csv(spp.mxdata, "greenhead_shiner_mxdata.csv")
+# an magically, back from john, maxent output:
+spp.mxout <- read.csv("greenhead_shiner_mx_out.csv")
+names(spp.mxout)
+# create a "prediction" object (table of predicted & actual values):
+spp.mx.pred <- prediction(spp.mxout$predH, spp)
+cutoff.mxtpr <- cutoff.ROCR(spp.pred, "tpr", target=0.95) # is 0.00639
+# maxent's recommended (balanced) cutoff is 0.051
+cutoff.mxb <- 0.051
+spp.mx.pred <- spp.mxout$predH
+spp.mx.pred[spp.mx.pred<cutoff.mxb] <- 0
+spp.mx.pred[spp.mx.pred>=cutoff.mxb] <- 1
+# the confusion matrix:
+table(spp.mx.pred,spp)
 
 
 # alt 3:  dump "presences" to mahalnobis; 
@@ -216,8 +229,9 @@ spp.md2 <- mahalanobis(background.hab,spp.means,spp.cov)
 summary(spp.md2)
 # convert to probabilities, from the Chi-sq distribution:
 spp.md2.p <- ???  # figure out how to convert from value to P:  is it qchisq?
+# qchisq(seq(0,1,0.1), df=16) seems to generate plausible numbers relative
+# to the MD2 values for the 56 known presences...
 
-# some exploratory stuff to confirm that MD2 is appropriate ...
 
 
 
