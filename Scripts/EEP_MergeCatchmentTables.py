@@ -106,7 +106,12 @@ for fld in flds[8:]: #Skip the first 8 fields as they are ok
     NullCount =  arcpy.GetCount_management("Lyr").getOutput(0)
     if int(NullCount) > 0:
         msg("Fixing {} null records {}".format(NullCount, fld.name))
-        #Set selected records to 0
-        arcpy.CalculateField_management("Lyr",fld.name,"-9999")
+        #Depending on the field, set missing values to -9999 or 0
+        if fld.name in ("warm","cold","cool","TotLength","Crossings") or \
+           "NLCD" in fld.name or \
+           "Shade" in fld.name:
+            arcpy.CalculateField_management("Lyr",fld.name,"0")
+        else:
+            arcpy.CalculateField_management("Lyr",fld.name,"-9999")
     
 msg("Finished!")

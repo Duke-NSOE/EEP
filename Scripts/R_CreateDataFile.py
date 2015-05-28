@@ -81,11 +81,26 @@ arcpy.TableSelect_analysis(envVarsTbl,resultsCopyTbl,whereClause)
 msg("...Joining species presence values to environment variables")
 arcpy.JoinField_management(resultsCopyTbl,"GRIDCODE",sppOnlyTbl,"GRIDCODE","{}".format(speciesName))
 
-# Create a list of field names
-msg("Generating a list of environment variables for processing") 
-fldList = [] #[speciesName] #start the list with the MaxEnt format: {species name, x, y}
+
+# Create a list of field names: remove non-numeric fields and extranneous fields
+outFldList = []
 for fld in arcpy.ListFields(resultsCopyTbl):
-    fldList.append(str(fld.name))
+    if fld.type in ("Double","Integer","SmallInteger") and \
+       not fld.name in ("GRIDCODE","FEATUREID",speciesName):
+        outFldList.append(fld.name)
+# Remove the first two and the last fields
+outFldList = outFldList[1:-1]
+
+# Filter the field list: remove fields with null values
+fldList = []
+for fld in outFldList:
+    #Create the SQL filter
+    sql = "{} IN (-9998.0,-9999)".format(fld)
+    #Select records
+    tmpTbl = arcpy.TableSelect_analysis(resultsCopyTbl,"in_memory/tmpSelect",sql)
+    #See if any records are selected
+    if int(arcpy.GetCount_management(tmpTbl).getOutput(0)) == 0:
+        fldList.append(fld)
 
 ## WRITE THE SPECIES RECORDS TO THE FILE ##
 msg("Iniitializing the output species file...")
@@ -96,13 +111,13 @@ writer = csv.writer(csvFile)
 
 # Write header row to CSV file
 msg("...Writing headers to CSV file")
-writer.writerow(["Species"] + fldList[1:-1]) #skip the first and last columns in the fldList
+writer.writerow(["Species"] + fldList)
 
 # Create a search cursor for the resultsTbl
 msg("...Writing presence values to CSV file")
 whereClause = '"{}" = 1'.format(speciesName)
 # Create a cursor including all but the first and last fields (species names)
-cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList[1:-1],whereClause) #<- the 1: skips the first & last field
+cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList,whereClause) #<- the 1: skips the first & last field
 for row in cursor:
     #write the species name + all the row data
     writer.writerow([1] + list(row))
@@ -113,7 +128,7 @@ counter = 0
 # Create a search cursor for the resultsTbl
 msg("...Writing background values to CSV file")
 whereClause = '"{}" IS Null'.format(speciesName)
-cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList[1:-1],whereClause)
+cursor = arcpy.da.SearchCursor(resultsCopyTbl,fldList,whereClause)
 for row in cursor:
     #write the species name + all the row data
     writer.writerow([0] + list(row))
