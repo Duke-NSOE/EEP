@@ -12,21 +12,22 @@
 
 import sys, os, csv, arcpy, numpy
 
-# import the Pyper module
-import pyper
-rPath = r"C:/Program Files/R/R-3.1.1/bin/i386/R"
-r = pyper.R(RCMD=rPath)
-
 '''DEBUG INPUTS
-C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\RData\E_complanata2.csv
+C:/Program Files/R/R-3.1.1/bin/i386/R C:/WorkSpace/EEP_Spring2015/EEP_Tool/Scratch/RData/E_complanata2.csv C:/WorkSpace/EEP_Spring2015/EEP_Tool/Scratch/RData/E_complanata2_sch.csv C:/WorkSpace/EEP_Spring2015/EEP_Tool/Scratch/RData/E_complanata2_schX.csv
 '''
 
 # Input variables
-speciesCSV = 'C:/WorkSpace/EEP_Spring2015/EEP_Tool/Scratch/RData/E_complanata2.csv'#arcpy.GetParameterAsText(0)
+rPath = arcpy.GetParameterAsText(0)
+speciesCSV = arcpy.GetParameterAsText(1)
 
 # Output variables
-correlationCSV = os.path.basename(speciesCSV)[:-4] + "_shc.csv"
-correlationCSV1 = os.path.basename(speciesCSV)[:-4] + "_shcX.csv"
+correlationCSV = arcpy.GetParameterAsText(2)
+correlationCSV1 = arcpy.GetParameterAsText(3)
+habScreenCSV = arcpy.GetParameterAsText(4)
+
+# import the Pyper module
+import pyper
+r = pyper.R(RCMD=rPath)
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -37,7 +38,7 @@ def msg(txt,type="message"):
     elif type == "error":
         arcpy.AddError(txt)
     elif type == 'r':
-        arcpy.AddMessage("[R:]"+txt)
+        arcpy.AddWarning("[R:]"+txt[5:-4])
         print "[R:]",
     print txt
         
@@ -76,7 +77,6 @@ msg(r('sppHabCor <- SHcor(sppAll$Species,as.matrix(sppAll[,c(-1)]),alpha=0.05)')
 msg("Writing full correlation values to {}".format(correlationCSV))
 msg(r('write.csv(sppHabCor,"{}")'.format(correlationCSV)),'r')
 
-
 #Eliminate values with p-values > 0.05
 msg("Finding significant correlations")
 # make a local copy
@@ -89,9 +89,6 @@ msg(r('shc <- shc[!is.na(shc$coef),1:2]'),'r')
 msg("Writing significant correlations to {}".format(correlationCSV1))
 msg(r('write.csv(shc,"{}")'.format(correlationCSV1)),'r')
 
-
-
-    
 ##------------------
 # sort variables with signif correlations in descending order of absolute correlation
 msg("Sorting significant variables in descending order of abolsute correlation")
@@ -126,3 +123,4 @@ r('''trapCollin <- function(data) {
 # habData2 = habData less the 
 #Use the function to screen 
 msg(r('habScreen <- trapCollin(habData)'),'r')
+msg(r('write.csv(habScreen,"{}")'.format(habScreenCSV)),'r')

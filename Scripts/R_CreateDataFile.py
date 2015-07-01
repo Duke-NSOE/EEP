@@ -67,9 +67,8 @@ msg("Creating the query string to extract records")
 whereClause = ""
 for HUC8 in HUC8s:
     whereClause += "REACHCODE LIKE '{}%' OR ".format(HUC8)
-# Trim of the last or
+# Trim of the last "OR "
 whereClause = whereClause[:-3]
-print whereClause
 
 # Select the records
 # Make a copy of the environment variable table and join the species table to it
@@ -80,7 +79,6 @@ arcpy.TableSelect_analysis(envVarsTbl,resultsCopyTbl,whereClause)
 # is present can be isolated. 
 msg("...Joining species presence values to environment variables")
 arcpy.JoinField_management(resultsCopyTbl,"GRIDCODE",sppOnlyTbl,"GRIDCODE","{}".format(speciesName))
-
 
 # Create a list of field names: remove non-numeric fields and extranneous fields
 outFldList = []
@@ -101,9 +99,11 @@ for fld in outFldList:
     #See if any records are selected
     if int(arcpy.GetCount_management(tmpTbl).getOutput(0)) == 0:
         fldList.append(fld)
+    else:
+        msg("   Field <<{}>> has null values and will be removed".format(fld),"warning")
 
 ## WRITE THE SPECIES RECORDS TO THE FILE ##
-msg("Iniitializing the output species file...")
+msg("Creating the output species file...")
 # Initialize the species output csv file & create the writer object
 msg("...Initializing the output CSV files")
 csvFile = open(speciesCSV,'wb')
