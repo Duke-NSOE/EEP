@@ -23,7 +23,6 @@ speciesCSV = arcpy.GetParameterAsText(1)
 # Output variables
 correlationCSV = arcpy.GetParameterAsText(2)
 correlationCSV1 = arcpy.GetParameterAsText(3)
-habScreenCSV = arcpy.GetParameterAsText(4)
 
 # import the Pyper module
 import pyper
@@ -88,39 +87,4 @@ msg(r('shc <- shc[!is.na(shc$coef),1:2]'),'r')
 # write to file
 msg("Writing significant correlations to {}".format(correlationCSV1))
 msg(r('write.csv(shc,"{}")'.format(correlationCSV1)),'r')
-
-##------------------
-# sort variables with signif correlations in descending order of absolute correlation
-msg("Sorting significant variables in descending order of abolsute correlation")
-msg(r('shco <- shc[order(abs(shc$coef),decreasing=TRUE),]'),'r')
-# varList = a list of the variables in sorted order (by absolute correlation)
-msg(r('varList <- as.numeric(rownames(shco))'),'r')
-# sppX = a list of env variable values
-msg(r('sppX <- sppAll[,c(-1)]'),'r')
-# habData = a list of habitat data for just the significant variables
-msg(r('habData <- sppX[,c(varList)]'),'r')
-# Create the trapCollin function: traps collinear variables
-r('''trapCollin <- function(data) {
-  # data, a frame of numeric variables
-  nv <- dim(data)[[2]]
-  nc <- nv*(nv-1)/2
-  v1 <- rep(NA,nc)
-  v2 <- rep(NA,nc)
-  r <- rep(NA,nc)
-  k <- 0
-  for (i in 2:nv) {
-    for (j in 1:(i-1)) {
-        k <- k+1
-        v1[k] <- names(data)[i]
-        v2[k] <- names(data)[j]
-        r[k] <- cor.test(unlist(data[i]),unlist(data[j]))$statistic
-    }
-  }
-  out <- data.frame(cbind(v1,v2,r))
-  out <- out[!is.na(v1),]
-  out
-}''')
-# habData2 = habData less the 
-#Use the function to screen 
-msg(r('habScreen <- trapCollin(habData)'),'r')
-msg(r('write.csv(habScreen,"{}")'.format(habScreenCSV)),'r')
+msg("Finished")
