@@ -1,12 +1,14 @@
 # R_CreateDataFile.py
 #
-# Description: Creates the files necessary to run R analyses.These include:
-#  - Presences file
-#  - Available habitat file
+# Description: Creates a CSV format table listing all the catchments in each HUC8 in which a
+#   selected species is found. The table includes a column indicating whether the species was
+#   observed in the catchment and all environment environment data. Any environment layer with
+#   missing data is omitted completely. 
 #
 # The procedure first finds all the HUC8s in which the species occurs, then
 #   extracts all the catchments within these HUC8s. Those catchments where the
-#   species was observed (via Endries' data) are tagged with 1, others with 0
+#   species was observed (via Endries' data) are tagged with 1, others with 0.bit_length
+#   Environment variables with missing data are eliminated. 
 #
 # Spring 2015
 # John.Fay@duke.edu
@@ -14,17 +16,13 @@
 import sys, os, csv, arcpy
 arcpy.env.overwriteOutput = 1
 
-'''DEBUG INPUTS
-C:\WorkSpace\EEP_Spring2015\EEP_Tool\Data\EEP_030201.gdb\HabModel Elliptio_complanata C:\WorkSpace\EEP_Spring2015\EEP_Tool\Data\EEP_030201.gdb\EnvStats C:\WorkSpace\EEP_Spring2015\EEP_Tool\Data\foo.csv
-'''
-
 # Input variables
-speciesTbl = arcpy.GetParameterAsText(0) # table of all ENDRIES surveyed catchments with a binary column for each species presence...
-speciesName = arcpy.GetParameterAsText(1) #Species to model; this should be a field in the above table
-envVarsTbl = arcpy.GetParameterAsText(2) # table listing all the catchment attributes to be used as environment layer values
+speciesTbl = arcpy.GetParameterAsText(0)    # Table of all ENDRIES surveyed catchments with a binary column for each species presence...
+speciesName = arcpy.GetParameterAsText(1)   # Species to model; this should be a field in the above table
+envVarsTbl = arcpy.GetParameterAsText(2)    # Table listing all the catchment attributes to be used as environment layer values
 
 # Output variables
-speciesCSV = arcpy.GetParameterAsText(3)
+speciesCSV = arcpy.GetParameterAsText(3)    # CSV file listing the species occurence and all env vars for HUC8s in which species occurs
 
 # Script variables
 sppOnlyTbl = "in_memory/sppOnlyTbl"
