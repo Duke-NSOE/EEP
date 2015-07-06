@@ -1,27 +1,25 @@
 # R_SHCorrelate.py
 #
 # Description:
-#  Correlate spp presence/absence with habitat variables. 
+#  Correlate spp presence/absence with habitat variables.
+#
+#  *****************************************************************************
+#  ** This module requires the SciPy module to be installed. When installing, **
+#  ** be sure to get version 0.12.0 as that is the one that works with the    **
+#  ** version of NumPy that is installed with ArcGIS 10.2                     ** 
+#  *****************************************************************************
 #
 # Spring 2015
 # John.Fay@duke.edu
 
-#from setuptools.command import easy_install
-#easy_install.main(["-U","scipy"])
-
-import sys, os, csv, arcpy, numpy
+import sys, os, arcpy, numpy
 arcpy.env.overwriteOutput = 1
 
-'''DEBUG INPUTS
-C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\RData\E_complanata2.csv
-'''
-
 # Input variables
-speciesCSV = r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\RData\E_complanata2.csv'#arcpy.GetParameterAsText(0)
+speciesCSV = arcpy.GetParameterAsText(0)
 
 # Output variables
-
-# Script variables
+correlationCSV = arcpy.GetParameterAsText(1)
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -32,11 +30,20 @@ def msg(txt,type="message"):
         arcpy.AddWarning(txt)
     elif type == "error":
         arcpy.AddError(txt)
-        
+
 ## ---Processes---
+#Check to see whether a SciPy exists
+try:
+    import scipy
+    from scipy import stats
+except:
+    msg("The SciPy module is not installed.\nExiting.","error")
+    sys.exit()
+
 #Read in the column headers
 f = open(speciesCSV,'rt')
 headerText = f.readline()
+headerText = headerText[:-1] #Strip the newline char
 headerItems = headerText.split(",")
 f.close()
 
@@ -51,14 +58,27 @@ nCols = arrData.shape[1]
 msg("Extracting occurrence records")
 sppVector = arrData[1:,0]
 
-i = 1 #Replace with loop
-for i in range(nCols):
+#Intialize output file
+msg("Creating output file {}".format(correlationCSV))
+f = open(correlationCSV,'wt')
+f.write("variable, coef, p_value\n")
+
+#Loop through columns and calculate the variables correlation with presence/absence
+msg("Calculating correlation coefficients")
+for i in range(1,nCols):
+    # Get the variable name (from the list created above)
     envName = headerItems[i]
+    # Get the env var column, as a vector
     envVector = arrData[1:,i]
+    #Calculate correlation --THIS REQUIRES SCIPY--
+    pearson = stats.pearsonr(sppVector, envVector)
+    coeff = pearson[0]
+    pValue = pearson[1]
+    #Print output to the CSV file
+    if abs(pValue) <= 0.05:
+        f.write("%s, %2.6f, %2.3f\n"%(envName,coeff,pValue))
 
-    #Calculate correlation
-    pearson = numpy.corrcoef(sppVector,envVector)[0,1]
-    #Print output
-    msg("{}\t{}".format(envName,pearson))
+#Wrap up
+f.close()
+msg("Finished")               
 
-    if i > 1: break
