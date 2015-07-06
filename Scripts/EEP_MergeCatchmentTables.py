@@ -44,7 +44,7 @@ def makeFldString(tbl):
     for f in arcpy.ListFields(tbl):
         if not f.name in ("COMID","OBJECTID"):
             fldString += "; {}".format(f.name)
-    return fldString[:-1] #return all but the last semicolon
+    return fldString #return all but the last semicolon
 
 # Copy the catchment feature class
 msg("Creating output catchment feature class")
@@ -66,7 +66,8 @@ arcpy.JoinField_management(outputFC, "GRIDCODE", Landscape_Stats, "COMID", "runo
 
 # Process: Join Field (3)
 msg(" Joining FlowlineLULC...3/7")
-arcpy.JoinField_management(outputFC, "GRIDCODE", FlowlineLULC, "GRIDCODE", "FLNLCD_11;FLNLCD_21;FL_D_22;FL_D_23;FL_D_24;FL_D_31;FL_D_41;FL_D_42;FL_D_43;FL_D_52;FL_D_71;FL_D_81;FL_D_82;FL_D_90;FL_D_95")
+arcpy.JoinField_management(outputFC, "GRIDCODE", FlowlineLULC, "GRIDCODE",
+                           "FLNLCD_11;FLNLCD_21;FLNLCD_22;FLNLCD_23;FLNLCD_24;FLNLCD_31;FLNLCD_41;FLNLCD_42;FLNLCD_43;FLNLCD_52;FLNLCD_71;FLNLCD_81;FLNLCD_82;FLNLCD_90;FLNLCD_95")
 
 # Process: Join Field (4)
 msg(" Joining RiparianStats...4/7")
@@ -74,7 +75,7 @@ arcpy.JoinField_management(outputFC, "GRIDCODE", RiparianStats, "GRIDCODE", "Oth
 
 # Process: Join Field (5)
 msg(" Joining Shadestats...5/7")
-arcpy.JoinField_management(outputFC, "FEATUREID", ShadeStats, "COMID", "ShadedFragments;ShadedLength;LongestShade;MeanShadeLength")
+arcpy.JoinField_management(outputFC, "FEATUREID", ShadeStats, "COMID", "ShadedSegments;ShadedLength;LongestSegment;MeanShadeLength")
 
 # Process: Join Field (6)
 msg(" Joining Streamtemp...6/7")
