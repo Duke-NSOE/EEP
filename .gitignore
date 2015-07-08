@@ -1,6 +1,7 @@
 scratch/
 Data/EEP_030501.gdb/
 Data/EEP_030201.gdb/
+Data/EEP_030401.gdb/
 Scripts/Notes_jpfay.txt
 Scripts/RScripts/output/
 *.asc
