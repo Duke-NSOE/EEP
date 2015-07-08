@@ -49,7 +49,7 @@ line = f.readline()         # Get the first data line
 while line:                 # Loop through the remaining lines
     lineData = f.readline().split(",")  # Get the string in the line and split it into a list
     if len(lineData) > 1:               # If the line includes field names (the last one may not)
-        colName = lineData[0]                      # Get the column name (first item)
+        colName = lineData[0].strip()              # Get the column name (first item)
         colName = colName.replace('"','')          # Remove any quotes
         colNames.append(colName)                   # Add the column name to the list 
     line = f.readline()                 # Go to the next line in the CSV file
