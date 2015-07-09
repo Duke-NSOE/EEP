@@ -14,9 +14,10 @@ arcpy.env.overwriteOutput = True
 speciesTbl = arcpy.GetParameterAsText(0) # table of all ENDRIES surveyed catchments with a binary column for each species presence...
 speciesName = arcpy.GetParameterAsText(1) #Species to model; this should be a field in the above table
 resultsTbl = arcpy.GetParameterAsText(2) # table listing all the catchment attributes to be used as environment layer values
+varFilterCSV = arcpy.GetParameterAsText(3) #r'C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\Nocomis_leptocephalus\CorrelatedFields.csv'
 
 # Output variables
-speciesCSV = arcpy.GetParameterAsText(3) #Output SWD format CSV file to create
+speciesCSV = arcpy.GetParameterAsText(4) #Output SWD format CSV file to create
 
 # Script varables
 sppOnlyTbl = "in_memory/SppTble"
@@ -40,7 +41,22 @@ arcpy.TableSelect_analysis(speciesTbl, sppOnlyTbl,'"{}" = 1'.format(speciesName)
 
 # Make a copy of the environment variable table and join the species table to it
 msg("...Creating temporary table of the environment variables")
-arcpy.CopyRows_management(resultsTbl,resultsCopyTbl)
+#arcpy.CopyRows_management(resultsTbl,resultsCopyTbl)
+arcpy.TableSelect_analysis(resultsTbl,resultsCopyTbl,"LENGTHKM > 0")
+
+# Remove uncorrelated fields
+f = open(varFilterCSV,'rt')
+keepList = ["OBJECTID","GRIDCODE","FEATUREID"]
+for row in csv.reader(f):
+    keepList.append(row[0])
+f.close()
+killList = []
+fldList = arcpy.ListFields(resultsCopyTbl)
+for fld in fldList:
+    if not fld.name in keepList:
+        msg("Removing {} from output".format(fld.name))
+        arcpy.DeleteField_management(resultsCopyTbl,fld.name)
+        
 
 # Join the species data to the results table so that the records where the species
 # is present can be isolated. 
