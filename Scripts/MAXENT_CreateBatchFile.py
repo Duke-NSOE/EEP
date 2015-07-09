@@ -57,7 +57,7 @@ if not(os.path.exists(outDir)):
 
 # Begin creating the batch run string with boilerplate stuff
 msg("Initializing the Maxent batch command")
-runString = "java -mx2048m -jar maxent.jar"
+runString = "java -mx2048m -jar {}".format(os.path.join(maxentPath,"maxent.jar"))
 
 # set samples file
 msg("Setting samples file to {}".format(swdFile))
