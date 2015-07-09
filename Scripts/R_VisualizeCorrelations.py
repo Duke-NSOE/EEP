@@ -31,7 +31,7 @@ while dataString:                   #Loop through each line in the CSV
     sppCorDict[varName] = coef          #Add items to the dictionary
     dataString = f.readline()[:-1]      #Read in the next line in the CSV    
 
-
+'''
 ##Create dictionary from the fields listed in correlations CSV file. Keys in the dictionary
 ##  are the field names and the values are a unique ID which can be used to link nodes to edges
 nodeDict = {}                       #Create a dictionary of field names/id values
@@ -46,6 +46,21 @@ while dataString:                   #Loop through each line in the CSV
         if not name in nodeDict.keys():             #If not, add them and give them a unique ID
             nodeDict[name] = id
             id += 1
+    dataString = f.readline()[:-1]                  #Read in the next line in the CSV
+f.close()                           #Close the file
+'''
+##Create a dictionary from the fields listed in the species correlations CSV...
+nodeDict = {}                       #Create a dictionary of field names/id values
+id = 1                              #Initialize the ID variable
+f = open(sppCorrelationsCSV,'rt')   #Open the file
+headers = f.readline()              #Extract/skip the headers line in the CSV
+dataString = f.readline()[:-1]      #Convert the text to string (omitting the newline char at the end
+while dataString:                   #Loop through each line in the CSV
+    data = dataString.split(",")                    #Convert text to a list of items
+    name = data[0]
+    if not name in nodeDict.keys():             #If not, add them and give them a unique ID
+        nodeDict[name] = id
+        id += 1
     dataString = f.readline()[:-1]                  #Read in the next line in the CSV
 f.close()                           #Close the file
 
@@ -159,4 +174,8 @@ f.write('''            // Instantiate our network object.
 # Close the file
 f.close()
 
+# Open the file in a web browser
+import webbrowser
+new = 2
+webbrowser.open(visHTML,new=new)
         
