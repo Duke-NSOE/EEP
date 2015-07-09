@@ -53,7 +53,6 @@ strmRaster = sa.IsNull(fdrnullRaster)
 msg("Assigning elevation values to stream cells")
 strmElevRaster1 = sa.Con(strmRaster,elevRaster)
 strmElevRaster = sa.Con(strmElevRaster1,strmElevRaster1,1,"VALUE >= 1")
-strmElevRaster.save("foo")
 msg("Saved to {}".format(strmElevRaster))
 
 ## Create a watershed, using the stream elevation raster as the pour points.
