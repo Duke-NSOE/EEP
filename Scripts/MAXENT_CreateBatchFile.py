@@ -50,10 +50,11 @@ else:
     msg("Maxent folder set to {}".format(maxentPath))
 
 # Check that the output folder exists; create it if not
-outDir = os.path.abspath(maxentPath + ".\\Output")
+outDir = os.path.abspath(os.path.dirname(prjFolder)+"\\..\\Output")
 if not(os.path.exists(outDir)):
     msg("Creating output directory")
     os.mkdir(outDir)
+else: msg("Setting output to {}".format(outDir))
 
 # Begin creating the batch run string with boilerplate stuff
 msg("Initializing the Maxent batch command")
