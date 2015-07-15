@@ -1,0 +1,1 @@
+This is a scratch folder. It needs this readme file to propogate through Git.
