@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+  <title>Nocomis_leptocephalus</title>
+  <style type="text/css">
+    html, body {
+      font: 14pt arial;
+    }
+    #mynetwork {
+      width: 100%;
+      height: 800px;
+      border: 1px solid lightgray;
+    }
+  </style>
+
+  <script type="text/javascript" src="http://visjs.org/dist/vis.js"></script>
+  <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript">
+    var nodes = null;
+    var edges = null;
+    var network = null;
+
+    function draw() {
+      // create people.
+      // value corresponds with the age of the person
+      nodes = [
+        {id: 1, value : 0.151557, label: 'AreaSqKM'},
+        {id: 2, value : 0.165860, label: 'Shape_Length'},
+        {id: 3, value : 0.151557, label: 'Shape_Area'},
+        {id: 4, value : 0.178325, label: 'LENGTHKM'},
+        {id: 5, value : -0.071367, label: 'FCODE'},
+        {id: 6, value : 0.075115, label: 'StreamOrde'},
+        {id: 7, value : 0.079345, label: 'Pathlength'},
+        {id: 8, value : -0.040020, label: 'ArbolateSu'},
+        {id: 9, value : -0.040539, label: 'TotDASqKM'},
+        {id: 10, value : 0.122514, label: 'V0001E'},
+        {id: 11, value : 0.102295, label: 'Qincr0001E'},
+        {id: 12, value : -0.046161, label: 'TEMP0001'},
+        {id: 13, value : 0.053584, label: 'PPT0001'},
+        {id: 14, value : -0.048656, label: 'PET0001'},
+        {id: 15, value : -0.079365, label: 'TempVC'},
+        {id: 16, value : -0.046141, label: 'TempVMA'},
+        {id: 17, value : -0.048920, label: 'Temp_min'},
+        {id: 18, value : -0.042268, label: 'Temp_max'},
+        {id: 19, value : 0.080301, label: 'PrecipVC'},
+        {id: 20, value : 0.053584, label: 'PrecipVMA'},
+        {id: 21, value : 0.066836, label: 'Precip_min'},
+        {id: 22, value : 0.055154, label: 'Precip_max'},
+        {id: 23, value : 0.056115, label: 'RunOffVMA'},
+        {id: 24, value : 0.023747, label: 'RunOff_min'},
+        {id: 25, value : 0.057778, label: 'RunOff_max'},
+        {id: 26, value : -0.051396, label: 'NLCD11P'},
+        {id: 27, value : 0.026933, label: 'NLCD21P'},
+        {id: 28, value : 0.029294, label: 'NLCD41P'},
+        {id: 29, value : -0.034007, label: 'NLCD42P'},
+        {id: 30, value : 0.029929, label: 'NLCD52P'},
+        {id: 31, value : 0.102518, label: 'NLCD2'},
+        {id: 32, value : 0.102518, label: 'NLCD3'},
+        {id: 33, value : 0.122655, label: 'NLCD4'},
+        {id: 34, value : 0.167559, label: 'NLCD5'},
+        {id: 35, value : 0.095918, label: 'NLCD7'},
+        {id: 36, value : 0.102388, label: 'NLCD8'},
+        {id: 37, value : 0.092611, label: 'NLCD9'},
+        {id: 38, value : -0.053337, label: 'NLCD11PC'},
+        {id: 39, value : 0.077003, label: 'NLCD41PC'},
+        {id: 40, value : -0.057249, label: 'NLCD42PC'},
+        {id: 41, value : -0.047009, label: 'NLCD71PC'},
+        {id: 42, value : -0.046665, label: 'NLCD81PC'},
+        {id: 43, value : -0.044830, label: 'NLCD1_1'},
+        {id: 44, value : -0.042803, label: 'NLCD2_1'},
+        {id: 45, value : -0.042803, label: 'NLCD3_1'},
+        {id: 46, value : -0.042451, label: 'NLCD4_1'},
+        {id: 47, value : -0.039055, label: 'NLCD5_1'},
+        {id: 48, value : -0.039923, label: 'NLCD7_1'},
+        {id: 49, value : -0.041500, label: 'NLCD8_1'},
+        {id: 50, value : -0.041397, label: 'NLCD9_1'},
+        {id: 51, value : 0.053128, label: 'slope_MEAN'},
+        {id: 52, value : 0.086600, label: 'FLNLCD_21'},
+        {id: 53, value : 0.036730, label: 'FLNLCD_22'},
+        {id: 54, value : 0.044586, label: 'FLNLCD_31'},
+        {id: 55, value : 0.156297, label: 'FLNLCD_41'},
+        {id: 56, value : 0.065490, label: 'FLNLCD_42'},
+        {id: 57, value : 0.040428, label: 'FLNLCD_43'},
+        {id: 58, value : 0.086797, label: 'FLNLCD_52'},
+        {id: 59, value : 0.096930, label: 'FLNLCD_71'},
+        {id: 60, value : 0.111907, label: 'FLNLCD_81'},
+        {id: 61, value : 0.101066, label: 'FLNLCD_90'},
+        {id: 62, value : 0.028450, label: 'Other'},
+        {id: 63, value : 0.154481, label: 'Forest'},
+        {id: 64, value : 0.089789, label: 'Wetland'},
+        {id: 65, value : 0.025138, label: 'pctWetland'},
+        {id: 66, value : 0.174505, label: 'ShadedSegments'},
+        {id: 67, value : 0.153499, label: 'ShadedLength'},
+        {id: 68, value : 0.077262, label: 'LongestSegment'},
+        {id: 69, value : -0.024563, label: 'MeanShadeLength'},
+        {id: 70, value : 0.047094, label: 'cold'},
+        {id: 71, value : 0.092021, label: 'cool'},
+        {id: 72, value : 0.224372, label: 'TotLength'},
+        {id: 73, value : 0.165277, label: 'Crossings'},
+        {id: 74, value : 0.027307, label: 'PctCanopy'},
+      ];
+
+      edges = [
+        {from: 2, to: 4, value: 0.917687978402, title: '0.917687978402'},
+        {from: 2, to: 34, value: 0.877577022676, title: '0.877577022676'},
+        {from: 2, to: 66, value: 0.722832358958, title: '0.722832358958'},
+        {from: 4, to: 34, value: 0.85311569181, title: '0.85311569181'},
+        {from: 4, to: 66, value: 0.782451330641, title: '0.782451330641'},
+        {from: 8, to: 44, value: 0.986318271802, title: '0.986318271802'},
+        {from: 8, to: 46, value: 0.993057971889, title: '0.993057971889'},
+        {from: 8, to: 48, value: 0.988703986288, title: '0.988703986288'},
+        {from: 8, to: 50, value: 0.982294910978, title: '0.982294910978'},
+        {from: 12, to: 14, value: 0.99787735537, title: '0.99787735537'},
+        {from: 12, to: 16, value: 0.999998444444, title: '0.999998444444'},
+        {from: 12, to: 18, value: 0.991782403159, title: '0.991782403159'},
+        {from: 14, to: 16, value: 0.997878153682, title: '0.997878153682'},
+        {from: 14, to: 18, value: 0.994978422241, title: '0.994978422241'},
+        {from: 14, to: 70, value: 0.708820930784, title: '0.708820930784'},
+        {from: 16, to: 18, value: 0.991796840129, title: '0.991796840129'},
+        {from: 18, to: 70, value: 0.731329978871, title: '0.731329978871'},
+        {from: 20, to: 22, value: 0.966901139901, title: '0.966901139901'},
+        {from: 20, to: 24, value: 0.861693320276, title: '0.861693320276'},
+        {from: 22, to: 24, value: 0.831579500025, title: '0.831579500025'},
+        {from: 28, to: 74, value: 0.776252716591, title: '0.776252716591'},
+        {from: 32, to: 52, value: 0.736397934486, title: '0.736397934486'},
+        {from: 44, to: 46, value: 0.998712426656, title: '0.998712426656'},
+        {from: 44, to: 48, value: 0.977241221279, title: '0.977241221279'},
+        {from: 44, to: 50, value: 0.977421971436, title: '0.977421971436'},
+        {from: 46, to: 48, value: 0.983892517353, title: '0.983892517353'},
+        {from: 46, to: 50, value: 0.982439367029, title: '0.982439367029'},
+        {from: 48, to: 50, value: 0.99634327593, title: '0.99634327593'},
+      ];
+
+            // Instantiate our network object.
+      var container = document.getElementById('mynetwork');
+      var data = {
+        nodes: nodes,
+        edges: edges
+      };
+      var options = {
+        nodes: {
+          shape: 'dot',
+        },
+                interaction: {
+                    navigationButtons: false,
+                    selectable: true
+                },
+				manipulation: {
+					enabled: true,
+					addNode: false,
+					addEdge: false
+				}
+        };
+      network = new vis.Network(container, data, options);
+
+    }
+  </script>
+</head>
+<body onload="draw()">
+<p>
+  Scale nodes and edges depending on their value. Hover over the edges to get a popup with more information.
+</p>
+<div id="mynetwork"></div>
+</body>
+</html>
