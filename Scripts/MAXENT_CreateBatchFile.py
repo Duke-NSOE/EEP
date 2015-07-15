@@ -21,7 +21,7 @@ import sys, os, arcpy
 swdFile = arcpy.GetParameterAsText(0)           # MaxEnt SWD formatted CSV file
 excludeFlds = arcpy.GetParameterAsText(1)       # Fields to toggle off by default
 categoricalFlds = arcpy.GetParameterAsText(2)   # Fields to set as categorical (not continuous)
-prjFolder = arcpy.GetParameterAsText(3)         # Folder containing ASCII projection files
+prjFolder = arcpy.GetParameterAsText(3)         # Folder containing ASCII projection files (optional)
 runMaxent = arcpy.GetParameterAsText(4)         # Boolean whether to run MaxEnt when finished
 
 # Output variables
@@ -50,7 +50,7 @@ else:
     msg("Maxent folder set to {}".format(maxentPath))
 
 # Check that the output folder exists; create it if not
-outDir = os.path.abspath(os.path.dirname(prjFolder)+"\\..\\Output")
+outDir = os.path.abspath(os.path.dirname(swdFile)+"\\Output")
 if not(os.path.exists(outDir)):
     msg("Creating output directory")
     os.mkdir(outDir)
@@ -93,17 +93,18 @@ if ("X") in excludeItems: excludeItems.remove("X")
 if ("Y") in excludeItems: excludeItems.remove("Y")
 
 ## Loop through list; if header item not in include list, toggle it off
-for excludeItems in excludeItems: 
-    msg("...disabling {} field".format(excludeItems))
-    runString += " togglelayerselected={}".format(excludeItems)
+for excludeItem in excludeItems: 
+    msg("...disabling {} field".format(excludeItem))
+    runString += " togglelayerselected={}".format(excludeItem)
             
 # Set categorical fields
-## Split the list string in to list items
-catItems = categoricalFlds.split(";")
-## Loop through each item in the list and set it to categorical
-for catItem in catItems:
-    msg("Setting {} field to categorical".format(catItem))
-    runString += " togglelayertype={}".format(catItem)
+if categoricalFlds:
+    ## Split the list string in to list items
+    catItems = categoricalFlds.split(";")
+    ## Loop through each item in the list and set it to categorical
+    for catItem in catItems:
+        msg("Setting {} field to categorical".format(catItem))
+        runString += " togglelayertype={}".format(catItem)
 
 # Set the projection file directory and turn on projections, if supplied
 if prjFolder:
