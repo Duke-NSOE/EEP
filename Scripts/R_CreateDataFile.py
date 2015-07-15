@@ -84,8 +84,8 @@ for fld in arcpy.ListFields(resultsCopyTbl):
     if fld.type in ("Double","Integer","SmallInteger") and \
        not fld.name in ("GRIDCODE","FEATUREID",speciesName):
         outFldList.append(fld.name)
-# Remove the first two and the last fields
-outFldList = outFldList[1:-1]
+# Remove the first two and the last fields <--NOT SURE WHY I DID THIS?
+#outFldList = outFldList[1:-1]
 
 # Filter the field list: remove fields with null values
 fldList = []
