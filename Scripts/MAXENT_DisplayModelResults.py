@@ -35,8 +35,11 @@ if not os.path.exists(logFN):
 f = open(logFN,"r")
 lines = f.readlines()
 f.close()
-sppLine = lines[11]
-sppName = sppLine[9:-1]
+
+#Get the species name
+sppName = "Unknown"
+for line in lines:
+    if line[:9] == "Species: ": sppName = line[9:-1]
 
 #Get the result filenames
 msg("Getting Maxent files...")
@@ -92,20 +95,23 @@ msg("Cleaning up fields")
 for fld in arcpy.ListFields(outFC)[2:-4]:
     arcpy.DeleteField_management(outFC, fld.name)
 
+#Get the probability field name (it's the last one...)
+probFld = arcpy.ListFields(outFC)[-1].name
+
 #Create and update output fields
 msg("Adding habitat probability field...")
 arcpy.AddField_management(outFC,"HabProb","DOUBLE")
 
 msg("Updating habitat probability values...")
-arcpy.CalculateField_management(outFC,"HabProb","[Logistic_E]")
+arcpy.CalculateField_management(outFC,"HabProb","[{}]".format(probFld))
 
 msg("Adding habitat binary field...")
 arcpy.AddField_management(outFC,"HabBinary","Short")
 
 msg("Updating habitat binary values..")
-arcpy.CalculateField_management(outFC,"HabBinary","!Logistic_E! > {}".format(threshold),"PYTHON")
+arcpy.CalculateField_management(outFC,"HabBinary","!{}! > {}".format(probFld,threshold),"PYTHON")
 
 #Remove fields
 msg("Cleaning up.")
-arcpy.DeleteField_management(outFC,["Logistic_O","Logistic_X","Logistic_Y","Logistic_E"])
+arcpy.DeleteField_management(outFC,["Logistic_O","Logistic_X","Logistic_Y",probFld])
 
