@@ -81,11 +81,9 @@ arcpy.JoinField_management(resultsCopyTbl,"GRIDCODE",sppOnlyTbl,"GRIDCODE","{}".
 # Create a list of field names: remove non-numeric fields and extranneous fields
 outFldList = []
 for fld in arcpy.ListFields(resultsCopyTbl):
-    if fld.type in ("Double","Integer","SmallInteger") and \
-       not fld.name in ("GRIDCODE","FEATUREID",speciesName):
+    if fld.type in ("Double","Integer","SmallInteger") and not fld.name == speciesName:
+       #not fld.name in ("GRIDCODE","FEATUREID",speciesName):
         outFldList.append(fld.name)
-# Remove the first two and the last fields <--NOT SURE WHY I DID THIS?
-#outFldList = outFldList[1:-1]
 
 # Filter the field list: remove fields with null values
 fldList = []
