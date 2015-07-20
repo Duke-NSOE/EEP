@@ -15,20 +15,18 @@ arcpy.CheckOutExtension("network")
 from arcpy import na
 
 # Path variables
-dataPth = os.path.abspath(sys.path[0]+ "\\..\\Data")
-NHDsde = os.path.join(dataPth,"NHD data.sde")
-NCsde = os.path.join(dataPth,"NC.sde")
+#dataPth = os.path.abspath(sys.path[0]+ "\\..\\Data")
+#NHDsde = os.path.join(dataPth,"NHD data.sde")
+#NCsde = os.path.join(dataPth,"NC.sde")
 
 # Input variables
-flowlineND = os.path.join(NHDsde,"NHD.DBO.NHDFlowlines\\NHD.DBO.NHDFlowlines_ND")
-flowlinePts = os.path.join(dataPth,"EEP_030501.gdb\\FlowlineMidPts")
-damPoints = os.path.join(NCsde,"NC.DBO.NCdams")
-maskPoly = os.path.join(dataPth,"EEP_030501.gdb\\MaskPoly")
+flowlineND = arcpy.GetParameterAsText(0) #os.path.join(NHDsde,"NHD.DBO.NHDFlowlines\\NHD.DBO.NHDFlowlines_ND")
+flowlinePts = arcpy.GetParameterAsText(1) #os.path.join(dataPth,"EEP_030501.gdb\\FlowlineMidPts")
+damPoints = arcpy.GetParameterAsText(2) #os.path.join(NCsde,"NC.DBO.NCdams")
+maskPoly = arcpy.GetParameterAsText(3) #os.path.join(dataPth,"EEP_030501.gdb\\MaskPoly")
 
 # Output variables
-outputGDB = os.path.join(dataPth,"EEP_030501.gdb")
-
-# Script variables
+outputGDB = arcpy.GetParameterAsText(4) #os.path.join(dataPth,"EEP_030501.gdb")
 
 # Environment variables
 arcpy.env.overwriteOutput = True
@@ -61,7 +59,7 @@ naLyr = arcpy.na.MakeClosestFacilityLayer(flowlineND,
                                           "NO_LINES",        # don't create any output lines
                                           "", "NOT_USED")    # ignore time of day
 
-msg("Adding flowline midpoints as incidents to NA Layer")
+msg("Adding flowline midpoints as incidents to NA Layer...")
 arcpy.AddLocations_na(naLyr,"Incidents", flowlinePts,
                       "Name COMID #",
                       "0 Meters", "",
@@ -73,7 +71,7 @@ arcpy.AddLocations_na(naLyr,"Incidents", flowlinePts,
                       "INCLUDE",
                       "NHD.DBO.NHDFlowlines #;NHD.DBO.NHDFlowlines_ND_Junctions #")
 
-msg("Adding dam locations as facilities to NA Layer")
+msg("Adding dam locations as facilities to NA Layer...")
 arcpy.AddLocations_na(naLyr, "Facilities", damsInHUC6,
                       "Name Name #;SourceID SourceID #;SourceOID SourceOID #;PosAlong PosAlong #;SideOfEdge SideOfEdge #",
                       "0 Meters",
@@ -90,17 +88,19 @@ solver = na.GetSolverProperties(naLyr.getOutput(0))
 for direction in ("downstream","upstream"):
 
     #Clear all restrictions
-    solver.restrictions = []
+    #solver.restrictions = []
 
     #Set the restriction to match the appropriate one in the flowline network dataset
     if direction == "downstream":
         msg("Restricting analysis to the downstream direction")
-        solver.restrictions.append("FlowDirection")
-        outFC = os.path.join(outputGDB,"kmToDam_downstream")
+        solver.restrictions = ["FlowDirection"]
+        outTable = os.path.join(outputGDB,"kmToDam_downstream")
+        arcpy.SetParameterAsText(5,outTable)
     else:
         msg("Restricting analysis to the upstream direction")
-        solver.restrictions.append("Upstream")
-        outFC = os.path.join(outputGDB,"kmToDam_upstream")
+        solver.restrictions = ["Upstream"]
+        outTable = os.path.join(outputGDB,"kmToDam_upstream")
+        arcpy.SetParameterAsText(6,outTable)
 
     msg("Locating dams in the {} direction".format(direction))
     arcpy.na.Solve(naLyr, "SKIP", "TERMINATE", "")
@@ -108,25 +108,25 @@ for direction in ("downstream","upstream"):
     msg("Extracting route information")
     routes = arcpy.SelectData_management(naLyr, "Routes")
 
-    msg("Saving table to ".format(outFC))
-    arcpy.CopyRows_management(routes, outFC, "")
+    msg("Saving table to {}".format(outTable))
+    arcpy.CopyRows_management(routes, outTable, "")
 
     msg("Adding COMID field to output")
-    arcpy.AddField_management(outFC, "COMID", "LONG", "10", "", "", "", "NULLABLE", "NON_REQUIRED", "")
+    arcpy.AddField_management(outTable, "COMID", "LONG", "10", "", "", "", "NULLABLE", "NON_REQUIRED", "")
 
     msg("Setting COMID field values")
-    arcpy.CalculateField_management(outFC, "COMID", "int(!Name![:7])", "PYTHON", "")
+    arcpy.CalculateField_management(outTable, "COMID", "int(!Name![:7])", "PYTHON", "")
 
     msg("Adding distance field to output")
-    arcpy.AddField_management(outFC, "Downstream2Dam_km", "FLOAT", "6", "2", "", "", "NULLABLE", "NON_REQUIRED", "")
+    arcpy.AddField_management(outTable,"{}Distance_km".format(direction), "FLOAT", "6", "2", "", "", "NULLABLE", "NON_REQUIRED", "")
 
     msg("Setting distance values")
-    arcpy.CalculateField_management(outFC, "Downstream2Dam_km", "[Total_Length] / 1000", "VB", "")
+    arcpy.CalculateField_management(outTable,"{}Distance_km".format(direction), "[Total_Length] / 1000", "VB", "")
 
     msg("Cleaning up fields")
     flds = []
-    for f in arcpy.ListFields(outFC)[1:-2]: #Loop through all fields but first and last two
-        msg("...removing {} field".format(f))
-        arcpy.DeleteField_management(outFC, f.name)
+    for f in arcpy.ListFields(outTable)[1:-2]: #Loop through all fields but first and last two
+        msg("...removing {} field".format(f.name))
+        arcpy.DeleteField_management(outTable, f.name)
 
 msg("Finished...")
