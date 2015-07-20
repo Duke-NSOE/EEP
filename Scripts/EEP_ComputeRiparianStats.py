@@ -53,7 +53,6 @@ strmRaster = sa.IsNull(fdrnullRaster)
 msg("Assigning elevation values to stream cells")
 strmElevRaster1 = sa.Con(strmRaster,elevRaster)
 strmElevRaster = sa.Con(strmElevRaster1,strmElevRaster1,1,"VALUE >= 1")
-msg("Saved to {}".format(strmElevRaster))
 
 ## Create a watershed, using the stream elevation raster as the pour points.
 '''Cell values in this output are the elevation at the point where the given
@@ -62,7 +61,7 @@ msg("Saved to {}".format(strmElevRaster))
    between the cell and where it drains into the stream'''
 msg("Calculating watersheds labeled with elevation")
 try:
-    elevSheds = sa.Watershed(fldrRaster,"foo","VALUE")
+    elevSheds = sa.Watershed(fldrRaster,strmElevRaster,"VALUE")
 except:
     msg(arcpy.GetMessages(),"error")
     sys.exit(1)
