@@ -17,6 +17,8 @@ RiparianStats = arcpy.GetParameterAsText(5)
 RoadXings = arcpy.GetParameterAsText(6)
 HabitatTable = arcpy.GetParameterAsText(7)
 CanopyImpervTable = arcpy.GetParameterAsText(8)
+AnimalOpsTable = arcpy.GetParameterAsText(9)
+NPDESTable = arcpy.GetParameterAsText(10)
 
 #GeologyTable = "GeologyTable"
 #NPDESCount = "NPDESCount"
@@ -83,19 +85,19 @@ arcpy.JoinField_management(outputFC, "FEATUREID", StreamTemp, "FEATUREID", "cold
 
 # Process: Join Field (7)
 msg(" Joining RoadXings...7/7")
-arcpy.JoinField_management(outputFC, "FEATUREID", RoadXings, "COMID", "Crossings")
+arcpy.JoinField_management(outputFC, "FEATUREID", RoadXings, "FEATUREID", "Crossings")
 
 # Process: Join Field (8)
 msg(" Joining Canopy and Impervious Stats...7/10")
 arcpy.JoinField_management(outputFC, "GRIDCODE", CanopyImpervTable, "COMID", "PctCanopy;PctImpervious")
 
 # Process: Join Field (9)
-#msg(" Joining AnimalOpsCount...9/10")
-#arcpy.JoinField_management(outputFC, "FEATUREID", AnimalOpsCount, "FEATUREID", "AnimalOpsCount")
+msg(" Joining AnimalOpsCount...9/10")
+arcpy.JoinField_management(outputFC, "FEATUREID", AnimalOps, "FEATUREID", "AnimalOps")
 
 # Process: Join Field (10)
-#msg(" Joining NPDESCount...10/10")
-#arcpy.JoinField_management(outputFC, "FEATUREID", NPDESCount, "FEATUREID", "NPDESCount")
+msg(" Joining NPDESCount...10/10")
+arcpy.JoinField_management(outputFC, "FEATUREID", NPDES, "FEATUREID", "NPDES")
 
 # Process: Fix Null Values
 flds = arcpy.ListFields(outputFC)

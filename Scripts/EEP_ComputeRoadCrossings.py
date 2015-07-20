@@ -41,10 +41,10 @@ msg("Intersecting roads and flowlines")
 arcpy.Intersect_analysis("{} #;{} #".format(flowlineFC,roadsFC),xingsFC,"NO_FID","","POINT")
 
 msg("Tabulating count of crossings for each NHD Catchment")
-arcpy.Statistics_analysis(xingsFC,roadXingTbl,"COMID COUNT","COMID")
+arcpy.Statistics_analysis(xingsFC,roadXingTbl,"FEATUREID FEATUREID","COMID")
 
 msg("Updating field names")
 arcpy.AlterField_management(roadXingTbl,"FREQUENCY","Crossings","Road Crossings")
-arcpy.DeleteField_management(roadXingTbl,"COUNT_COMID")
+arcpy.DeleteField_management(roadXingTbl,"COUNT_FEATUREID")
 
 msg("Finished")
