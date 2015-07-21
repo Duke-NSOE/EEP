@@ -96,12 +96,12 @@ arcpy.JoinField_management(OutTable, "COMID", IncrPrecip,"FeatureID","PrecipVMA;
 msg("Joining Runoff data (ROMA) ({} of {})".format(x,total)); x += 1
 arcpy.JoinField_management(OutTable, "COMID", ROMA, "FeatureID","RunOffVMA;RunOff_min;RunOff_max")
 
+## Incremental NLCD
 msg("Joining Incremental NLCD_2011 ({} of {})".format(x,total)); x += 1
-arcpy.JoinField_management(OutTable, "COMID", Incr_NLCD_2011, "FeatureID",
-                           "NLCD11P;NLCD21P;NLCD22P;NLCD23P;NLCD24P;NLCD31P;NLCD41P;NLCD42P;NLCD43P;NLCD52P;NLCD71P;NLCD81P;NLCD82P;NLCD90P;NLCD95P;NLCD1;NLCD2;NLCD3;NLCD4;NLCD5;NLCD7;NLCD8;NLCD9")
+arcpy.JoinField_management(OutTable, "COMID", Incr_NLCD_2011, "FeatureID","NLCD1;NLCD2;NLCD3;NLCD4;NLCD5;NLCD7;NLCD8;NLCD9")
 
+## Cumulative NLCD
 msg("Joining Cumulative NLCD_2011 ({} of {})".format(x,total)); x += 1
-arcpy.JoinField_management(OutTable, "COMID", Cum_Tot_NLCD_2011, "ComID",
-                          "NLCD11PC;NLCD21PC;NLCD22PC;NLCD23PC;NLCD24PC;NLCD31PC;NLCD41PC;NLCD42PC;NLCD43PC;NLCD52PC;NLCD71PC;NLCD81PC;NLCD82PC;NLCD90PC;NLCD95PC;NLCD1;NLCD2;NLCD3;NLCD4;NLCD5;NLCD7;NLCD8;NLCD9")
+arcpy.JoinField_management(OutTable, "COMID", Cum_Tot_NLCD_2011, "ComID","NLCD1c;NLCD2c;NLCD3c;NLCD4c;NLCD5c;NLCD7c;NLCD8c;NLCD9c")
 
-
+msg("Finished!")
