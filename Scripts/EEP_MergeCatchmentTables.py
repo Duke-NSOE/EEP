@@ -87,7 +87,7 @@ arcpy.JoinField_management(outputFC, "FEATUREID", StreamTemp, "FEATUREID", "cold
 
 # Process: Join Field (7)
 msg(" Joining RoadXings...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "FEATUREID", RoadXings, "FEATUREID", "Crossings")
+arcpy.JoinField_management(outputFC, "FEATUREID", RoadXings, "COMID", "Crossings")
 
 # Process: Join Field (8)
 msg(" Joining Canopy and Impervious Stats...{}/{}".format(currentCount,totalCount)); currentCount += 1
@@ -95,11 +95,11 @@ arcpy.JoinField_management(outputFC, "GRIDCODE", CanopyImpervTable, "COMID", "Pc
 
 # Process: Join Field (9)
 msg(" Joining AnimalOpsCount...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "FEATUREID", AnimalOps, "FEATUREID", "AnimalOps")
+arcpy.JoinField_management(outputFC, "FEATUREID", AnimalOpsTable, "FEATUREID", "AnimalOps")
 
 # Process: Join Field (10)
 msg(" Joining NPDESCount...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "FEATUREID", NPDES, "FEATUREID", "NPDES")
+arcpy.JoinField_management(outputFC, "FEATUREID", NPDESTable, "FEATUREID", "NPDES")
 
 # Process: Join Field (11)
 msg(" Joining downstream dam distance...{}/{}".format(currentCount,totalCount)); currentCount += 1

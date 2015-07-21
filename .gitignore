@@ -3,7 +3,7 @@ Data/EEP_030501.gdb/
 Data/EEP_030201.gdb/
 Data/EEP_030401.gdb/
 Data/EEP_060102.gdb/
-
+Data/*.gdb/
 Scripts/Notes_jpfay.txt
 Scripts/RScripts/output/
 *.asc
@@ -21,13 +21,7 @@ MaxEnt/Elliptio_complanata.txt.xml
 MaxEnt/Elliptio_complanata_RESULTS.txt.xml
 MaxEnt/Notropis_chlorocephalus.txt.xml
 Scripts/RScripts/MaxEnt_Shiner2.zip
-MaxEnt/Output/maxentResults.csv
-MaxEnt/Output/Nocomis_leptocephalus.html
-MaxEnt/Output/maxentResults.csv
-MaxEnt/Output/maxentResults.csv
-MaxEnt/Output/maxentResults.csv
-MaxEnt/Output/maxentResults.csv
-MaxEnt/Output/Nocomis_leptocephalus.html
+MaxEnt/Output/
 Docs/Endries_Data.xlsx
 Scripts/UTIL_ListFields.py
 MaxEnt/Nocomis_leptocephalus.txt.xml
