@@ -17,16 +17,12 @@ import sys, os, csv, arcpy
 arcpy.env.overwriteOutput = 1
 
 # Input variables
-#speciesTbl = arcpy.GetParameterAsText(0)    # Table of all ENDRIES surveyed catchments with a binary column for each species presence...
-#speciesName = arcpy.GetParameterAsText(1)   # Species to model; this should be a field in the above table
-#envVarsTbl = arcpy.GetParameterAsText(2)    # Table listing all the catchment attributes to be used as environment layer values
-speciesTbl = r"C:\WorkSpace\EEP_Tool\Data\NC.sde\NC.DBO.AquaticSpeciesPoints" 
-speciesName = "Nocomis_leptocephalus"
-envVarsTbl = r"C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\EnvStats" #Replace with statewide table
+speciesTbl = arcpy.GetParameterAsText(0)    # Table of all ENDRIES surveyed catchments with a binary column for each species presence...
+speciesName = arcpy.GetParameterAsText(1)   # Species to model; this should be a field in the above table
+envVarsTbl = arcpy.GetParameterAsText(2)    # Table listing all the catchment attributes to be used as environment layer values
 
 # Output variables
-#speciesCSV = arcpy.GetParameterAsText(3)    # CSV file listing the species occurence and all env vars for HUC8s in which species occurs
-outFolder = os.path.join(r"C:\WorkSpace\EEP_Tool\Maxent",speciesName)
+outFolder = arcpy.GetParameterAsText(3) #Folder to hold all species model stuff
 
 
 # Script variables
@@ -55,6 +51,7 @@ else:
 
 # Set the output species filename
 speciesCSV = os.path.join(outFolder,"AllHUC8Records.csv")
+arcpy.SetParameterAsText(4, speciesCSV)
 
 # Extract Catchments with species
 msg("Pulling catchment records for {}".format(speciesName))
@@ -91,12 +88,12 @@ arcpy.TableSelect_analysis(envVarsTbl,resultsCopyTbl,whereClause)
 # Join the species data to the results table so that the records where the species
 # is present can be isolated. 
 msg("...Joining species presence values to environment variables")
-arcpy.JoinField_management(resultsCopyTbl,"GRIDCODE",sppOnlyTbl,"GRIDCODE","{}".format(speciesName))
+arcpy.JoinField_management(resultsCopyTbl,"GRIDCODE",sppOnlyTbl,"GRIDCODE",["{}".format(speciesName),"REACHCODE"])
 
 # Create a list of field names: remove non-numeric fields and extranneous fields
 outFldList = []
 for fld in arcpy.ListFields(resultsCopyTbl):
-    if fld.type in ("Double","Integer","SmallInteger") and not fld.name == speciesName:
+    if fld.type in ("Double","Integer","SmallInteger") and not fld.name in (speciesName,"REACHCODE"):
        #not fld.name in ("GRIDCODE","FEATUREID",speciesName):
         outFldList.append(fld.name)
 
