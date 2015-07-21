@@ -40,7 +40,8 @@ arcpy.MultipartToSinglepart_management(occurrencePtsFC,tmpPts)
 
 # Intersect the occurrence points and the NHD Catchments
 msg("Intersecting occurrence points with NHD catchments")
-arcpy.Intersect_analysis("{} #;{} # ".format(tmpPts,catchmentFC),tmpPts2,"NO_FID","","POINT")
+catchLyr = arcpy.MakeFeatureLayer_management(catchmentFC,"catchLyr")
+arcpy.Intersect_analysis("{} #;{} # ".format(tmpPts,catchLyr),tmpPts2,"NO_FID","","POINT")
 
 # Add a tabulate field, set its value to 1
 arcpy.AddField_management(tmpPts2,"Present","SHORT")
