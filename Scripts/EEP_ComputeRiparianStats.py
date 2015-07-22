@@ -76,29 +76,13 @@ nlcdLevel1 = sa.Int(arcpy.Raster(nlcdRaster) / (10))
 
 msg("Extracting land cover within riparian cells")
 riparianNLCD = sa.SetNull(elevDiff,nlcdLevel1,'VALUE > {}'.format(zThreshold))
-'''
-## If name is given for riparian raster, save it
-if not(riparianRaster == "" or riparianRaster == "#"):
-    msg("Saving riparian NLCD raster to {}".format(riparianRaster))
-    riparianNLCD.save(riparianRaster)
 
-msg("Determining area of forest and wetland within riparian zone")
-msg("...creating riparian forest raster")
-forestRaster = sa.Con(riparianNLCD,1,0,'VALUE IN (41, 42, 43)')
-msg("...updating riparian wetland cells")
-forWetRaster = sa.Con(riparianNLCD,2,forestRaster,'VALUE IN (90, 95)')
-msg("...tabulating area of forest, wetland, and other in each catchment")
-sa.TabulateArea(catchRaster,"VALUE",forWetRaster,"VALUE",riparianTbl)
-'''
 ## If no forest or riparian exists
 msg("Tabulating area of each NLCD cover within each catchment")
 arcpy.sa.TabulateArea(catchRaster,"VALUE",riparianNLCD,"VALUE",riparianTbl)
 
-msg("...updating field names")
+msg("...calculating percents from areas names")
 for x in (1,2,3,4,5,7,8,9):
-    #Get/Set the field names
-    currentFldName = "VALUE_{}".format(x)
-    areaFldName = "Riparian_{}A".format(x)
     pctFldName = "Riparian_{}P".format(x)
     #Create the pct area calculation string
     calc = "[VALUE_{}] / ([VALUE_1] + [VALUE_2] + [VALUE_3] + [VALUE_4] + [VALUE_5] + [VALUE_7] + [VALUE_8] + [VALUE_9])".format(x)
@@ -106,6 +90,12 @@ for x in (1,2,3,4,5,7,8,9):
     msg("...creating percent field")
     arcpy.AddField_management(riparianTbl,pctFldName,"FLOAT",5,3)
     arcpy.CalculateField_management(riparianTbl,pctFldName,calc)
+
+msg("updating field names")
+for x in (1,2,3,4,5,7,8,9):
+    #Get/Set the field names
+    currentFldName = "VALUE_{}".format(x)
+    areaFldName = "Riparian_{}A".format(x)
     #Change the area field name
     msg("...updating area field name for nlcd class {}".format(x))
     arcpy.AlterField_management(riparianTbl,currentFldName,areaFldName,areaFldName)
