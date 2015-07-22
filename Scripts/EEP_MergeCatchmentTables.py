@@ -76,7 +76,7 @@ arcpy.JoinField_management(outputFC, "GRIDCODE", FlowlineLULC, "GRIDCODE",
 
 # Process: Join Field (4)
 msg(" Joining RiparianStats...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "GRIDCODE", RiparianStats, "GRIDCODE", "Other;Forest;Wetland;pctForest;pctWetland")
+arcpy.JoinField_management(outputFC, "GRIDCODE", RiparianStats, "GRIDCODE", "NLCD_1A;NLCD_2A;NLCD_3A;NLCD_4A;NLCD_5A;NLCD_7A;NLCD_8A;NLCD_9A;NLCD_1P;NLCD_2P;NLCD_3P;NLCD_4P;NLCD_5P;NLCD_7p;NLCD_8P;NLCD_9P;")
 
 # Process: Join Field (5)
 msg(" Joining Shadestats...{}/{}".format(currentCount,totalCount)); currentCount += 1
