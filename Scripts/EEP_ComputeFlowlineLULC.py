@@ -40,9 +40,13 @@ def msg(txt,type="message"):
 msg("Extracting stream cells from NHD flowdir null raster")
 streamRaster = sa.IsNull(fldrnullRaster)
 
+# Reduce NLCD to Level 1
+msg("Reducing NLCD classes to level 1")
+NLCD_L1 = sa.Int(arcpy.Raster(nlcdRaster) / 10)
+
 # If pixel is a stream, set to NLCD
 msg("Converting stream cells to NLCD classes") 
-streamNLCD = sa.Con(streamRaster,nlcdRaster)
+streamNLCD = sa.Con(streamRaster,NLCD_L1)
 
 # Tabulate Areas
 msg("Cross tabulating NLCD classes for each NHD catchment")
@@ -52,7 +56,7 @@ sa.TabulateArea(catchRaster,"VALUE",streamNLCD,"VALUE",flowlineTbl)
 msg("Renaming fields...")
 msg("  setting VALUE to GRIDCODE")
 arcpy.AlterField_management(flowlineTbl,"VALUE","GRIDCODE","GRIDCODE")
-for nlcdClass in [11,21,22,23,24,31,41,42,43,52,71,81,82,90,95]:
+for nlcdClass in [1,2,3,4,5,7,8,9]:
     fldName = "VALUE_{}".format(nlcdClass)
     outName = "FLNLCD_{}".format(nlcdClass)
     msg("  setting {} to {}".format(fldName, outName))
