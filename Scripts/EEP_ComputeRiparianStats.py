@@ -33,6 +33,7 @@ arcpy.env.overwriteOutput = True
 arcpy.env.snapRaster = fldrRaster
 arcpy.env.cellSize = fldrRaster
 arcpy.env.mask = fldrRaster
+arcpy.env.rasterStatistics = "STATISTICS"
 
 # ---Functions---
 def msg(txt,type="message"):
@@ -44,7 +45,6 @@ def msg(txt,type="message"):
     elif type == "error":
         arcpy.AddError(txt)
 
-
 # ---Processes---
 ## Create a raster of stream cells, with values set to elevation
 msg("Creating a streams raster (inverting NHD FlowDirNull Raster)")
@@ -52,6 +52,7 @@ strmRaster = sa.IsNull(fdrnullRaster)
 
 msg("Assigning elevation values to stream cells")
 strmElevRaster1 = sa.Con(strmRaster,elevRaster)
+#If the elevation values 
 strmElevRaster = sa.Con(strmElevRaster1,strmElevRaster1,1,"VALUE >= 1")
 
 ## Create a watershed, using the stream elevation raster as the pour points.
@@ -66,14 +67,16 @@ except:
     msg(arcpy.GetMessages(),"error")
     sys.exit(1)
 
-
 msg("Identifying cells within {}m in elevation from stream cell".format(zThreshold))
 elevDiff = sa.Minus(elevRaster,elevSheds)
-elevDiff.save()
+#elevDiff.save()
+
+msg("Simplifying land cover to level 1")
+nlcdLevel1 = sa.Int(arcpy.Raster(nlcdRaster) / (10))
 
 msg("Extracting land cover within riparian cells")
-riparianNLCD = sa.SetNull(elevDiff,nlcdRaster,'VALUE > {}'.format(zThreshold))
-
+riparianNLCD = sa.SetNull(elevDiff,nlcdLevel1,'VALUE > {}'.format(zThreshold))
+'''
 ## If name is given for riparian raster, save it
 if not(riparianRaster == "" or riparianRaster == "#"):
     msg("Saving riparian NLCD raster to {}".format(riparianRaster))
@@ -86,23 +89,27 @@ msg("...updating riparian wetland cells")
 forWetRaster = sa.Con(riparianNLCD,2,forestRaster,'VALUE IN (90, 95)')
 msg("...tabulating area of forest, wetland, and other in each catchment")
 sa.TabulateArea(catchRaster,"VALUE",forWetRaster,"VALUE",riparianTbl)
-
+'''
 ## If no forest or riparian exists
+msg("Tabulating area of each NLCD cover within each catchment")
+arcpy.sa.TabulateArea(catchRaster,"VALUE",riparianNLCD,"VALUE",riparianTbl)
 
 msg("...updating field names")
-arcpy.AlterField_management(riparianTbl,"VALUE","GRIDCODE","GRIDCODE")
-arcpy.AlterField_management(riparianTbl,"VALUE_0","Other","Other lulc")
-arcpy.AlterField_management(riparianTbl,"VALUE_1","Forest","Riparian forest")
-arcpy.AlterField_management(riparianTbl,"VALUE_2","Wetland","Riparian wetland")
-
-msg("Calculating percentages")
-msg("...forest")
-arcpy.AddField_management(riparianTbl,"pctForest","DOUBLE",5,2,8,"Pct riparian forest")
-arcpy.CalculateField_management(riparianTbl,"pctForest","([Forest] / ( [Forest] + [Wetland] + [Other])) * 100", "VB",  "#")
-
-msg("...wetland")
-arcpy.AddField_management(riparianTbl,"pctWetland","DOUBLE",5,2,8,"Pct riparian wetland")
-arcpy.CalculateField_management(riparianTbl,"pctWetland","([Wetland] / ( [Forest] + [Wetland] + [Other])) * 100", "VB",  "#")
+for x in (1,2,3,4,5,7,8,9):
+    #Get/Set the field names
+    currentFldName = "VALUE_{}".format(x)
+    areaFldName = "Riparian_{}A".format(x)
+    pctFldName = "Riparian_{}P".format(x)
+    #Create the pct area calculation string
+    calc = "[VALUE_{}] / ([VALUE_1] + [VALUE_2] + [VALUE_3] + [VALUE_4] + [VALUE_5] + [VALUE_7] + [VALUE_8] + [VALUE_9])".format(x)
+    #Create and calculate the percent field name
+    msg("...creating percent field")
+    arcpy.AddField_management(riparianTbl,pctFldName,"FLOAT",5,3)
+    arcpy.CalculateField_management(riparianTbl,pctFldName,calc)
+    #Change the area field name
+    msg("...updating area field name for nlcd class {}".format(x))
+    arcpy.AlterField_management(riparianTbl,currentFldName,areaFldName,areaFldName)
+    
 
 msg("Finished!")
 
