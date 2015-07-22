@@ -10,8 +10,8 @@ arcpy.CheckOutExtension("spatial")
 
 #User variables
 CatchRaster = arcpy.GetParameterAsText(0)#r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\cat'
-NLCDRaster = arcpy.GetParameterAsText(0)#r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\nlcd_2011'
-outTable = arcpy.GetParameterAsText(0)#r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\foo'
+NLCDRaster = arcpy.GetParameterAsText(1)#r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\nlcd_2011'
+outTable = arcpy.GetParameterAsText(2)#r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\foo'
 
 #Set environments
 arcpy.env.overwriteOutput = True
@@ -30,24 +30,24 @@ tmpZStat = "in_memory\\zStat"
 def msg(txt,type="message"):
     print txt
     if type == "message":
-        msg(txt)
+        arcpy.AddMessage(txt)
     elif type == "warning":
         arcpy.AddWarning(txt)
     elif type == "error":
         arcpy.AddError(txt)
-        
 
 ## PROCESSES 
 # Process: Make Image Server Layer
 svcName = Service.split("\\")[-1].split(".")[0]
 msg("Linking to {} on ESRIs Server...".format(svcName))
 
-msg("...extracting data. (This takes a while)")
+# Process: Extract data from ESRI server
 svcPath = os.path.join(dataWS,Service)
 arcpy.MakeImageServerLayer_management(svcPath, ServiceLayer, "", "", "NORTH_WEST", "Name", "0", "", "30")
 
 # Extract Hydric Soils from Layer, excluding areas coincident with NLCD urban classes
 msg("Excluding urban areas")
+arcpy.env.extent = NLCDRaster
 hydricRaster = arcpy.sa.Con(NLCDRaster,ServiceLayer,"","VALUE >= 30")
 
 # Convert to a binary hydric/non-hydric layer (2="All hydric"; 4="Partially hydric")
