@@ -9,22 +9,23 @@ import os, arcpy
 
 # Input variables:
 NHDCatchments = arcpy.GetParameterAsText(0)
-Landscape_Stats = arcpy.GetParameterAsText(1)
-FlowlineLULC = arcpy.GetParameterAsText(2)
-ShadeStats = arcpy.GetParameterAsText(3)
-StreamTemp = arcpy.GetParameterAsText(4)
-RiparianStats = arcpy.GetParameterAsText(5)
-RoadXings = arcpy.GetParameterAsText(6)
-HabitatTable = arcpy.GetParameterAsText(7)
-CanopyImpervTable = arcpy.GetParameterAsText(8)
-AnimalOpsTable = arcpy.GetParameterAsText(9)
-NPDESTable = arcpy.GetParameterAsText(10)
-DownstreamDams = arcpy.GetParameterAsText(11)
-UpstreamDams = arcpy.GetParameterAsText(12)
-HydricSoils = arcpy.GetParameterAsText(13)
+NHDFlowlines = arcpy.GetParameterAsText(1)
+Landscape_Stats = arcpy.GetParameterAsText(2)
+FlowlineLULC = arcpy.GetParameterAsText(3)
+ShadeStats = arcpy.GetParameterAsText(4)
+StreamTemp = arcpy.GetParameterAsText(5)
+RiparianStats = arcpy.GetParameterAsText(6)
+RoadXings = arcpy.GetParameterAsText(7)
+HabitatTable = arcpy.GetParameterAsText(8)
+CanopyImpervTable = arcpy.GetParameterAsText(9)
+AnimalOpsTable = arcpy.GetParameterAsText(10)
+NPDESTable = arcpy.GetParameterAsText(11)
+DownstreamDams = arcpy.GetParameterAsText(12)
+UpstreamDams = arcpy.GetParameterAsText(13)
+HydricSoils = arcpy.GetParameterAsText(14)
 
 # Output variables:
-outputFC = arcpy.GetParameterAsText(14)
+outputFC = arcpy.GetParameterAsText(15)
 
 # Set environment variables
 arcpy.env.overwriteOutput = True
@@ -57,60 +58,63 @@ arcpy.AddIndex_management(outputFC,"GRIDCODE;FEATUREID","TagIndex","UNIQUE","NON
 
 # Status counters
 currentCount = 1
-totalCount = 12
+totalCount = 14
+
+# Process: Join Field 
+msg(" Joining Reachcodes...{}/{}".format(currentCount,totalCount)); currentCount += 1
+arcpy.JoinField_management(outputFC, "FEATUREID", NHDFlowlines,"COMID","REACHCODE")
 
 # Process: Join Field
-msg(" Joining Habitat Table...{}/{}".format(currentCount,totalCount)); currentCount += 1
+msg(" Joining NHD Variable Table...{}/{}".format(currentCount,totalCount)); currentCount += 1
 fldString = makeFldString(HabitatTable)
 arcpy.JoinField_management(outputFC, "FEATUREID", HabitatTable, "COMID",fldString)
 #"LENGTHKM;REACHCODE;WBAREACOMI;FTYPE;FCODE;StreamOrde;Pathlength;ArbolateSu;TotDASqKM;SLOPE;Q0001E;V0001E;Qincr0001E;TEMP0001;PPT0001;PET0001;QLOSS0001;TempV;PrecipV;RunOffV;MinMonthly;NLCD11P;NLCD12P;NLCD21P;NLCD22P;NLCD23P;NLCD24P;NLCD31P;NLCD41P;NLCD42P;NLCD43P;NLCD51P;NLCD52P;NLCD71P;NLCD72P;NLCD73P;NLCD74P;NLCD81P;NLCD82P;NLCD90P;NLCD95P;NLCD11PC;NLCD12PC;NLCD21PC;NLCD22PC;NLCD23PC;NLCD24PC;NLCD31PC;NLCD41PC;NLCD42PC;NLCD43PC;NLCD51PC;NLCD52PC;NLCD71PC;NLCD72PC;NLCD73PC;NLCD74PC;NLCD81PC;NLCD82PC;NLCD90PC;NLCD95PC")
 
-# Process: Join Field (2)
+# Process: Join Field 
 msg(" Joining Landscape Stats...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "GRIDCODE", Landscape_Stats, "COMID", "runoff_SUM;flooding_SUM;slope_MEAN;road_density_MEAN;tfactor_MEAN;water_table_MEAN;erodability_MEAN;wetlands_SUM;surface_water_SUM;flood_risk_SUM")
 
-# Process: Join Field (3)
+# Process: Join Field
 msg(" Joining FlowlineLULC...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "GRIDCODE", FlowlineLULC, "GRIDCODE",
-                           "FLNLCD_11;FLNLCD_21;FLNLCD_22;FLNLCD_23;FLNLCD_24;FLNLCD_31;FLNLCD_41;FLNLCD_42;FLNLCD_43;FLNLCD_52;FLNLCD_71;FLNLCD_81;FLNLCD_82;FLNLCD_90;FLNLCD_95")
+arcpy.JoinField_management(outputFC, "GRIDCODE", FlowlineLULC, "GRIDCODE", "FLNLCD_1;FLNLCD_2;FLNLCD_3;FLNLCD_4;FLNLCD_5;FLNLCD_7;FLNLCD_8;FLNLCD_9")
 
-# Process: Join Field (4)
+# Process: Join Field
 msg(" Joining RiparianStats...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "GRIDCODE", RiparianStats, "GRIDCODE", "NLCD_1A;NLCD_2A;NLCD_3A;NLCD_4A;NLCD_5A;NLCD_7A;NLCD_8A;NLCD_9A;NLCD_1P;NLCD_2P;NLCD_3P;NLCD_4P;NLCD_5P;NLCD_7p;NLCD_8P;NLCD_9P;")
+arcpy.JoinField_management(outputFC, "GRIDCODE", RiparianStats, "VALUE", "NLCD_1A;NLCD_2A;NLCD_3A;NLCD_4A;NLCD_5A;NLCD_7A;NLCD_8A;NLCD_9A;NLCD_1P;NLCD_2P;NLCD_3P;NLCD_4P;NLCD_5P;NLCD_7p;NLCD_8P;NLCD_9P;")
 
-# Process: Join Field (5)
+# Process: Join Field
 msg(" Joining Shadestats...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "FEATUREID", ShadeStats, "COMID", "ShadedSegments;ShadedLength;LongestSegment;MeanShadeLength")
 
-# Process: Join Field (6)
+# Process: Join Field
 msg(" Joining Streamtemp...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "FEATUREID", StreamTemp, "FEATUREID", "cold;cool;warm;TotLength")
 
-# Process: Join Field (7)
+# Process: Join Field
 msg(" Joining RoadXings...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "FEATUREID", RoadXings, "COMID", "Crossings")
 
-# Process: Join Field (8)
+# Process: Join Field
 msg(" Joining Canopy and Impervious Stats...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "GRIDCODE", CanopyImpervTable, "COMID", "PctCanopy;PctImpervious")
 
-# Process: Join Field (9)
+# Process: Join Field
 msg(" Joining AnimalOpsCount...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "FEATUREID", AnimalOpsTable, "FEATUREID", "AnimalOps")
 
-# Process: Join Field (10)
+# Process: Join Field
 msg(" Joining NPDESCount...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "FEATUREID", NPDESTable, "FEATUREID", "NPDES")
 
-# Process: Join Field (11)
+# Process: Join Field
 msg(" Joining downstream dam distance...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "FEATUREID", DownstreamDams, "COMID","downstreamDistance_km")
 
-# Process: Join Field (12) 
+# Process: Join Field
 msg(" Joining downstream dam distance...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "FEATUREID", UpstreamDams, "COMID","upstreamDistance_km")
 
-# Process: Join Field (13) 
+# Process: Join Field
 msg(" Joining hydric soils...{}/{}".format(currentCount,totalCount)); currentCount += 1
 arcpy.JoinField_management(outputFC, "FEATUREID", HydricSoils, "COMID","PCT_HYDRIC;AREA_HYDRIC")
 
