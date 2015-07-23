@@ -116,7 +116,7 @@ arcpy.JoinField_management(outputFC, "FEATUREID", UpstreamDams, "COMID","upstrea
 
 # Process: Join Field
 msg(" Joining hydric soils...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "FEATUREID", HydricSoils, "COMID","PCT_HYDRIC;AREA_HYDRIC")
+arcpy.JoinField_management(outputFC, "FEATUREID", HydricSoils, "FEATUREID","PCT_HYDRIC;AREA_HYDRIC")
 
 # Process: Fix Null Values
 flds = arcpy.ListFields(outputFC)
@@ -129,7 +129,7 @@ for fld in flds[8:]: #Skip the first 8 fields as they are ok
     if int(NullCount) > 0:
         msg("Fixing {} null records {}".format(NullCount, fld.name))
         #Depending on the field, set missing values to -9999 or 0
-        if fld.name in ("warm","cold","cool","TotLength","Crossings") or \
+        if fld.name in ("warm","cold","cool","TotLength","Crossings","AnimalOps","PCT_HYDRIC","AREA_HYDRIC") or \
            "NLCD" in fld.name or \
            "Shade" in fld.name:
             arcpy.CalculateField_management("Lyr",fld.name,"0")
