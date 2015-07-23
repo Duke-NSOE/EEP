@@ -60,9 +60,9 @@ arcpy.AddIndex_management(outputFC,"GRIDCODE;FEATUREID","TagIndex","UNIQUE","NON
 currentCount = 1
 totalCount = 14
 
-# Process: Join Field 
+# Process: Join Field (REDUNDANT)
 msg(" Joining Reachcodes...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "FEATUREID", NHDFlowlines,"COMID","REACHCODE")
+#arcpy.JoinField_management(outputFC, "FEATUREID", NHDFlowlines,"COMID","REACHCODE")
 
 # Process: Join Field
 msg(" Joining NHD Variable Table...{}/{}".format(currentCount,totalCount)); currentCount += 1
@@ -80,7 +80,7 @@ arcpy.JoinField_management(outputFC, "GRIDCODE", FlowlineLULC, "GRIDCODE", "FLNL
 
 # Process: Join Field
 msg(" Joining RiparianStats...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "GRIDCODE", RiparianStats, "VALUE", "NLCD_1A;NLCD_2A;NLCD_3A;NLCD_4A;NLCD_5A;NLCD_7A;NLCD_8A;NLCD_9A;NLCD_1P;NLCD_2P;NLCD_3P;NLCD_4P;NLCD_5P;NLCD_7p;NLCD_8P;NLCD_9P;")
+arcpy.JoinField_management(outputFC, "GRIDCODE", RiparianStats, "VALUE", "Riparian_1A;Riparian_2A;Riparian_3A;Riparian_4A;Riparian_5A;Riparian_7A;Riparian_8A;Riparian_9A;Riparian_1P;Riparian_2P;Riparian_3P;Riparian_4P;Riparian_5P;Riparian_7p;Riparian_8P;Riparian_9P;")
 
 # Process: Join Field
 msg(" Joining Shadestats...{}/{}".format(currentCount,totalCount)); currentCount += 1
@@ -129,7 +129,7 @@ for fld in flds[8:]: #Skip the first 8 fields as they are ok
     if int(NullCount) > 0:
         msg("Fixing {} null records {}".format(NullCount, fld.name))
         #Depending on the field, set missing values to -9999 or 0
-        if fld.name in ("warm","cold","cool","TotLength","Crossings","AnimalOps","PCT_HYDRIC","AREA_HYDRIC") or \
+        if fld.name in ("warm","cold","cool","TotLength","Crossings","AnimalOps","NPDES","PCT_HYDRIC","AREA_HYDRIC") or \
            "NLCD" in fld.name or \
            "Shade" in fld.name:
             arcpy.CalculateField_management("Lyr",fld.name,"0")

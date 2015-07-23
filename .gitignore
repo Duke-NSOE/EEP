@@ -6,6 +6,7 @@ Scripts/RScripts/output/
 *.mxe
 *.info
 MaxEnt/*
+MaxEnt/*.*
 Scripts/RScripts/MaxEnt_Shiner/
 Scripts/RScripts/habitat_suitability.docx
 Scripts/RScripts/MaxEnt_Shiner2.zip
