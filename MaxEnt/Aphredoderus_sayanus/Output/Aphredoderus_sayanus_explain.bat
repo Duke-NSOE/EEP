@@ -1,2 +1,0 @@
-java -mx1820m -cp "/C:/WorkSpace/EEP_Spring2015/EEP_Tool/MaxEnt/maxent.jar;C:\WorkSpace\EEP_Spring2015\EEP_Tool\Maxent\maxent.jar" density.Explain -l C:\WorkSpace\EEP_Spring2015\EEP_Tool\MaxEnt\Aphredoderus_sayanus\Output\Aphredoderus_sayanus.lambdas C:\WorkSpace\EEP_Spring2015\EEP_Tool\MaxEnt\Aphredoderus_sayanus\Output\Aphredoderus_sayanus.asc C:\WorkSpace\EEP_Spring2015\EEP_Tool\MaxEnt\Aphredoderus_sayanus\MaxEntSWD.csv
-@if errorlevel 1 pause
