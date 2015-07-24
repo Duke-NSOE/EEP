@@ -24,7 +24,6 @@ envVarsTbl = arcpy.GetParameterAsText(2)    # Table listing all the catchment at
 # Output variables
 outFolder = arcpy.GetParameterAsText(3) #Folder to hold all species model stuff
 
-
 # Script variables
 sppOnlyTbl = "in_memory/sppOnlyTbl"
 freqTbl = "in_memory/FreqTbl"
@@ -88,18 +87,17 @@ arcpy.TableSelect_analysis(envVarsTbl,resultsCopyTbl,whereClause)
 # Join the species data to the results table so that the records where the species
 # is present can be isolated. 
 msg("...Joining species presence values to environment variables")
-arcpy.JoinField_management(resultsCopyTbl,"GRIDCODE",sppOnlyTbl,"GRIDCODE",["{}".format(speciesName),"REACHCODE"])
+arcpy.JoinField_management(resultsCopyTbl,"GRIDCODE",sppOnlyTbl,"GRIDCODE",["{}".format(speciesName)])
 
 # Create a list of field names: remove non-numeric fields and extranneous fields
 outFldList = []
 for fld in arcpy.ListFields(resultsCopyTbl):
-    if fld.type in ("Double","Integer","SmallInteger") and not fld.name in (speciesName,"REACHCODE"):
-       #not fld.name in ("GRIDCODE","FEATUREID",speciesName):
+    if fld.type not in ("OID","String") and not fld.name in (speciesName):
         outFldList.append(fld.name)
 
 # Filter the field list: remove fields with null values
 fldList = []
-for fld in outFldList:
+for fld in outFldList[2:]: #Skip the first two fields (GRIDCODE and REACHCODE)
     #Create the SQL filter
     sql = "{} IN (-9998.0,-9999)".format(fld)
     #Select records
@@ -109,6 +107,12 @@ for fld in outFldList:
         fldList.append(fld)
     else:
         msg("   Field <<{}>> has null values and will be removed".format(fld),"warning")
+
+# Insert GRIDCODE and REACHCODE
+fldList.insert(0,"REACHCODE")
+fldList.insert(0,"GRIDCODE")
+fldList.remove("Shape_Length")
+fldList.remove("Shape_Area")
 
 ## WRITE THE SPECIES RECORDS TO THE FILE ##
 msg("Creating the output species file...")
