@@ -69,7 +69,7 @@ for i in range(2,nCols):
     # Get the variable name (from the list created above)
     envName = headerItems[i]
     # Skip if name is GRIDCODE or FeatureID
-    if envName in ("GRIDCODE","FeatureID"): continue
+    if envName in ("GRIDCODE","FeatureID","REACHCODE"): continue
     # Get the env var column, as a vector
     envVector = arrData[1:,i]
     #Calculate correlation --THIS REQUIRES SCIPY--
