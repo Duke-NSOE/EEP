@@ -65,7 +65,7 @@ f.write("variable, coef, abs_coef, p_value\n")
 
 #Loop through columns and calculate the variables correlation with presence/absence
 msg("Calculating correlation coefficients")
-for i in range(1,nCols):
+for i in range(2,nCols):
     # Get the variable name (from the list created above)
     envName = headerItems[i]
     # Skip if name is GRIDCODE or FeatureID
