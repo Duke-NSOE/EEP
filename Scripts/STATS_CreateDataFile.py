@@ -20,9 +20,10 @@ arcpy.env.overwriteOutput = 1
 speciesTbl = arcpy.GetParameterAsText(0)    # Table of all ENDRIES surveyed catchments with a binary column for each species presence...
 speciesName = arcpy.GetParameterAsText(1)   # Species to model; this should be a field in the above table
 envVarsTbl = arcpy.GetParameterAsText(2)    # Table listing all the catchment attributes to be used as environment layer values
+statsFolder = arcpy.GetParameterAsText(3) #Root folder to hold all species model stuff and into which a species subfolder will be created
 
 # Output variables
-outFolder = arcpy.GetParameterAsText(3) #Folder to hold all species model stuff
+outFolder = os.path.join(statsFolder,speciesName)
 
 # Script variables
 sppOnlyTbl = "in_memory/sppOnlyTbl"
@@ -42,23 +43,26 @@ def msg(txt,type="message"):
         
 ## ---Processes---
 # Create the output folder, if not present
-if not os.path.exists(outFolder):
-    msg("{} does not exist, creating it".format(outFolder))
-    os.mkdir(outFolder)
+if os.path.exists(outFolder):
+    msg("...Using existing output folder.")
 else:
-    msg("Using existing output folder.")
+    msg("...{} does not exist, creating it".format(outFolder))
+    os.mkdir(outFolder)
+
+# Set the output parameter to the outFolder
+arcpy.SetParameterAsText(4,outFolder)
 
 # Set the output species filename
 speciesCSV = os.path.join(outFolder,"AllHUC8Records.csv")
-arcpy.SetParameterAsText(4, speciesCSV)
+arcpy.SetParameterAsText(5, speciesCSV)
 
 # Extract Catchments with species
-msg("Pulling catchment records for {}".format(speciesName))
+msg("...Pulling catchment records for {}".format(speciesName))
 arcpy.TableSelect_analysis(speciesTbl, sppOnlyTbl,'"{}" = 1'.format(speciesName))
 msg("{} records extracted".format(arcpy.GetCount_management(sppOnlyTbl)))
 
 # Make a list of HUC8s
-msg("Making a list of HUCs in which {} was observed".format(speciesName))
+msg("...Making a list of HUCs in which {} was observed".format(speciesName))
 HUC6s = []
 HUC8s = []
 for rec in arcpy.da.SearchCursor(sppOnlyTbl,("REACHCODE")):
@@ -68,11 +72,11 @@ for rec in arcpy.da.SearchCursor(sppOnlyTbl,("REACHCODE")):
     HUC6 = str(rec[0][:6])
     if not HUC6 in HUC6s:
         HUC6s.append(HUC6)
-msg("{} was found in {} HUC6s and {} HUC8s".format(speciesName,len(HUC6s),len(HUC8s)))
+msg("{} was found in {} HUC6s and {} HUC8s".format(speciesName,len(HUC6s),len(HUC8s)),"warning")
 
 #Select data rows in the response variables that are within the specified HUC8s
 # Create a where clause from the HUC8s
-msg("Creating the query string to extract records")
+msg("...Creating the query string to extract records")
 whereClause = ""
 for HUC8 in HUC8s:
     whereClause += "REACHCODE LIKE '{}%' OR ".format(HUC8)
@@ -115,7 +119,7 @@ fldList.remove("Shape_Length")
 fldList.remove("Shape_Area")
 
 ## WRITE THE SPECIES RECORDS TO THE FILE ##
-msg("Creating the output species file...")
+msg("...Creating the output species file")
 # Initialize the species output csv file & create the writer object
 msg("...Initializing the output CSV files")
 csvFile = open(speciesCSV,'wb')
@@ -134,7 +138,7 @@ for row in cursor:
     #write the species name + all the row data
     writer.writerow([1] + list(row))
     counter += 1
-msg("{} presence records writted to file".format(counter))
+msg("{} presence records written to file".format(counter))
 counter = 0
 
 # Create a search cursor for the resultsTbl
@@ -150,4 +154,3 @@ msg("{} absence records writted to file".format(counter))
 # Close file and clean up
 csvFile.close()
 
-msg("Finished")
