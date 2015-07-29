@@ -1,0 +1,92 @@
+OBJECTID,variable,Total,A_sayanus,C_funduloides,E_flabellare,E_olmstedi,L_auritus,M_collapsum,N_leptocephalus,N_altipinnis,N_insignis,Description,buffer,wetland,temp,velocity,volume,AvdConv,DamRem,NutRed,Ranking
+1,AreaSqKM,7,0,1,1,1,1,1,1,0,1,Catchment area in square kilometers,,,,,,,,,0
+2,LENGTHKM,7,0,1,1,1,1,1,1,0,1,Flowline length,,,,,,,,,0
+3,FCODE,6,0,1,1,1,1,0,1,0,1,Numeric code for feature attributes in the NHDFCode lookup table,,,,,,,,,0
+4,StreamOrde,6,0,0,1,1,1,1,1,0,1,Strahler Stream order,,,,,,,,,0
+5,Pathlength,6,0,1,1,1,1,0,1,0,1,Distance to the terminal Flowline feature downstream along the main path,,,,,,,,,0
+6,ArbolateSu,5,0,1,0,1,1,0,1,0,1,Km of stream upstream of the bottom of the NHDFlowline feature,,,,,,,,,0
+7,TotDASqKM,5,0,1,0,1,1,0,1,0,1,Total Upstream Cumulative Drainage Area (km2) at the downstream end of the NHDFlowline feature,,,,,,,,,0
+8,SLOPE,0,0,0,0,0,0,0,0,0,0,Slope of flowline (meters/meters) based on smoothed elevations,,,,,,,,,0
+9,Q0001E,2,0,1,0,0,0,1,0,0,0,Mean annual flow from gage adjustment (cfs),,,,,s,,,,2
+10,V0001E,7,0,1,1,1,1,1,1,0,1,Mean annual velocity from gage adjustment (fps),,,,s,,,,,2
+11,Qincr0001E,7,0,1,1,1,1,1,1,0,1,Mean annual incremental flow from gage adjustment (cfs),,,,,s,,,,2
+12,TEMP0001,3,0,1,0,0,0,0,1,0,1,Mean annual catchment temperature (Deg. C),,,s,,,,,,2
+13,PPT0001,4,0,1,0,1,0,0,1,0,1,Mean annual catchment precipitation (mm),,,,,,,,,0
+14,PET0001,3,0,1,0,0,0,0,1,0,1,Mean annual catchment PET (mm),,,,,,,,,1
+15,QLOSS0001,0,0,0,0,0,0,0,0,0,0,Mean annual catchment flow loss from Excess ET (cfs),,,,,,,,,1
+16,Q0001E_min,2,0,1,0,0,0,1,0,0,0,Min. monthly flow (cfs),,,,,s,,,,1
+17,Q0001E_max,1,0,1,0,0,0,0,0,0,0,Max. monthly flow (cfs),,,,,s,,,,1
+18,TempVC,7,0,1,1,1,1,1,1,0,1,Mean annual temp. upstream of the catchment (°C * 100),,,s,,,,,,1
+19,TempVMA,3,0,1,0,0,0,0,1,0,1,Mean annual temperature within the catchment (°C * 100),,,s,,,,,,1
+20,Temp_min,4,0,1,0,0,1,0,1,0,1,Min. monthly mean temperature w/in the catchment (in °C * 100),,,s,,,,,,1
+21,Temp_max,4,0,1,0,0,0,1,1,1,0,Max. monthly mean temperature w/in the catchment (in °C * 100),,,s,,,,,,1
+22,PrecipVC,4,0,1,0,0,1,0,1,0,1,Mean annual precipitation upstream of catchment (mm * 100),,,,,,,,,0
+23,PrecipVMA,4,0,1,0,1,0,0,1,0,1,Mean annual precipitation w/in the catchment (mm * 100),,,,,,,,,0
+24,Precip_min,4,0,1,0,0,1,0,1,0,1,Min. monthly mean precipitation w/in the catchment (mm * 100),,,,,,,,,0
+25,Precip_max,4,0,1,0,1,0,0,1,0,1,Max. monthly mean precipitation w/in the catchment (mm * 100),,,,,,,,,0
+26,RunOffVMA,3,0,1,0,0,0,0,1,0,1,Mean annual runoff in the area of the catchment (mm),,,,,,,,,1
+27,RunOff_min,3,0,0,0,1,0,1,1,0,0,Min. monthly mean runoff (mm),,,,,,,,,1
+28,RunOff_max,3,0,1,0,0,0,0,1,0,1,Max. monthly mean runoff (mm),,,,,,,,,1
+29,NLCD1,0,0,0,0,0,0,0,0,0,0,Upstream area (km2) classified as open water,,,,,,,,,1
+30,NLCD2,5,0,1,0,1,1,0,1,0,1,Upstream area (km2) classified as developed,,,,,,m-up,,,3
+31,NLCD3,5,0,1,0,1,1,0,1,0,1,Upstream area (km2) classified as barren,,m,,,,m,,,4
+32,NLCD4,6,0,1,0,1,1,1,1,0,1,Upstream area (km2) classified as forested,,m,,,,m,,,4
+33,NLCD5,7,0,1,1,1,1,1,1,0,1,Upstream area (km2) classified as shrubland,,m,,,,m,,,4
+34,NLCD7,7,0,1,1,1,1,1,1,0,1,Upstream area (km2) classified as grassland,,m,,,,m,,,4
+35,NLCD8,7,0,1,1,1,1,1,1,0,1,Upstream area (km2) classified as cultivated,,m,,,,m,,,4
+36,NLCD9,7,0,1,1,1,1,1,1,0,1,Upstream area (km2) classified as wetland,,m-up,,,,m,,,4
+37,NLCD1c,5,0,1,0,1,1,0,1,0,1,Catchment area (km2) classified as open water,,,,,,,,,1
+38,NLCD2c,5,0,1,0,1,1,0,1,0,1,Catchment area (km2) classified as developed,,,,,,m-up,,,3
+39,NLCD3c,5,0,1,0,1,1,0,1,0,1,Catchment area (km2) classified as barren,,m,,,,m,,,4
+40,NLCD4c,5,0,1,0,1,1,0,1,0,1,Catchment area (km2) classified as forested,,m,,,,m,,,4
+41,NLCD5c,6,0,1,0,1,1,1,1,0,1,Catchment area (km2) classified as shrubland,,m,,,,m,,,4
+42,NLCD7c,6,0,1,0,1,1,1,1,0,1,Catchment area (km2) classified as grassland,,m,,,,m,,,4
+43,NLCD8c,5,0,1,0,1,1,0,1,0,1,Catchment area (km2) classified as cultivated,,m,,,,m,,,4
+44,NLCD9c,5,0,1,0,1,1,0,1,0,1,Catchment area (km2) classified as wetland,,m-up,,,,m,,,4
+45,flooding_SUM,0,0,0,1,0,0,1,0,0,0,Sum of flooding frequency values within a catchment,,,,,,,,,1
+46,slope_MEAN,0,0,0,0,0,0,0,0,0,0,Mean slope (degrees),,,,,,,,,0
+47,road_density_MEAN,3,0,0,1,1,1,0,0,0,0,"Sum of road length w/in 1km cells, averaged across all cells w/in a catchment",,,,,,,,,1
+48,water_table_MEAN,0,0,0,0,0,0,0,0,0,0,Mean depth to water table (cm),,,,,,,,,0
+49,erodability_MEAN,0,0,0,0,0,0,0,0,0,0,Mean SSURGO Erodibility (K-factor) value,,,,,,,,,0
+50,flood_risk_SUM,0,0,0,0,0,0,0,0,0,0,Proportion of catchment area in flood risk zone,,,,,,,,,1
+51,FLNLCD_1,2,0,1,0,0,0,1,0,0,0,Flowline length (m) falling within NLCD open water,,,,,,,,,1
+52,FLNLCD_2,5,0,1,0,1,1,0,1,0,1,Flowline length (m) falling within NLCD developed,,,,,,m-up,,,3
+53,FLNLCD_3,4,0,0,0,0,1,1,1,0,1,Flowline length (m) falling within NLCD barren,m,m,,,,m,,,6
+54,FLNLCD_4,7,0,1,1,1,1,1,1,0,1,Flowline length (m) falling within NLCD forested,m-up,m,,,,m,,,6
+55,FLNLCD_5,6,0,1,1,1,1,0,1,0,1,Flowline length (m) falling within NLCD shrubland,m,m,,,,m,,,6
+56,FLNLCD_7,7,0,1,1,1,1,1,1,0,1,Flowline length (m) falling within NLCD grassland,m,m,,,,m,,,6
+57,FLNLCD_8,7,0,1,1,1,1,1,1,0,1,Flowline length (m) falling within NLCD cultivated,m,m,,,,m,,,6
+58,FLNLCD_9,7,0,1,1,1,1,1,1,0,1,Flowline length (m) falling within NLCD wetland,,m-up,,,,m,,,4
+59,Riparian_1A,0,0,0,0,0,0,0,0,0,0,Area (km2) of riparian zone classified as open water,,,,,,,,,1
+60,Riparian_2A,5,0,1,0,1,1,0,1,0,1,Area (km2) of riparian zone classified as developed,,,,,,m-up,,,3
+61,Riparian_3A,5,0,0,1,0,1,1,1,0,1,Area (km2) of riparian zone classified as barren,m,m,,,,m,,,6
+62,Riparian_4A,8,0,1,1,1,1,1,1,1,1,Area (km2) of riparian zone classified as forested,m-up,m,,,,m,,,6
+63,Riparian_5A,7,0,1,1,1,1,1,1,0,1,Area (km2) of riparian zone classified as shrubland,m,m,,,,m,,,6
+64,Riparian_7A,7,0,1,1,1,1,1,1,0,1,Area (km2) of riparian zone classified as grassland,m,m,,,,m,,,6
+65,Riparian_8A,8,0,1,1,1,1,1,1,1,1,Area (km2) of riparian zone classified as cultivated,m,m,,,,m,,,6
+66,Riparian_9A,7,0,1,1,1,1,1,1,0,1,Area (km2) of riparian zone classified as wetland,,m-up,,,,m,,,4
+67,Riparian_1P,6,0,1,1,1,1,0,1,0,1,Percent of riparian zone classified as open water,,,,,,,,,1
+68,Riparian_2P,3,0,0,0,1,1,0,1,0,0,Percent of riparian zone classified as developed,,,,,,m-up,,,3
+69,Riparian_3P,4,0,0,0,0,1,1,1,0,1,Percent of riparian zone classified as barren,m,m,,,,m,,,6
+70,Riparian_4P,4,0,0,0,1,1,1,0,0,1,Percent of riparian zone classified as forested,m-up,m,,,,m,,,6
+71,Riparian_5P,0,0,0,0,0,0,0,0,0,0,Percent of riparian zone classified as shrubland,m,m,,,,m,,,6
+72,Riparian_7P,0,0,0,0,0,0,0,0,0,0,Percent of riparian zone classified as grassland,m,m,,,,m,,,6
+73,Riparian_8P,6,0,1,0,1,1,1,1,0,1,Percent of riparian zone classified as cultivated,m,m,,,,m,,,6
+74,Riparian_9P,4,0,0,0,1,1,1,1,0,0,Percent of riparian zone classified as wetland,,m-up,,,,m,,,4
+75,ShadedSegments,7,0,1,1,1,1,1,1,0,1,Number of flowline segments classified as shaded,m,,,,,,,,2
+76,ShadedLength,7,0,1,1,1,1,1,1,0,1,Total flowline length (m) intersecting NLCD (2011) forest,m-up (how is this one different),,,,,,,,2
+77,LongestSegment,7,0,1,1,1,1,1,1,0,1,The length (m) of the longest shaded flowline segment,m,,,,,,,,2
+78,MeanShadeLength,5,0,0,0,1,1,1,1,0,1,Average length (m) of all the shaded segments w/in a catchment,m,,,,,,,,2
+79,cold,4,0,1,1,0,0,1,1,0,0,Percent of stream classified as cold,,,s,,,,,,2
+80,cool,7,0,1,1,1,1,1,1,0,1,Percent of stream classified as cool,,,s,,,,,,2
+81,warm,6,1,0,1,1,1,1,0,1,0,Percent of stream classified as warm,,,s,,,,,,2
+82,TotLength,8,0,1,1,1,1,1,1,1,1,Total stream length (m) ,,,,,,,,,1
+83,Crossings,7,0,1,1,1,1,1,1,0,1,Count of road crossings found within the catchment,,,,,,,,,1
+84,PctCanopy,3,0,1,1,0,0,0,1,0,0,Percent canopy cover within the catchment area,,,,,,,,,1
+85,PctImpervious,3,0,0,1,1,1,0,0,0,0,Percent catchment area that is impervious,,,,,,,,,1
+86,AnimalOps,2,0,0,0,0,1,0,0,0,1,Number of animal operation permits issued in catchment,,,,,,,,m,3
+87,NPDES,5,0,0,0,1,1,0,1,1,1,Number of NPDES with catchment,,,,,,,,?,3
+88,downstreamDistance_km,5,0,1,1,0,1,0,1,0,1,Distance to nearest downstream dam,,,,,,,m,,3
+89,upstreamDistance_km,1,0,0,0,0,0,1,0,0,0,Distance to nearest upstream dam,,,,,,,m,,3
+90,PCT_HYDRIC,1,0,0,0,1,0,0,0,0,0,Percent catchment area classified as hydric,,m-calc,,,,,,,3
+91,AREA_HYDRIC,8,0,1,1,1,1,1,1,1,1,Area (km2) catchment area classified as hydric,,m-calc,,,,,,,3
