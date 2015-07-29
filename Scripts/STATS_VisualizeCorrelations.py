@@ -32,13 +32,13 @@ def msg(txt,type="message"):
 #------PROCESSES-------
 ## Create a ranking/color dictionary. This converts rankings to sequentially darker colors
 colorDict = {}
-colorDict["0"] = "{background:'White',border:'gray'}"
-colorDict["1"] = "{background:'Thistle',border:'gray'}"
-colorDict["2"] = "{background:'Plum',border:'gray'}"
-colorDict["3"] = "{background:'Violet',border:'gray'}"
-colorDict["4"] = "{background:'Fuchsia',border:'gray'}"
-colorDict["5"] = "{background:'DarkViolet',border:'gray'}"
-colorDict["6"] = "{background:'DarkRed',border:'gray'}"
+colorDict["0"] = "{background:'#FCE8EC',border:'gray'}"
+colorDict["1"] = "{background:'#F4B8C4',border:'gray'}"
+colorDict["2"] = "{background:'#EE8A9E',border:'gray'}"
+colorDict["3"] = "{background:'#E65B77',border:'gray'}"
+colorDict["4"] = "{background:'#E02B50',border:'gray'}"
+colorDict["5"] = "{background:'#840C24',border:'gray'}"
+colorDict["6"] = "{background:'#420612',border:'gray'}"
 
 ## Create a dictionary of species correlation values from the sppCorrelation CSV file
 msg("...Generating list of nodes in nodes from species correlations file")
@@ -218,34 +218,18 @@ Scale nodes and edges depending on their value. Hover over the edges to get a po
 </p>
 <div id="nav">
 Ranks<br>
-    <div class="input-color">
-        <input type="text" value="0" />
-        <div class="color-box" style="background-color: White;"></div>
-    </div>
-    <div class="input-color">
-        <input type="text" value="1" />
-        <div class="color-box" style="background-color: Thistle;"></div>
-    </div>
-    <div class="input-color">
-        <input type="text" value="2" />
-        <div class="color-box" style="background-color: Plum;"></div>
-    </div>
-    <div class="input-color">
-        <input type="text" value="3" />
-        <div class="color-box" style="background-color: Violet;"></div>
-    </div>
-    <div class="input-color">
-        <input type="text" value="4" />
-        <div class="color-box" style="background-color: Fuchsia;"></div>
-    </div>
-    <div class="input-color">
-        <input type="text" value="5" />
-        <div class="color-box" style="background-color: DarkViolet;"></div>
-    </div>
-    <div class="input-color">
-        <input type="text" value="6" />
-        <div class="color-box" style="background-color: DarkRed;"></div>
-    </div>
+''')
+        
+for i in range(7):
+    idx = str(i); colorTxt = colorDict[idx]
+    color = colorTxt[13:-16]
+    writeString =  '    <div class="input-color">\n' 
+    writeString += '        <input type="text" value="{}" />\n'.format(idx) 
+    writeString += '        <div class="color-box" style="background-color: {};"></div>\n'.format(color)
+    writeString += '    </div>'
+    f.write(writeString)
+
+f.write('''
 </div>
 <div id="mynetwork"></div>
 </body>
