@@ -15,10 +15,6 @@
 import sys, os, csv, arcpy, numpy
 arcpy.env.overwriteOutput = 1
 
-'''DEBUG INPUTS
-C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\RData\E_complanata2.csv C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\RData\E_complanata2_shcX.csv 0.7 C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scratch\RData\E_complanata2_coeff.csv
-'''
-
 # Input variables
 speciesCSV = arcpy.GetParameterAsText(0)
 fieldsCSV = arcpy.GetParameterAsText(1)
@@ -26,8 +22,6 @@ threshold = arcpy.GetParameterAsText(2)
 
 # Output variables
 coeffCSV = arcpy.GetParameterAsText(3)
-
-# Script variables
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -41,7 +35,7 @@ def msg(txt,type="message"):
         
 ## ---Processes---
 #Read in columns to process
-msg("Reading in field names to include from {}".format(fieldsCSV))
+msg("...Reading in fields")
 colNames = []               # Create an empty list to add field names to 
 f = open(fieldsCSV,'rt')    # Open the csv file
 line = f.readline()         # Skip the header line
@@ -55,17 +49,17 @@ while line:                 # Loop through the remaining lines
     line = f.readline()                 # Go to the next line in the CSV file
 f.close()                   # Close the file
 #colNames.remove("TEMP0001")
-msg("{} columns to analyze".format(len(colNames)))
+msg("...{} columns to analyze".format(len(colNames)))
 
 #Read in all the column header names (from the full data file)
-msg("Reading in column header names from {}".format(speciesCSV))
+msg("...Reading in column header names")
 f = open(speciesCSV,'rt')
 headerText = f.readline()
 headerItems = headerText.split(",")
 f.close()
 
 #Read in the csv file as a numpy vector
-msg("Reading in data from {}".format(speciesCSV))
+msg("...Reading in data")
 arrData = numpy.genfromtxt(speciesCSV,delimiter=",")
 
 #Create variables from data array
@@ -93,9 +87,7 @@ for i in range(0,nCols):
                 # If the coefficient is > the threshold consider them redundant and add to the CSV
                 if abs(pearson) >= float(threshold):
                     f.write("{}, {}, {}\n".format(str(name1),name2,pearson))
-                    #msg("{},{},{}".format(name1,name2,pearson))
 
 msg("Values written to {}".format(coeffCSV))
 f.close()
-msg("Finished")
 

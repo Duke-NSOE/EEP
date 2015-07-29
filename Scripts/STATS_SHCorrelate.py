@@ -48,18 +48,18 @@ headerItems = headerText.split(",")
 f.close()
 
 #Read in the csv file as a numpy vector
-msg("Reading in data from {}".format(speciesCSV))
+msg("...Reading in data")
 arrData = numpy.genfromtxt(speciesCSV,delimiter=",")
 
 #Create variables from data array
 nCols = arrData.shape[1]
 
 #Create vectors
-msg("Extracting occurrence records")
+msg("...Extracting occurrence records")
 sppVector = arrData[1:,0]
 
 #Intialize output file
-msg("Creating output file {}".format(correlationCSV))
+msg("...Creating output file")
 f = open(correlationCSV,'wt')
 f.write("variable, coef, abs_coef, p_value\n")
 
@@ -80,9 +80,8 @@ for i in range(2,nCols):
     if abs(pValue) <= 0.05:
         f.write("%s, %2.4f, %2.4f, %2.3f\n"%(envName,coeff,abs(coeff),pValue))
     else:
-        msg("%s was dropped (p=%2.2f)"%(envName,pValue),"warning")
+        msg("--> [%s] was dropped (p=%2.2f)"%(envName,pValue),"warning")
 
 #Wrap up
-f.close()
-msg("Finished")               
+f.close()          
 
