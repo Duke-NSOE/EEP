@@ -75,7 +75,7 @@ for sppCSV in csvFiles:
 msg("...initializing output CSV")
 f = open(outCSV,'wb')
 writer = csv.writer(f)
-writer.writerow(outFields+["mean_PctContribution","mean_PermImportance","mean_GainWithOut","mean_GainWithOnly"])
+writer.writerow([outFields[0]]+["mean_PctContribution","mean_PermImportance","mean_GainWithOut","mean_GainWithOnly"]+outFields[1:])
 
 # Write the data to the file
 msg("...writing data to CSV")
@@ -105,6 +105,6 @@ for row in cur:
     GWavg = GWsum / counter
     GOavg = GOsum / counter
     #Write values to CSV
-    writer.writerow(outValues+[PCavg,PIavg,GWavg,GOavg])
+    writer.writerow([outValues[0]]+[PCavg,PIavg,GWavg,GOavg]+outValues[1:])
     
 f.close()
