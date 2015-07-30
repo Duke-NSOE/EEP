@@ -3,7 +3,13 @@
 # Description: Extracts the variable importance values from MaxEnt results 
 #    and creates a CSV table.
 #
-# Inputs: Maxent output folder (must contain the
+# Inputs: Maxent output folder (must contain the maxentResults.csv file)
+#
+# Outputs: A table listing the modeled response variables and for each their:
+#  - Percent Contribution
+#  - Permutation Importance
+#  - Gain without the variable
+#  - Gain with only the variable
 #
 # Spring 2015
 # John.Fay@duke.edu
