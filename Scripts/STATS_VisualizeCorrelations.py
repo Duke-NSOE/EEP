@@ -1,7 +1,9 @@
 # STATS_VisualizeCorrelations.py
 #
 # Description: Creates an HTML page with javascript visualization of the
-#  Environment variable correlations.
+#  Environment variable correlations. Variables are displayed as nodes and are
+#  colored using rankings described in the ResponseVars.xls file, which should be
+#  found in the Data folder. 
 #
 # See "http://visjs.org/docs/network/" for info on the methods for displaying this
 #
@@ -14,7 +16,7 @@ import sys, os, arcpy
 speciesName = arcpy.GetParameterAsText(0)           # Name of species analyzed
 sppCorrelationsCSV = arcpy.GetParameterAsText(1)    # List of variable correlations with presence/absence
 envCorrelationsCSV = arcpy.GetParameterAsText(2)    # List of variabel correlations with each other
-envRankingsCSV = arcpy.GetParameterAsText(3)        # Table listing the rankings of each variable for selection [static]
+envRankingsXLS = arcpy.GetParameterAsText(3)        # Table listing the rankings of each variable for selection [static]
 
 #Ouptut
 visHTML = arcpy.GetParameterAsText(4)               # Output HTML file that will be displayed in a browser
@@ -31,57 +33,45 @@ def msg(txt,type="message"):
         
 #------PROCESSES-------
 ## Create a ranking/color dictionary. This converts rankings to sequentially darker colors
+msg("...creating listing of ranking colors")
 colorDict = {}
-colorDict["0"] = "{background:'#FCE8EC',border:'gray'}"
-colorDict["1"] = "{background:'#F4B8C4',border:'gray'}"
-colorDict["2"] = "{background:'#EE8A9E',border:'gray'}"
-colorDict["3"] = "{background:'#E65B77',border:'gray'}"
-colorDict["4"] = "{background:'#E02B50',border:'gray'}"
-colorDict["5"] = "{background:'#840C24',border:'gray'}"
-colorDict["6"] = "{background:'#420612',border:'gray'}"
+colorDict["0"] = "{background:'#FCE8EC',border:'gray'}" # Unable to alter with management
+colorDict["1"] = "{background:'#FFFFCC',border:'gray'}" # No expected impact from any action
+colorDict["2"] = "{background:'#FFCC99',border:'gray'}" # Indirect impact from 1 action
+colorDict["3"] = "{background:'#FF9933',border:'gray'}" # Indirect impact from >1 actions
+colorDict["4"] = "{background:'#FF5050',border:'gray'}" # Secondary impact from 1 action
+colorDict["5"] = "{background:'#FF33CC',border:'gray'}" # Secondary impact from 2 actions
+colorDict["6"] = "{background:'#9900CC',border:'gray'}" # Secondary impact from >2 actions
+colorDict["7"] = "{background:'#660033',border:'blue'}"    # Direct impact from any action
 
-## Create a dictionary of species correlation values from the sppCorrelation CSV file
-msg("...Generating list of nodes in nodes from species correlations file")
-sppCorDict = {}
+##Create a dictionary from the fields listed in the species correlations CSV...
+## key-value pairs in this dictionary include the variable name and the correlation value
+## which is used for the size of the node (larger = more correlated with presence/absence
+msg("...creating a list of significant response variables (nodes)")
+nodeDict = {}                       #Create a dictionary of field names/id values
+id = 1                              #Initialize the ID variable
 f = open(sppCorrelationsCSV,'rt')   #Open the file
 headers = f.readline()              #Extract/skip the headers line in the CSV
 dataString = f.readline()[:-1]      #Convert the text to string (omitting the newline char at the end
 while dataString:                   #Loop through each line in the CSV
     data = dataString.split(",")        #Convert text to a list of items
-    varName = data[0].strip()           #Get the variable name (1st item)
-    coef = data[1].strip()              #Get the coefficient
-    sppCorDict[varName] = coef          #Add items to the dictionary
-    dataString = f.readline()[:-1]      #Read in the next line in the CSV    
-
-##Create a dictionary from the fields listed in the species correlations CSV...
-msg("...Creating a listing of variables (nodes)")
-nodeDict = {}                       #Create a dictionary of field names/id values
-id = 1                              #Initialize the ID variable
-f = open(sppCorrelationsCSV,'rt')       #Open the file
-headers = f.readline()              #Extract/skip the headers line in the CSV
-dataString = f.readline()[:-1]      #Convert the text to string (omitting the newline char at the end
-while dataString:                   #Loop through each line in the CSV
-    data = dataString.split(",")                    #Convert text to a list of items
-    name = data[0]
-    if not name in nodeDict.keys():             #If not, add them and give them a unique ID
-        nodeDict[name] = id
-        id += 1
-    dataString = f.readline()[:-1]                  #Read in the next line in the CSV
+    name = data[0].strip()              #Set the name to be the variable name (1st column)
+    coef = data[2].strip()              #Set the coef to be the variable name (3rd column)
+    if not name in nodeDict.keys():     #If name isn't in alread included: 
+        nodeDict[name] = (id,coef)          #Add the entry to the dictioary (key=name; val=(id, coef)
+        id += 1                             #Increase the id counter
+    dataString = f.readline()[:-1]      #Read in the next line in the CSV
 f.close()                           #Close the file
 
 ##Create another dictionary of fields, this one with their ranking
 msg("...Reading in variable rankings from rankings file")
 rankDict = {}
-f = open(envRankingsCSV,'rt')   #Open the file
-headers = f.readline()              #Extract/skip the headers line in the CSV
-dataString = f.readline()[:-1]      #Convert the text to string (omitting the newline char at the end
-while dataString:                   #Loop through each line in the CSV
-    data = dataString.split(",")    # Convert text to a list of items
-    varName = data[1]               # The variable name is the second column
-    varRank = str(int(data[-1]))    # The variable rank is the last column 
-    rankDict[varName] = varRank     # Add the key:value to the dictionary
-    dataString = f.readline()[:-1]  # Read in the next line in the CSV
-f.close()                           #Close the file
+cur = arcpy.da.SearchCursor(envRankingsXLS,("variable","Ranking"))
+for rec in cur:
+    varName = rec[0]              # The variable name is the second column
+    varRank = str(int(rec[1]))    # The variable rank is the last column 
+    rankDict[varName] = varRank   # Add the key:value to the dictionary
+del cur
             
 ##Create string from nodeList in the visjs format
 msg("Writing HTML code for variable nodes")
@@ -90,11 +80,13 @@ nodeString = "      nodes = [\n"
 #Loop through items in the dictionary - but sort them by value (not by variable name)
 for key, value in sorted(nodeDict.iteritems(), key=lambda (k,v): (v,k)):
     #Get the coefficient from the species correlation dictionary
-    coef = sppCorDict[key]
+    id = value[0]
+    coef = value[1]
+    #coef = nodeDict[key][1]#sppCorDict[key]
     rank = rankDict[key]
     color = colorDict[rank]
     #Add a new line to the string containing its id, value, and label
-    nodeString += "        {0}id:{1},value:{2},label:'{3}',font:'20px Arial black',color:{4}{5},\n".format("{",value,coef,key,color,"}")
+    nodeString += "        {0}id:{1},value:{2},label:'{3}',font:'20px Arial black',color:{4}{5},\n".format("{",id,coef,key,color,"}")
 #Finish the string
 nodeString += "      ];\n\n"    
 
@@ -107,9 +99,9 @@ dataString = f.readline()[:-1]      #Convert the text to string (omitting the ne
 while dataString:                   #Loop through each line in the CSV
     data = dataString.split(",")        #Convert text to a list of items
     fromNode = data[0].strip()          #Get the id of the From node
-    fromID = nodeDict[fromNode]     
+    fromID = nodeDict[fromNode][0]     
     toNode = data[1].strip()            #Get the id of the To node
-    toID = nodeDict[toNode]
+    toID = nodeDict[toNode][0] 
     corVal = abs(float(data[2]))        #Get the value (correlation value)
     #Write the value to the string
     edgeString += "        {}from: {}, to: {}, value: {}, title: '{}'{},\n".format("{",fromID,toID,corVal,corVal,"}")
@@ -220,7 +212,7 @@ Scale nodes and edges depending on their value. Hover over the edges to get a po
 Ranks<br>
 ''')
         
-for i in range(7):
+for i in range(8):
     idx = str(i); colorTxt = colorDict[idx]
     color = colorTxt[13:-16]
     writeString =  '    <div class="input-color">\n' 
