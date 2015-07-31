@@ -1,4 +1,4 @@
-# R_ScreenCor.py
+# STATS_CalculateCrossCorrelations.py
 #
 # Description: This script is used to identify which env variables are redundant.
 #  It reads in the full data file for a species and a second file listing the
@@ -8,9 +8,6 @@
 #
 # Spring 2015
 # John.Fay@duke.edu
-
-#from setuptools.command import easy_install
-#easy_install.main(["-U","scipy"])
 
 import sys, os, csv, arcpy, numpy
 arcpy.env.overwriteOutput = 1
