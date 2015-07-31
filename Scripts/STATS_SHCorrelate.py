@@ -1,7 +1,13 @@
 # Stats_SHCorrelate.py
 #
 # Description:
-#  Correlate spp presence/absence with habitat variables.
+#  This script identifies response variables that can be eliminated from the
+#  analysis from lacking a significant correlation with whether a species occurs
+#  in a catchment or not. It computes the Pearson product moment correlation
+#  between a given response variable and the binary presence/absence variable.
+#  If the correlation is not significant (p < 0.05), the response variable is
+#  considered more noise than signal and is tagged for eliminated from the
+#  habitat modeling.
 #
 #  *****************************************************************************
 #  ** This module requires the SciPy module to be installed. When installing, **
@@ -16,10 +22,10 @@ import sys, os, arcpy, numpy
 arcpy.env.overwriteOutput = 1
 
 # Input variables
-speciesCSV = arcpy.GetParameterAsText(0)
+speciesCSV = arcpy.GetParameterAsText(0) #Catchment table of species p/a with all other response variables
 
 # Output variables
-correlationCSV = arcpy.GetParameterAsText(1)
+correlationCSV = arcpy.GetParameterAsText(1) #Table of only significant response variables and their coefficients
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -84,4 +90,3 @@ for i in range(2,nCols):
 
 #Wrap up
 f.close()          
-
