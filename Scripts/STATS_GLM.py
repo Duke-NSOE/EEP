@@ -13,7 +13,9 @@
 # July 2015
 # John.Fay@duke.edu
 
-import sys, os, arcpy
+import sys, os, arcpy, csv
+
+#Debug: Nocomis_leptocephalus C:\WorkSpace\EEP_Tool\MaxEnt "C:/Program Files/R/R-3.1.1/bin/i386/R" C:\WorkSpace\EEP_Tool\MaxEnt\SanteeResults\glmout.csv
 
 # Input variables
 sppName = arcpy.GetParameterAsText(0)
@@ -22,6 +24,10 @@ rPath = arcpy.GetParameterAsText(2) #r'C:/Program Files/R/R-3.1.1/bin/i386/R'
 
 # Output variables
 outJFile = arcpy.GetParameterAsText(3)
+
+# Rlogging
+rLogFN = r"C:\WorkSpace\EEP_Tool\MaxEnt\Nocomis_leptocephalus\GLMpilot\rlog.R"
+rLog = open(rLogFN,'w')
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -40,12 +46,14 @@ def r(rCMD): #Runs an R command
     firstLine = "   [R:]"+outLines[0][5:-3]
     arcpy.AddWarning(firstLine)
     print firstLine
+    rLog.write(outLines[0][5:-3]+"\n")
     #Print any additional lines
     for idx in range(1,len(outLines)):
         if len(outLines[idx]) > 0:
             otherLine = "       "+outLines[idx]
             arcpy.AddWarning(otherLine)
             print otherLine
+            #rLog.write(otherLine)
 
 ## -- Module checks --
 # Set and check species SWD file
@@ -71,17 +79,73 @@ except:
     sys.exit()
 
 ## -- Procedures --
-#Get the fields to cut from the MaxEnt batch file
+#Set the R workspace
+msg("Setting the R workspace")
+r('setwd("{}")'.format(os.path.dirname(speciesCSV)))
+
+#Read in the CSV file
+msg("Reading in the species data")
+r('sppAll <- read.csv("{}")'.format(os.path.basename(speciesCSV)))
+
+#Set the spp vector
+msg("Create species vector: 'spp'")
+r('spp <- sppAll[,c(1)]')
+
+#Make a dictionary of correlation values from the Correlations.csv file
+msg("Reading in variable correlations with presence-absence")
+correlationsCSV = os.path.join(statsFolder,sppName,"Correlations.csv")
+corDict = {}
+f = open(correlationsCSV,'rt')
+reader = csv.reader(f)
+for row in reader:
+    corDict[row[0]] = row[2]
+
+#Create a sorted a list of variable names **on coeffient values**
+msg("Sorting variables on coefficient with presence-absence")
+varList = []
+for key, value in sorted(corDict.iteritems(), key=lambda (k,v): (v,k)):
+    varList.append(key)
+
+#Remove "variable" from the list
+if "variable" in varList: varList.remove("variable")
+
+##REMOVE CROSSINGS
+if "Crossings" in varList: varList.remove("Crossings")
+
+#Get the fields to cut (b/c of redundancy from the MaxEnt batch file
 f = open(maxentFile,'rt')
 lineString = f.readline()
 f.close()
-removeString = "dropFields <- c("
+#removeString = "dropFields <- c("
 for item in lineString.split(" "):
+    #If the item appears as a "togglelayersselected" item, it should be removed
     if 'togglelayerselected' in item:
+        #Get the layer name from the string
         layerName = item.split("=")[-1]
+        #Inform the user that it will not be included
         msg("    {} is redundant".format(layerName))
-        removeString += '"{}",'.format(layerName)
-removeString = removeString[:-1] + ')'
+        #Remove the item in the varList, if it's there
+        varList.remove(layerName)
+
+
+#Initialize the habData object with the first column
+r('habData <- sppAll[("{}")]'.format(varList[0]))
+
+#Loop through the remaining columns and cbind them to the first
+for var in varList[1:]:
+    r('hVar <- sppAll[("{}")]'.format(var))
+    r('habData <- cbind(habData,hVar)')
+   
+##Create the R command to set the habData data frame
+##commandString = "habData <- sppAll[c,("
+##for var in varList:
+##    commandString += '"{}",'.format(var)
+##commandString = commandString[:-1] #remove ending comma
+##commandString += ")]"
+
+#Run the command to create the habData data frame
+#msg("Creating the response variable data frame")
+#r(commandString)
 
 #Create the SHcor function
 msg("Constructing the jackGLM function")
@@ -133,37 +197,35 @@ r('''jackGLM <- function(spp, data)
 }
 ''')
 
-#Set the R workspace
-msg("Setting the R workspace")
-r('setwd("{}")'.format(os.path.dirname(speciesCSV)))
-
-#Read in the CSV file
-msg("Reading in the species data")
-r('sppAll <- read.csv("{}")'.format(os.path.basename(speciesCSV)))
-
-#Set the spp vector
-msg("Create species vector: 'spp'")
-r('spp <- sppAll[,c(1)]')
-
 #Set the data matrix
 #msg("Create response variable data frame: 'habData'")
-r('habData <- sppAll[,c(-1,-2,-3)]')
+#r('habData <- sppAll[,c(-1,-2,-3)]')
 
-#Drop redundant fields
-if len(removeString) > 16:
-    msg("Dropping redundant fields from data frame")
-    r(removeString)
-    r('habData2 <- habData[,!(names(habData) %in% dropFields)]')
+###Create the response values data frame
+###start the command string
+##cmdString = "habData <- sppAll[,c("
+##for var in varList:
+##    cmdString += '"{}",'.format(var)
+##cmdString = cmdString[:-1] + ")]"
+
+###Drop redundant fields
+####habData <- sppAll[,c("RunOff_min","MeanShadeLength")]
+##if len(removeString) > 16:
+##    msg("Dropping redundant fields from data frame")
+##    r(removeString)
+##    r('habData2 <- habData[,!(names(habData) %in% dropFields)]')
 
 #Run the GLM
 msg("Running the GLM")
-r('sppGLM <- glm(as.factor(spp)~., data=habData2, family=binomial)')
+r('sppGLM <- glm(as.factor(spp)~., data=habData, family=binomial)')
 #r('summary(sppGLM'))
 r('sppGLMAnova <- anova(sppGLM, test="Chi")')
 r('sppGLMd2 <- 1-(sppGLM$deviance/sppGLM$null.deviance)')
 #r('sppGLMd2')
 #r('source("C:/WorkSpace/EEP_Tool/Scripts/RScripts/jackGLM.R")')
-r('sppJtable <- jackGLM(spp,habData2)')
+r('sppJtable <- jackGLM(spp,habData)')
 #r('sppJtable')
 msg("Writing jackknife results to {}".format(outJFile))
 r('write.csv(sppJtable$jtable, "{}")'.format(outJFile))
+
+rLog.close()
