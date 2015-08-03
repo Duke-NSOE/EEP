@@ -1,21 +1,26 @@
 # STATS_GLM.py
 #
-# Runs GML using SciPy and StatsModel modules
+# Description: Runs GLM using PypeR module to run R command and generates a CSV table
+#  listing variable importance using the embedded jackknifing script from Dean Urban.
 #
-#  *****************************************************************************
-#  ** This module requires the SciPy module to be installed. When installing, **
-#  ** be sure to get version 0.12.0 as that is the one that works with the    **
-#  ** version of NumPy that is installed with ArcGIS 10.2                     ** 
-#  *****************************************************************************
+# Inputs include:
+#  (1) the species name (used to locate requried input files);
+#  (2) the stats folder generated in earler tool scripts. The stats folder should be the root 
+#      folder containing sub-folders for all modeled species. These sub-folders *must* be named 
+#      with the species name (e.g. "Nocomis_leptocephalus"), and these sub-folders *must* contain
+#      the Maxent SWD file (e.g. "Nocomis_leptocephalus_SWD.csv" - containing the data used 
+#      to run the model) and the MaxEnt batchfile (e.g., "RunMaxent.bat" - containing the
+#      variables omitted because of redundancy). 
+#  (3) The path to the R executable file, used to link Python to R via the PypeR module
 #
-# SciPy URL:      http://sourceforge.net/projects/scipy/files/scipy/0.12.0/
-# 
+# Outputs include:
+#  (1) A CSV format table listing all the variables modeled and indications of variable importance
+#  (2) {optional} a log file listing all the R commands used to run the model
+#
 # July 2015
 # John.Fay@duke.edu
 
 import sys, os, arcpy, csv
-
-#Debug: Nocomis_leptocephalus C:\WorkSpace\EEP_Tool\MaxEnt "C:/Program Files/R/R-3.1.1/bin/i386/R" C:\WorkSpace\EEP_Tool\MaxEnt\SanteeResults\glmout.csv
 
 # Input variables
 sppName = arcpy.GetParameterAsText(0)
@@ -24,10 +29,6 @@ rPath = arcpy.GetParameterAsText(2) #r'C:/Program Files/R/R-3.1.1/bin/i386/R'
 
 # Output variables
 outJFile = arcpy.GetParameterAsText(3)
-
-# Rlogging
-rLogFN = r"C:\WorkSpace\EEP_Tool\MaxEnt\Nocomis_leptocephalus\GLMpilot\rlog.R"
-rLog = open(rLogFN,'w')
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -39,21 +40,19 @@ def msg(txt,type="message"):
         arcpy.AddError(txt)
     print txt
 
-def r(rCMD): #Runs an R command
+def r(rCMD,logging=0): #Runs an R command
     rawOutput = runR(rCMD)
     outLines = rawOutput.split("\n")
     #Print the first line
     firstLine = "   [R:]"+outLines[0][5:-3]
     arcpy.AddWarning(firstLine)
     print firstLine
-    rLog.write(outLines[0][5:-3]+"\n")
     #Print any additional lines
     for idx in range(1,len(outLines)):
         if len(outLines[idx]) > 0:
             otherLine = "       "+outLines[idx]
             arcpy.AddWarning(otherLine)
             print otherLine
-            #rLog.write(otherLine)
 
 ## -- Module checks --
 # Set and check species SWD file
@@ -127,25 +126,19 @@ for item in lineString.split(" "):
         #Remove the item in the varList, if it's there
         varList.remove(layerName)
 
-
 #Initialize the habData object with the first column
 r('habData <- sppAll[("{}")]'.format(varList[0]))
 
-#Loop through the remaining columns and cbind them to the first
-for var in varList[1:]:
-    r('hVar <- sppAll[("{}")]'.format(var))
-    r('habData <- cbind(habData,hVar)')
-   
-##Create the R command to set the habData data frame
-##commandString = "habData <- sppAll[c,("
-##for var in varList:
-##    commandString += '"{}",'.format(var)
-##commandString = commandString[:-1] #remove ending comma
-##commandString += ")]"
+#Create the R command to set the habData data frame
+commandString = "habData <- sppAll[c("
+for var in varList:
+    commandString += '"{}",'.format(var)
+commandString = commandString[:-1] #remove ending comma
+commandString += ")]"
 
 #Run the command to create the habData data frame
-#msg("Creating the response variable data frame")
-#r(commandString)
+msg("Creating the response variable data frame")
+r(commandString)
 
 #Create the SHcor function
 msg("Constructing the jackGLM function")
@@ -197,24 +190,6 @@ r('''jackGLM <- function(spp, data)
 }
 ''')
 
-#Set the data matrix
-#msg("Create response variable data frame: 'habData'")
-#r('habData <- sppAll[,c(-1,-2,-3)]')
-
-###Create the response values data frame
-###start the command string
-##cmdString = "habData <- sppAll[,c("
-##for var in varList:
-##    cmdString += '"{}",'.format(var)
-##cmdString = cmdString[:-1] + ")]"
-
-###Drop redundant fields
-####habData <- sppAll[,c("RunOff_min","MeanShadeLength")]
-##if len(removeString) > 16:
-##    msg("Dropping redundant fields from data frame")
-##    r(removeString)
-##    r('habData2 <- habData[,!(names(habData) %in% dropFields)]')
-
 #Run the GLM
 msg("Running the GLM")
 r('sppGLM <- glm(as.factor(spp)~., data=habData, family=binomial)')
@@ -228,4 +203,6 @@ r('sppJtable <- jackGLM(spp,habData)')
 msg("Writing jackknife results to {}".format(outJFile))
 r('write.csv(sppJtable$jtable, "{}")'.format(outJFile))
 
-rLog.close()
+#Remove the R object from memory
+del pyper
+
