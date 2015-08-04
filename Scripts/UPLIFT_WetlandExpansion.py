@@ -14,15 +14,15 @@ outRaster =  r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\wetlanduplift'
 
 #Set environments
 arcpy.env.overwriteOutput = True
-arcpy.env.cellSize = CatchRaster
+arcpy.env.cellSize = NLCDRaster
 
 # Get paths
 rootWS = os.path.dirname(sys.path[0])
 dataWS = os.path.join(rootWS,"Data")
 
 # Local variables:
-#Service = r'ESRILayers\ESRI Landscape 4\USA_Soils_Hydric_Classification.ImageServer'
-Service = r'ESRILayers\HydricSoils\USA_Soils_Hydric_Classification.ImageServer'
+Service = r'ESRILayers\ESRI Landscape 4\USA_Soils_Hydric_Classification.ImageServer'
+#Service = r'ESRILayers\HydricSoils\USA_Soils_Hydric_Classification.ImageServer'
 HydricSoilsLayer = "LYR"
 
 # ---Functions---
