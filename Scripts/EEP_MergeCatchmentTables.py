@@ -23,7 +23,7 @@ AnimalOpsTable = arcpy.GetParameterAsText(inputID); inputID += 1
 NPDESTable = arcpy.GetParameterAsText(inputID); inputID += 1
 DownstreamDams = arcpy.GetParameterAsText(inputID); inputID += 1
 UpstreamDams = arcpy.GetParameterAsText(inputID); inputID += 1
-HydricSoils = arcpy.GetParameterAsText(inputID); inputID += 1
+#HydricSoils = arcpy.GetParameterAsText(inputID); inputID += 1
 
 # Output variables:
 outputFC = arcpy.GetParameterAsText(inputID); inputID += 1
@@ -116,8 +116,8 @@ msg(" Joining downstream dam distance...{}/{}".format(currentCount,totalCount));
 arcpy.JoinField_management(outputFC, "FEATUREID", UpstreamDams, "COMID","upstreamDistance_km")
 
 # Process: Join Field
-msg(" Joining hydric soils...{}/{}".format(currentCount,totalCount)); currentCount += 1
-arcpy.JoinField_management(outputFC, "FEATUREID", HydricSoils, "FEATUREID","PCT_HYDRIC;AREA_HYDRIC")
+#msg(" Joining hydric soils...{}/{}".format(currentCount,totalCount)); currentCount += 1
+#arcpy.JoinField_management(outputFC, "FEATUREID", HydricSoils, "FEATUREID","PCT_HYDRIC;AREA_HYDRIC")
 
 # Process: Fix Null Values
 flds = arcpy.ListFields(outputFC)
