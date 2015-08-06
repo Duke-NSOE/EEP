@@ -53,7 +53,7 @@ msg("...creating level 1 NLCD raster")
 
 # Set hydric soils to wetland, otherwise keep NLCD (Level 1) values
 msg("...converting all areas with hydric soils as wetlands")
-hydricNLCD = arcpy.sa.Con(HydricSoilsLayer,90,NLCDRaster,"Value in (2, 4)")
+hydricNLCD = arcpy.sa.Con(HydricSoilsLayer,90,NLCDRaster,"Value in (2)")
 
 # Creates a raster where urban areas are zero, otherwise hydric values
 msg("...reverting wetlands on developed areas back to developed")
