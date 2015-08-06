@@ -18,9 +18,9 @@
 import arcpy, sys, os, csv
 
 # Input variables
-prjFN = arcpy.GetParameterAsText(0) #r"C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scripts\RScripts\output\greenhead.shiner_PRJFiles.asc"
-swdFN = arcpy.GetParameterAsText(1) #r"C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scripts\RScripts\greenhead_shiner_mxdata.csv"
-outCSV = arcpy.GetParameterAsText(2)#r"C:\WorkSpace\EEP_Spring2015\EEP_Tool\Scripts\RScripts\output\greenhead_shiner_projection.csv"
+prjFN = arcpy.GetParameterAsText(0) 
+swdFN = arcpy.GetParameterAsText(1) 
+outCSV = arcpy.GetParameterAsText(2)
 
 # ---Functions---
 def msg(txt,type="message"):
@@ -54,6 +54,10 @@ for row in reader:
     if not row[0] in ('ncols','nrows','xllcorner','yllcorner','cellsize','NODATA_value'):
         #Replace NoData with zeros
         if row[0] == '-9999': habProb = 0
+        #Write out scientific notation
+        elif "E-" in row[0]:
+            #val,expt = row[0].split["E"]
+            habProb = str(float(row[0]))
         else: habProb = row[0]
         #write the value to the list
         valueIDs.append(habProb)    
