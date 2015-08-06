@@ -147,21 +147,19 @@ hab.data <- hab.data[,c(-10)]
 # ready to do an actual analysis!
 # ***
 
-# fit GLM for spp X
-# tune to 95% true positive rate (use cutoff.ROCR)
-# predict for all catchments in the analysis unit (here, the "available" sample)
-# dump:  prediction [0,1]; prediction as "habitat/not" [1/0]
+#	fit GLM for spp X
+#	  tune to 95% true positive rate (use cutoff.ROCR)
+#	  predict for all catchments in the analysis unit (here, the "available" sample)
+#	dump:  prediction [0,1]; prediction as "habitat/not" [1/0]
 
 # fit the model:
 spp.glm <- glm(as.factor(spp)~., data=hab.data, family=binomial)
 summary(spp.glm)
-(spp.glm.anova <- anova(spp.glm, test="Chi"))
+spp.glm.anova <- anova(spp.glm, test="Chi")
 # might want to save this as a CSV?
 # model deviance explained (~ R2):
-(spp.glm.d2 <- 1-(spp.glm$deviance/spp.glm$null.deviance))
-# a plot:
-plot(spp.glm$linear.predictor, spp.glm$fitted.values, ylim=c(0,1),col="blue")
-points(spp.glm$linear.predictor, spp, col="red")
+spp.glm.d2 <- 1-(spp.glm$deviance/spp.glm$null.deviance)
+spp.glm.d2
 
 # for fun:  a jackknifing estimate of variable importance:
 source("jackGLM.R")
@@ -170,40 +168,30 @@ spp.jtable
 write.csv(spp.jtable, "greenhead_shiner_jtable.csv")
 
 # threshold to a binary prediction:
-spp.glm.pred <- predict(spp.glm, type="response", data=hab.data)
+spp.glm.pred <- predict(spp.glm, data=hab.data)
 library(ROCR)
 source("cutoff.ROCR.R")
 # create a "prediction" object (table of predicted & actual values):
 spp.pred <- prediction(spp.glm$fitted.values, spp)
 cutoff <- cutoff.ROCR(spp.pred, "tpr", target=0.95)
 spp.glm.pred[spp.glm.pred<cutoff] <- 0
-spp.glm.pred[spp.glm.pred=>cutoff] <- 1
+spp.glm.pred[spp.glm.pred>=cutoff] <- 1
 # the confusion matrix:
 table(spp.glm.pred,spp)
-# dump:
-write.csv(cbind(spp.glm$fitted.values,spp.glm.pred,spp),"greenhead_shiner_glm.csv")
 
-# redo, to generate prediction for the entire HUC6 study area:
-spp.glm.phuc6 <- predict(spp.glm, type="response", newdata=huc.data)
+# redo, to generate prediction for the HUC6 study area (the background samples):
+spp.glm.pred2 <- predict(spp.glm, data=spp.all[spp.all$spp==0,])
 # copy before thresholding:
-spp.glm.pc <- spp.glm.phuc6
-spp.glm.phuc6[spp.glm.phuc6<cutoff] <- 0
-spp.glm.phuc6[spp.glm.phuc6>=cutoff] <- 1
-write.csv(cbind(FEATUREID,spp.glm.pc,spp.glm.phuc6),"greenhead_shiner_glm_pHUC6.csv")
-
-# "management" scenario: set road crossings to optimum value in "habitat"
-huc.data2 <- huc.data
-huc.data2$Crossings[huc.data2$Crossings>1.5] <- 1.5
-spp.glm.phuc6b <- predict(spp.glm, type="response", newdata=huc.data2)
-spp.glm.pc2 <- spp.glm.phuc6b
-spp.glm.phuc6b[spp.glm.phuc6b<cutoff] <- 0
-spp.glm.phuc6b[spp.glm.phuc6b>=cutoff] <- 1
-write.csv(cbind(FEATUREID,spp.glm.pc,spp.glm.phuc6,spp.glm.pc2,spp.glm.phuc6b),"greenhead_shiner_glm_pHUC6b.csv")
-
+spp.glm.pc <- spp.glm.pred2
+spp.glm.pred2[spp.glm.pred2<cutoff] <- 0
+spp.glm.pred2[spp.glm.pred2>=cutoff] <- 1
+write.csv(cbind(spp.glm.pc,spp.glm.pred2),"greenhead_shiner_pred.csv")
 
 # ***
 # end GLM
 #
+
+
 
 # alt 2:  dump spp.all to maxent (code "spp" as "spp" vs "background")
 # to run externally, dump spp.all ...
@@ -237,39 +225,13 @@ background.hab <- hab.data[spp==0,]
 spp.cov <- cov(background.hab)
 # spp.icov <- solve(cov)
 # MD2 values for all catchments:
-spp.back.md2 <- mahalanobis(background.hab,spp.means,spp.cov)
-summary(spp.back.md2)
-# and for the presences:
-spp.pres.md2 <- mahalanobis(spp.pres,spp.means,spp.cov)
-summary(spp.pres.md2)
+spp.md2 <- mahalanobis(background.hab,spp.means,spp.cov)
+summary(spp.md2)
 # convert to probabilities, from the Chi-sq distribution:
-spp.pres.md2.p <- pchisq(spp.pres.md2,16)
-spp.back.md2.p <- pchisq(spp.pres.md2,16)
-# figure out how to convert from value to P:  is it qchisq?
+spp.md2.p <- ???  # figure out how to convert from value to P:  is it qchisq?
 # qchisq(seq(0,1,0.1), df=16) seems to generate plausible numbers relative
 # to the MD2 values for the 56 known presences...
 
-# alt 4:  random forests
-library(randomForest)
-# fit the model:
-spp.forest <- randomForest(as.factor(spp)~., data=hab.data, ntree=500, importance=TRUE)
-# look at it (not much info here):
-print(spp.forest)
-
-# variable importance (as table):
-spp.forest$importance
-# variable importance plot:
-varImpPlot(spp.forest)
-
-# predict over HUC6:
-# prediction type = response gives the binary class prediction, which we would use to
-# generate the confusion matrix:
-spp.forest.phuc6b <- predict(spp.forest, type="response", newdata=huc.data)
-# the confusion matrix:
-table(spp.forest.phuc6b,spp)
-# using type = prob gives the likelihood for each class; we want the prob for class 1:
-spp.forest.phuc6p <- predict(spp.forest, type="response", newdata=huc.data)
-# this is the prediction on [0,1]. 
 
 
 
