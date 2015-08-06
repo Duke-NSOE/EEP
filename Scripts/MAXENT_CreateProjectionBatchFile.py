@@ -1,31 +1,27 @@
 # MAXENT_CreateProjectionBatchFile.py
 #
-# Creates a batch file (.bat) used to run MaxEnt with the supplied files. The way
-#  this script is configured, the workspace must contain a MaxEnt folder (containing
-#  the MaxEnt.jar file) in the project's root folder. 
+# Description: Tweaks the RunMe.bat batch file created in the initial run of Maxent
+#  so that alternate scenarios can be modeled. 
 #
 # Inputs include:
-#  (1) the MaxEnt samples with data format (SWD) CSV file, 
-#  (2) a list of field names to exclude by default in the analysis
-#  (3) a list of fields that should be set to categorical
-#  (4) a folder containing projection ASCII files
+#  (1) the initial Runme.bat file
+#  (2) a folder containing projection ASCII files
+#  (3) a new folder to hold the model outputs
 #
 #  Model outputs will be sent to the Outputs folder in the MaxEnt directory.
 #
-# Spring 2015
+# July 2015
 # John.Fay@duke.edu
 
 import sys, os, arcpy
 
 # Input variables
-swdFile = arcpy.GetParameterAsText(0)           # MaxEnt SWD formatted CSV file
-excludeFlds = arcpy.GetParameterAsText(1)       # Fields to toggle off by default
-categoricalFlds = arcpy.GetParameterAsText(2)   # Fields to set as categorical (not continuous)
-prjFolder = arcpy.GetParameterAsText(3)         # Folder containing ASCII projection files
-outDir = arcpy.GetParameterAsText(4)         # Folder for maxent outputs
+origBatchFN = arcpy.GetParameterAsText(0)   # MaxEnt SWD formatted CSV file
+prjFolder = arcpy.GetParameterAsText(1)     # Folder containing ASCII projection files
+outDir = arcpy.GetParameterAsText(2)        # Folder for maxent outputs
 
 # Output variables
-maxentFile = arcpy.GetParameterAsText(5)        # BAT file to write
+newBatchFN = arcpy.GetParameterAsText(3)   # BAT file to write
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -38,83 +34,37 @@ def msg(txt,type="message"):
         arcpy.AddError(txt)
         
 ## ---Processes---
-# Check that the Maxent folder exists and that the maxent.jar file is in it
-maxentPath = os.path.abspath(sys.path[0]+ "\\..\\Maxent")
-if not(os.path.exists(maxentPath)):
-    msg("Maxent folder cannot be found","error")
-    sys.exit(0)
-elif not(os.path.exists(maxentPath+"\\maxent.jar")):
-    msg("Maxent.jar file cannot be found in {}./n Exiting.".format(maxentPath),"error")
-    sys.exit(0)
-else:
-    msg("Maxent folder set to {}".format(maxentPath))
+#Read in the original RunMe.bat file
+file = open(origBatchFN,'r')
+lineString = file.readline()
+file.close()
 
-# Check that the output folder exists; create it if not
-if not(os.path.exists(outDir)):
-    msg("Creating output directory")
-    os.mkdir(outDir)
-else: msg("Setting output to {}".format(outDir))
+#Make a dictioary of key/values from data in the line string
+lineObjects = lineString.split()
 
-# Begin creating the batch run string with boilerplate stuff
-msg("Initializing the Maxent batch command")
-runString = "java -mx2048m -jar {}".format(os.path.join(maxentPath,"maxent.jar"))
+#Create dictionary of modify values
+changeDict = {}
+changeDict['outputdirectory'] = outDir
+changeDict['responsecurves'] = 'false'
+changeDict['pictures'] = 'false'
+changeDict['jackknife'] = 'false'
 
-# set samples file
-msg("Setting samples file to {}".format(swdFile))
-runString += " samplesfile={}".format(swdFile)
+#projectionlayers = '.format(prjFolder)
 
-# set enviroment layers file
-msg("Setting enviroment layers file to {}".format(swdFile))
-runString += " environmentallayers={}".format(swdFile)
-    
-# set output directory
-msg("Setting output directory to {}".format(outDir))
-runString += " outputdirectory={}".format(outDir)
+#Initialize the output file
+outFile = open(newBatchFN,'w')
 
-# enable response curves
-msg("Disabling response curves")
-runString += " responsecurves=false"
+#Modify key objects and write to output
+for lineObj in lineObjects:
+    for key,val in changeDict.items():
+        if key in lineObj:
+            msg("{}={}".format(key,val))
+            outFile.write("{}={} ".format(key,val))
+            break
+    msg(lineObj)
+    outFile.write("{} ".format(lineObj))
+msg(' projectionlayers={}'.format(prjFolder))
+outFile.write('projectionlayers={}'.format(prjFolder))
 
-# enable jackknifing
-msg("Disabling jackknifing")
-runString += " jackknife=false"
-
-# turn off background spp
-msg('Toggling "background" species')
-runString += " togglespeciesselected=background"
-
-# toggle off all species in excludeFields
-## Create list from excludeFields input
-excludeItems = excludeFlds.split(";")
-## Remove species, X, and Y columns from list, if included
-if ("Species") in excludeItems: excludeItems.remove("Species")
-if ("X") in excludeItems: excludeItems.remove("X")
-if ("Y") in excludeItems: excludeItems.remove("Y")
-
-## Loop through list; if header item not in include list, toggle it off
-for excludeItems in excludeItems: 
-    msg("...disabling {} field".format(excludeItems))
-    runString += " togglelayerselected={}".format(excludeItems)
-            
-# Set categorical fields
-## Split the list string in to list items
-catItems = categoricalFlds.split(";")
-## Loop through each item in the list and set it to categorical
-for catItem in catItems:
-    msg("Setting {} field to categorical".format(catItem))
-    runString += " togglelayertype={}".format(catItem)
-
-# Set the projection file directory and turn on projections, if supplied
-if prjFolder:
-    msg("Setting projection folder to {}".format(prjFolder))
-    runString += " projectionlayers={}".format(prjFolder)
-
-# Write commands to batch file
-msg("Writing commands to batchfile {}".format(maxentFile))
-outFile = open(maxentFile,'w')
-outFile.write(runString)
 outFile.close()
 
-
-
-    
