@@ -8,14 +8,13 @@
 #  (2) the stats folder generated in earler tool scripts. The stats folder should be the root 
 #      folder containing sub-folders for all modeled species. These sub-folders *must* be named 
 #      with the species name (e.g. "Nocomis_leptocephalus"), and these sub-folders *must* contain
-#      the Maxent SWD file (e.g. "Nocomis_leptocephalus_SWD.csv" - containing the data used 
+#      the **Maxent SWD** file (e.g. "Nocomis_leptocephalus_SWD.csv" - containing the data used 
 #      to run the model) and the MaxEnt batchfile (e.g., "RunMaxent.bat" - containing the
 #      variables omitted because of redundancy). 
 #  (3) The path to the R executable file, used to link Python to R via the PypeR module
 #
 # Outputs include:
 #  (1) A CSV format table listing all the variables modeled and indications of variable importance
-#  (2) {optional} a log file listing all the R commands used to run the model
 #
 # July 2015
 # John.Fay@duke.edu
@@ -28,12 +27,20 @@ statsFolder = arcpy.GetParameterAsText(1)
 rPath = arcpy.GetParameterAsText(2) #r'C:/Program Files/R/R-3.1.1/bin/i386/R' 
 
 # Output variables
-outJFile = arcpy.GetParameterAsText(3)
+GLMVarImportanceCSV = arcpy.GetParameterAsText(3)   #GLM variable importance table (Jackknife results)
+GLMPredictionsCSV = arcpy.GetParameterAsText(4)     #GLM Predictions
+RFVarImportanceCSV = arcpy.GetParameterAsText(5)    #RF variable importance table
+RFPredictionsCSV = arcpy.GetParameterAsText(6)      #RF Predictions
+
+# Script variables
+rlibPath = os.path.join(sys.path[0],"RScripts")         # Location of all R subscripts
+jackGLM = os.path.join(rlibPath,"jackGLM.R")            # Jackkinifing subscript
+cutoffROCR = os.path.join(rlibPath,"cutoff.ROCR.R")     # ROCR subscript
 
 ## ---Functions---
 def msg(txt,type="message"):
     if type == "message":
-        arcpy.AddMessage(txt)
+        arcpy.AddMessage("   "+txt)
     elif type == "warning":
         arcpy.AddWarning(txt)
     elif type == "error":
@@ -44,13 +51,13 @@ def r(rCMD,logging=0): #Runs an R command
     rawOutput = runR(rCMD)
     outLines = rawOutput.split("\n")
     #Print the first line
-    firstLine = "   [R:]"+outLines[0][5:-3]
+    firstLine = "[R:]"+outLines[0][5:-3]
     arcpy.AddWarning(firstLine)
     print firstLine
     #Print any additional lines
     for idx in range(1,len(outLines)):
         if len(outLines[idx]) > 0:
-            otherLine = "       "+outLines[idx]
+            otherLine = "   "+outLines[idx]
             arcpy.AddWarning(otherLine)
             print otherLine
 
@@ -89,6 +96,12 @@ r('sppAll <- read.csv("{}")'.format(os.path.basename(speciesCSV)))
 #Set the spp vector
 msg("Create species vector: 'spp'")
 r('spp <- sppAll[,c(1)]')
+
+#Make a binary vector of spp
+r('sppBin = c(spp)')
+#Replace 1s with 0s and 2s with 1s
+r('sppBin <- replace(sppBin, sppBin == 1, 0)')
+r('sppBin <- replace(sppBin, sppBin == 2, 1)')
 
 #Make a dictionary of correlation values from the Correlations.csv file
 msg("Reading in variable correlations with presence-absence")
@@ -141,68 +154,70 @@ msg("Creating the response variable data frame")
 r(commandString)
 
 #Create the SHcor function
-msg("Constructing the jackGLM function")
-r('''jackGLM <- function(spp, data)
-	# the inputs: spp=presence/absence of a species, coded 1/0;
-	# data is a frame of predictor variables
-{
-	# the D2 and P-value for the full model:
-	full<-rep(NA,2)
-	names(full)<-c("D2","P")
-	# build a table for the jack-knifed estimates of explanatory power:
-	nv <- ncol(data)
-	d2in<-rep(NA,nv) # R2 as deviance explained by the model with only this variable
-	pin<-rep(NA,nv)	# P-value for this model
-	d2out<-rep(NA,nv)  # R2 for the model with this variable withheld (all other vars in)
-	pout<-rep(NA,nv)  # P-value for this model
-	jtable<-data.frame(cbind(d2in,pin,d2out,pout))
-	vn <- names(data)
-	names(jtable)<-c("D2only","Ponly","dD2without","Pwithout")
-	rownames(jtable)<-vn
-
-    # run the full model:
-    gfull<-glm(as.factor(spp)~.,data=data,family=binomial)
-    # D2 and P for the full model:
-    d2full <- 1 - (gfull$deviance/gfull$null)
-    pfull <- 1 - pchisq(gfull$null - gfull$deviance, (nv+1))
-    full<-c(d2full,pfull)
-
-    # do each variable ...
-        for (i in 1:nv) {
-        # this variable only in the model:
-        gin<-glm(as.factor(spp)~data[,i],family=binomial)
-        # D2:
-        d2ii<- 1 - (gin$deviance/gin$null)
-        # P-value:
-        pii<- 1 - pchisq(gin$null - gin$deviance, 2)
-        jtable[i,1]<-d2ii
-        jtable[i,2]<-pii
-        # everything except this variable:
-        gix<-glm(as.factor(spp)~.,data=data[,-i],family=binomial)
-        d2ix<- 1 - (gix$deviance/gix$null)
-        dd2ix<-d2full-d2ix # we want the difference in D2 from the full model
-        aix<-anova(gix,gfull,test="Chi") # does this variable add to the model?
-        pix<-aix$"Pr(>Chi)"[[2]] # the P-value on the 2nd model, with the variable added
-        jtable[i,3]<-dd2ix
-        jtable[i,4]<-pix
-    }
-    return(list(full,jtable=jtable))
-}
-''')
+msg("Loading jackGLM script")
+r('source("{}")'.format(jackGLM))
 
 #Run the GLM
 msg("Running the GLM")
 r('sppGLM <- glm(as.factor(spp)~., data=habData, family=binomial)')
 #r('summary(sppGLM'))
-r('sppGLMAnova <- anova(sppGLM, test="Chi")')
-r('sppGLMd2 <- 1-(sppGLM$deviance/sppGLM$null.deviance)')
+#r('sppGLMAnova <- anova(sppGLM, test="Chi")')
+#r('sppGLMd2 <- 1-(sppGLM$deviance/sppGLM$null.deviance)')
 #r('sppGLMd2')
-#r('source("C:/WorkSpace/EEP_Tool/Scripts/RScripts/jackGLM.R")')
 r('sppJtable <- jackGLM(spp,habData)')
+
 #r('sppJtable')
-msg("Writing jackknife results to {}".format(outJFile))
-r('write.csv(sppJtable$jtable, "{}")'.format(outJFile))
+msg("Writing jackknife results to {}".format(GLMVarImportanceCSV))
+r('write.csv(sppJtable$jtable, "{}")'.format(GLMVarImportanceCSV))
+
+#Run GLM predictions on current conditions
+msg("Running predictions on current conditions")
+r('sppPredGLM <- predict(sppGLM, type="response",data=habData)')
+msg("Loading the ROCR library")
+r('library(ROCR)')
+msg("Loading the cutoffROCR script")
+r('source("{}")'.format(cutoffROCR))
+msg("Predicting values on all catchments")
+r('sppPred <- prediction(sppGLM$fitted.values,spp)')
+msg("Finding and applying probability cutoff (via ROC)") 
+r('cutoff <- cutoff.ROCR(sppPred, "tpr", target=0.95)')
+r('sppPredGLM[sppPredGLM < cutoff] <- 0')
+r('sppPredGLM[sppPredGLM >= cutoff] <- 1')
+
+msg("Writing predictions to {}".format(GLMPredictionsCSV))
+#Merge the sppAll gridcode, predictions, and thresholded values
+r('outTable <- cbind(sppAll$X,sppGLM$fitted.values,sppPredGLM,sppBin)')
+#Rename columns
+r('colnames(outTable)[0] <- "ID"')
+r('colnames(outTable)[1] <- "GRIDCODE"')
+r('colnames(outTable)[2] <- "HAB_PROB"')
+r('colnames(outTable)[3] <- "PREDICTION"')
+r('colnames(outTable)[4] <- "OBSERVED"')
+#Write the output
+r('write.csv(outTable,"{}")'.format(GLMPredictionsCSV))
+
+##-- RANDOM FOREST --
+msg("Running random forest analysis")
+r('library(randomForest)')
+r('sppForest <- randomForest(as.factor(spp)~., data=habData, ntree=500, importance=TRUE)')
+msg("Compiling variable importances to {}".format(RFVarImportanceCSV))
+r('outTable <- sppForest$importance')
+#r('colnames(outTable)[0] <- "VARIABLE"')
+#r('colnames(outTable)[1] <- "0"')
+#r('colnames(outTable)[2] <- "1"')
+r('write.csv(outTable,"{}")'.format(RFVarImportanceCSV))
+msg("Running predictions on catchments")
+r('rfPredictions <- predict(sppForest, type="response")')
+r('rfProbs <- predict(sppForest, type="prob")')
+
+r('outTable <- cbind(sppAll$X,rfProbs[,(1)],rfPredictions,sppBin)')
+r('colnames(outTable)[1] <- "GRIDCODE"')
+r('colnames(outTable)[2] <- "HABPROB"')
+r('colnames(outTable)[3] <- "PREDICTION"')
+r('colnames(outTable)[4] <- "OBSERVED"')
+r('write.csv(outTable,"{}")'.format(RFPredictionsCSV))
+
 
 #Remove the R object from memory
-del pyper
+#del pyper
 
