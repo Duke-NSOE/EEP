@@ -34,15 +34,23 @@ def msg(txt,type="message"):
 #------PROCESSES-------
 ## Create a ranking/color dictionary. This converts rankings to sequentially darker colors
 msg("...creating listing of ranking colors")
+##Color values
+col0 = '#CECEF6'#'#FCE8EC'
+col1 = '#8181F7'#'#FFCC99'
+col2 = '#0000FF'#'#FF5050'
+col3 = '#0B0B61'#'#660033'
+##Border value
+border1 = 'red'
+border2 = 'white'
+##Dictionary
 colorDict = {}
-colorDict["0"] = "{background:'#FCE8EC',border:'gray'}" # Unable to alter with management
-colorDict["1"] = "{background:'#FFFFCC',border:'gray'}" # No expected impact from any action
-colorDict["2"] = "{background:'#FFCC99',border:'gray'}" # Indirect impact from 1 action
-colorDict["3"] = "{background:'#FF9933',border:'gray'}" # Indirect impact from >1 actions
-colorDict["4"] = "{background:'#FF5050',border:'gray'}" # Secondary impact from 1 action
-colorDict["5"] = "{background:'#FF33CC',border:'gray'}" # Secondary impact from 2 actions
-colorDict["6"] = "{background:'#9900CC',border:'gray'}" # Secondary impact from >2 actions
-colorDict["7"] = "{background:'#660033',border:'blue'}"    # Direct impact from any action
+colorDict["10"] = "{background:'%s',border:'%s'}" %(col0,border1)
+colorDict["11"] = "{background:'%s',border:'%s'}" %(col1,border1)
+colorDict["12"] = "{background:'%s',border:'%s'}" %(col2,border1) 
+colorDict["13"] = "{background:'%s',border:'%s'}" %(col3,border1)
+colorDict["21"] = "{background:'%s',border:'%s'}" %(col1,border2) 
+colorDict["22"] = "{background:'%s',border:'%s'}" %(col2,border2)
+colorDict["23"] = "{background:'%s',border:'%s'}" %(col3,border2)
 
 ##Create a dictionary from the fields listed in the species correlations CSV...
 ## key-value pairs in this dictionary include the variable name and the correlation value
@@ -66,7 +74,7 @@ f.close()                           #Close the file
 ##Create another dictionary of fields, this one with their ranking
 msg("...Reading in variable rankings from rankings file")
 rankDict = {}
-cur = arcpy.da.SearchCursor(envRankingsXLS,("variable","Ranking"))
+cur = arcpy.da.SearchCursor(envRankingsXLS,("variable","MergedRank"))
 for rec in cur:
     varName = rec[0]              # The variable name is the second column
     varRank = str(int(rec[1]))    # The variable rank is the last column 
@@ -104,7 +112,7 @@ while dataString:                   #Loop through each line in the CSV
     toID = nodeDict[toNode][0] 
     corVal = abs(float(data[2]))        #Get the value (correlation value)
     #Write the value to the string
-    edgeString += "        {}from: {}, to: {}, value: {}, title: '{}'{},\n".format("{",fromID,toID,corVal,corVal,"}")
+    edgeString += "        {}from:{},to:{},color:'gray',value:{},title:'{}'{},\n".format("{",fromID,toID,corVal,corVal,"}")
     dataString = f.readline()           #Read in the next line in the CSV
 f.close()                           #Close the file
 edgeString += "      ];\n\n"        #Finish the string
@@ -211,15 +219,31 @@ Scale nodes and edges depending on their value. Hover over the edges to get a po
 <div id="nav">
 Ranks<br>
 ''')
-        
-for i in range(8):
-    idx = str(i); colorTxt = colorDict[idx]
-    color = colorTxt[13:-16]
+
+#Create the legend: Rank Colors        
+for i in range(4):
+    idx = str(10 + i); colorTxt = colorDict[str(idx)]
+    color = colorTxt[13:-15]
     writeString =  '    <div class="input-color">\n' 
-    writeString += '        <input type="text" value="{}" />\n'.format(idx) 
-    writeString += '        <div class="color-box" style="background-color: {};"></div>\n'.format(color)
-    writeString += '    </div>'
+    writeString += '        <input type="text" value="{}" />\n'.format(i) 
+    writeString += '        <div class="color-box" style="background-color:{};"></div>\n'.format(color)
+    writeString += '    </div>\n'
     f.write(writeString)
+
+###Create the legend: Orignial vs derived
+####Original
+##writeString =  '    <div class="input-color">\n' 
+##writeString += '        <input type="text" value=Original data/>\n'
+##writeString += '        <div class="color-box" style="background-color:white;"></div>\n'
+##writeString += '    </div>\n'
+##f.write(writeString)
+####Derived
+##writeString =  '    <div class="input-color">\n' 
+##writeString += '        <input type="text" value=Derived data />\n'
+##writeString += '        <div class="color-box" style="background-color:white;"></div>\n'
+##writeString += '    </div>\n'
+##f.write(writeString)
+
 
 f.write('''
 </div>
@@ -232,6 +256,5 @@ f.close()
 
 # Open the file in a web browser
 import webbrowser
-new = 2
-webbrowser.open(visHTML,new=new)
+webbrowser.open(visHTML,2)
         
