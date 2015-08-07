@@ -80,6 +80,10 @@ runString += " responsecurves=true"
 msg("Enabling jackknifing")
 runString += " jackknife=true"
 
+# disable pictures
+msg("Disabling drawing pictures")
+runString += " pictures=false"
+
 # turn off background spp
 msg('Toggling "background" species')
 runString += " togglespeciesselected=background"
