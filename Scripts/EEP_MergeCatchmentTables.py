@@ -130,11 +130,19 @@ for fld in flds[8:]: #Skip the first 8 fields as they are ok
     if int(NullCount) > 0:
         msg("Fixing {} null records {}".format(NullCount, fld.name))
         #Depending on the field, set missing values to -9999 or 0
-        if fld.name in ("warm","cold","cool","TotLength","Crossings","AnimalOps","NPDES","PCT_HYDRIC","AREA_HYDRIC") or \
+        if fld.name in ("warm","cold","cool","TotLength","Crossings","AnimalOps","NPDES") or \
            "NLCD" in fld.name or \
            "Shade" in fld.name:
             arcpy.CalculateField_management("Lyr",fld.name,"0")
+        elif fld.name == "upstreamDistance_km":
+            #If no dam upstream, set value to arbolate sum
+            arcpy.CalculateField_management("Lyr","upstreamDistance_km","[ArbolateSu]")
+        elif fld.name == "downstreamDistance_km":
+            #If no dam downstream, set value to pathlength
+            arcpy.CalculateField_management("Lyr","downstreamDistance_km","[PathLength]")
         else:
             arcpy.CalculateField_management("Lyr",fld.name,"-9999")
+
+
     
 msg("Finished!")
