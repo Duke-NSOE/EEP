@@ -105,7 +105,7 @@ r('sppBin <- replace(sppBin, sppBin == 2, 1)')
 
 #Make a dictionary of correlation values from the Correlations.csv file
 msg("Reading in variable correlations with presence-absence")
-correlationsCSV = os.path.join(statsFolder,sppName,"Correlations.csv")
+correlationsCSV = os.path.join(statsFolder,sppName,"SH_Correlations.csv")
 corDict = {}
 f = open(correlationsCSV,'rt')
 reader = csv.reader(f)
