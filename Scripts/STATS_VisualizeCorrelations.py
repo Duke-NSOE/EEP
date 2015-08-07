@@ -14,8 +14,8 @@ import sys, os, arcpy
 
 #Input variables
 speciesName = arcpy.GetParameterAsText(0)           # Name of species analyzed
-sppCorrelationsCSV = arcpy.GetParameterAsText(1)    # List of variable correlations with presence/absence
-envCorrelationsCSV = arcpy.GetParameterAsText(2)    # List of variabel correlations with each other
+shCorrelationsCSV = arcpy.GetParameterAsText(1)    # List of variable correlations with presence/absence
+rvCorrelationsCSV = arcpy.GetParameterAsText(2)    # List of variabel correlations with each other
 envRankingsXLS = arcpy.GetParameterAsText(3)        # Table listing the rankings of each variable for selection [static]
 
 #Ouptut
@@ -58,7 +58,7 @@ colorDict["23"] = "{background:'%s',border:'%s'}" %(col3,border2)
 msg("...creating a list of significant response variables (nodes)")
 nodeDict = {}                       #Create a dictionary of field names/id values
 id = 1                              #Initialize the ID variable
-f = open(sppCorrelationsCSV,'rt')   #Open the file
+f = open(shCorrelationsCSV,'rt')   #Open the file
 headers = f.readline()              #Extract/skip the headers line in the CSV
 dataString = f.readline()[:-1]      #Convert the text to string (omitting the newline char at the end
 while dataString:                   #Loop through each line in the CSV
@@ -100,8 +100,9 @@ nodeString += "      ];\n\n"
 
 ##Make edge string from file
 #Start the string
+msg("Writing HTML code for variable edges")
 edgeString = "      edges = [\n"
-f = open(envCorrelationsCSV,'rt')      #Open the CSV file (again)
+f = open(rvCorrelationsCSV,'rt')    #Open the CSV file (again)
 headers = f.readline()              #Read/skip the header file
 dataString = f.readline()[:-1]      #Convert the text to string (omitting the newline char at the end
 while dataString:                   #Loop through each line in the CSV
