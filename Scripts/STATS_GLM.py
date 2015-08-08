@@ -220,7 +220,7 @@ r('write.csv(outTable,"{}")'.format(GLMPredictionsCSV))
 ##-- RANDOM FOREST --
 msg("Running random forest analysis")
 r('library(randomForest)')
-r('sppForest <- randomForest(as.factor(spp)~., data=habData, ntree=500, importance=TRUE)')
+r('sppForest <- randomForest(as.factor(spp)~., data=habData, ntree=2501, importance=TRUE)')
 msg("Compiling variable importances to {}".format(RFVarImportanceCSV))
 r('outTableRFVars <- sppForest$importance')
 r('colnames(outTableRFVars)[0] <- "VARIABLE"')
@@ -228,17 +228,17 @@ r('colnames(outTableRFVars)[1] <- "0"')
 r('colnames(outTableRFVars)[2] <- "1"')
 r('write.csv(outTableRFVars,"{}")'.format(RFVarImportanceCSV))
 msg("Running predictions on catchments")
+#Calculate RF Predictions (continuous)
+r('rfProbs <- predict(sppForest, type="prob")')
 #Calculate Responses (binary)
 r('rfPredictions <- predict(sppForest, type="response")')
-#Convert rfPredictions to binary
+#--Convert rfPredictions to binary
 r('rfPredBin = c(rfPredictions)')
-#Replace 1s with 0s and 2s with 1s
-#r('rfPredBin <- replace(rfPredBin, rfPredBin == 1, 0)')
+#--Replace 1s with 0s and 2s with 1s
+r('rfPredBin <- replace(rfPredBin, rfPredBin == 1, 0)')
 r('rfPredBin <- replace(rfPredBin, rfPredBin == 2, 1)')
-#Calculate RF Predictions
-r('rfProbs <- predict(sppForest, type="prob")')
-
-r('outTableRF <- cbind(sppAll$X,rfProbs[,(1)],rfPredBin,sppBin)')
+#Write to a table
+r('outTableRF <- cbind(sppAll$X,rfProbs[,(2)],rfPredBin,sppBin)')
 r('colnames(outTableRF)[1] <- "GRIDCODE"')
 r('colnames(outTableRF)[2] <- "HABPROB"')
 r('colnames(outTableRF)[3] <- "PREDICTION"')
