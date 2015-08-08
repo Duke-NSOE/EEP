@@ -40,7 +40,7 @@ def msg(txt,type="message"):
 # Get the list of Variable Importance CSVs in the folder
 msg("...getting GLM jackknife files")
 arcpy.env.workspace = sppCSVFolder
-csvFiles = arcpy.ListFiles("*_GLM.csv")
+csvFiles = arcpy.ListFiles("*_GLMVars.csv")
 msg("   ...{} species files accessed".format(len(csvFiles)))
 
 # Make a copy of the master variables table
@@ -54,12 +54,12 @@ outFields = ["variable"]
 msg("...looping through species files")
 for sppCSV in csvFiles:
     #Extract the species name
-    sppName = sppCSV.replace('_GLM','')
+    sppName = sppCSV.replace('_GLMVars.csv','')
     msg("      processing {}".format(sppName))
     #Make a local copy (for joining)
     sppTbl = arcpy.CopyRows_management(sppCSV, "in_memory/spp")
     #Join the fields
-    arcpy.JoinField_management(varTbl,"Variable",sppTbl,"Field1",("D2only;Ponly;dD2without;GainWithOnly"))
+    arcpy.JoinField_management(varTbl,"Variable",sppTbl,"Field1",("D2only;Ponly;dD2without;PWithout"))
     #Rename the joined fields
     arcpy.AlterField_management(varTbl,"D2only","{0}_D2only".format(sppName))
     arcpy.AlterField_management(varTbl,"Ponly","{0}_Ponly".format(sppName))
