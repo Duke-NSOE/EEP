@@ -40,7 +40,7 @@ def msg(txt,type="message"):
 # Get the list of Variable Importance CSVs in the folder
 msg("...getting species fileds")
 arcpy.env.workspace = sppCSVFolder
-csvFiles = arcpy.ListFiles("*VarImportance.csv")
+csvFiles = arcpy.ListFiles("*MEVars.csv")
 msg("   ...{} species files accessed".format(len(csvFiles)))
 
 # Make a copy of the master variables table
@@ -54,7 +54,7 @@ outFields = ["variable"]
 msg("...looping through species files")
 for sppCSV in csvFiles:
     #Extract the species name
-    sppName = sppCSV.replace('_VarImportance.csv','')
+    sppName = sppCSV.replace('_MEVars.csv','')
     msg("      processing {}".format(sppName))
     #Make a local copy (for joining)
     sppTbl = arcpy.CopyRows_management(sppCSV, "in_memory/spp")
