@@ -19,7 +19,7 @@
 # July 2015
 # John.Fay@duke.edu
 
-import sys, os, arcpy, csv
+import sys, os, arcpy, csv, datetime
 
 # Input variables
 sppName = arcpy.GetParameterAsText(0)
@@ -37,6 +37,13 @@ rlibPath = os.path.join(sys.path[0],"RScripts")         # Location of all R subs
 jackGLM = os.path.join(rlibPath,"jackGLM.R")            # Jackkinifing subscript
 cutoffROCR = os.path.join(rlibPath,"cutoff.ROCR.R")     # ROCR subscript
 
+statsFolder = statsFolder.replace("\\","/")                      # Folder containing MaxEnt data
+speciesCSV = '{0}/{1}/{1}_SWD.csv'.format(statsFolder,sppName)   # Maxent SWD file containing all data to run the models
+maxentFile = '{0}/{1}/RunMaxent.bat'.format(statsFolder,sppName) # MaxEnt batch file, containing response vars to exclude
+
+RLogFile = '{0}/{1}/{1}.R'.format(statsFolder,sppName)
+RDataFile = '{0}/{1}/.RData'.format(statsFolder,sppName)
+
 ## ---Functions---
 def msg(txt,type="message"):
     if type == "message":
@@ -47,13 +54,18 @@ def msg(txt,type="message"):
         arcpy.AddError(txt)
     print txt
 
-def r(rCMD,logging=0): #Runs an R command
+def r(rCMD,logFN=RLogFile): #Runs an R command
     rawOutput = runR(rCMD)
     outLines = rawOutput.split("\n")
     #Print the first line
     firstLine = "[R:]"+outLines[0][5:-3]
     arcpy.AddWarning(firstLine)
     print firstLine
+    #If a logfile is provided, open it, append the line, and close
+    if RLogFile:
+        log = open(logFN,'a')
+        log.write("{}\n".format(firstLine[4:]))
+        log.close()
     #Print any additional lines
     for idx in range(1,len(outLines)):
         if len(outLines[idx]) > 0:
@@ -61,18 +73,30 @@ def r(rCMD,logging=0): #Runs an R command
             arcpy.AddWarning(otherLine)
             print otherLine
 
-## -- Module checks --
+## -- File checks --
+# Set and check species jackGLM R script
+if not os.path.exists(jackGLM):
+    msg("jackGLM R script not found at {}".format(jackGLM),"error")
+    sys.exit(1)
+# Set and check species cutoffROCR R script
+if not os.path.exists(cutoffROCR):
+    msg("cutoffROCR R script not found at {}".format(cutoffROCR),"error")
+    sys.exit(1)
 # Set and check species SWD file
-statsFolder = statsFolder.replace("\\","/")
-speciesCSV = '{0}/{1}/{1}_SWD.csv'.format(statsFolder,sppName)
 if not os.path.exists(speciesCSV):
     msg("SWD file not found at {}".format(speciesCSV),"error")
     sys.exit(1)
 # Maxent batch file (used to identify and remove redundant fields       
-maxentFile = '{0}/{1}/RunMaxent.bat'.format(statsFolder,sppName)
 if not os.path.exists(maxentFile):
     msg("Maxent Batch file not found at {}".format(maxentFile),"error")
     sys.exit(1)
+
+# Initialize the R log file
+msg("Saving R commands to {}".format(RLogFile))
+logFile = open(RLogFile,"w")
+timeNow = str(datetime.datetime.now())[:-7]
+logFile.write("#R log file for {}; Created: {}\n".format(sppName,timeNow))
+logFile.close()
 
 #Fire up PypeR
 try:
@@ -94,7 +118,7 @@ msg("Reading in the species data")
 r('sppAll <- read.csv("{}")'.format(os.path.basename(speciesCSV)))
 
 #Set the spp vector
-msg("Create species vector: 'spp'")
+msg("Creating species vector: 'spp'")
 r('spp <- sppAll[,c(1)]')
 
 #Make a binary vector of spp
@@ -120,9 +144,6 @@ for key, value in sorted(corDict.iteritems(), key=lambda (k,v): (v,k)):
 
 #Remove "variable" from the list
 if "variable" in varList: varList.remove("variable")
-
-##REMOVE CROSSINGS
-if "Crossings" in varList: varList.remove("Crossings")
 
 #Get the fields to cut (b/c of redundancy from the MaxEnt batch file
 f = open(maxentFile,'rt')
@@ -165,8 +186,8 @@ r('sppGLM <- glm(as.factor(spp)~., data=habData, family=binomial)')
 #r('sppGLMd2 <- 1-(sppGLM$deviance/sppGLM$null.deviance)')
 #r('sppGLMd2')
 r('sppJtable <- jackGLM(spp,habData)')
+r('colnames(sppJtable)[0] <- "Variable"')
 
-#r('sppJtable')
 msg("Writing jackknife results to {}".format(GLMVarImportanceCSV))
 r('write.csv(sppJtable$jtable, "{}")'.format(GLMVarImportanceCSV))
 
@@ -184,15 +205,15 @@ r('cutoff <- cutoff.ROCR(sppPred, "tpr", target=0.95)')
 r('sppPredGLM[sppPredGLM < cutoff] <- 0')
 r('sppPredGLM[sppPredGLM >= cutoff] <- 1')
 
-msg("Writing predictions to {}".format(GLMPredictionsCSV))
+msg("Writing GLM predictions to {}".format(GLMPredictionsCSV))
 #Merge the sppAll gridcode, predictions, and thresholded values
-r('outTable <- cbind(sppAll$X,sppGLM$fitted.values,sppPredGLM,sppBin)')
+r('outTableGLM <- cbind(sppAll$X,sppGLM$fitted.values,sppPredGLM,sppBin)')
 #Rename columns
-r('colnames(outTable)[0] <- "ID"')
-r('colnames(outTable)[1] <- "GRIDCODE"')
-r('colnames(outTable)[2] <- "HAB_PROB"')
-r('colnames(outTable)[3] <- "PREDICTION"')
-r('colnames(outTable)[4] <- "OBSERVED"')
+r('colnames(outTableGLM)[0] <- "ID"')
+r('colnames(outTableGLM)[1] <- "GRIDCODE"')
+r('colnames(outTableGLM)[2] <- "HAB_PROB"')
+r('colnames(outTableGLM)[3] <- "PREDICTION"')
+r('colnames(outTableGLM)[4] <- "OBSERVED"')
 #Write the output
 r('write.csv(outTable,"{}")'.format(GLMPredictionsCSV))
 
@@ -201,23 +222,29 @@ msg("Running random forest analysis")
 r('library(randomForest)')
 r('sppForest <- randomForest(as.factor(spp)~., data=habData, ntree=500, importance=TRUE)')
 msg("Compiling variable importances to {}".format(RFVarImportanceCSV))
-r('outTable <- sppForest$importance')
-#r('colnames(outTable)[0] <- "VARIABLE"')
-#r('colnames(outTable)[1] <- "0"')
-#r('colnames(outTable)[2] <- "1"')
-r('write.csv(outTable,"{}")'.format(RFVarImportanceCSV))
+r('outTableRFVars <- sppForest$importance')
+r('colnames(outTableRFVars)[0] <- "VARIABLE"')
+r('colnames(outTableRFVars)[1] <- "0"')
+r('colnames(outTableRFVars)[2] <- "1"')
+r('write.csv(outTableRFVars,"{}")'.format(RFVarImportanceCSV))
 msg("Running predictions on catchments")
+#Calculate Responses (binary)
 r('rfPredictions <- predict(sppForest, type="response")')
+#Convert rfPredictions to binary
+r('rfPredBin = c(rfPredictions)')
+#Replace 1s with 0s and 2s with 1s
+#r('rfPredBin <- replace(rfPredBin, rfPredBin == 1, 0)')
+r('rfPredBin <- replace(rfPredBin, rfPredBin == 2, 1)')
+#Calculate RF Predictions
 r('rfProbs <- predict(sppForest, type="prob")')
 
-r('outTable <- cbind(sppAll$X,rfProbs[,(1)],rfPredictions,sppBin)')
-r('colnames(outTable)[1] <- "GRIDCODE"')
-r('colnames(outTable)[2] <- "HABPROB"')
-r('colnames(outTable)[3] <- "PREDICTION"')
-r('colnames(outTable)[4] <- "OBSERVED"')
-r('write.csv(outTable,"{}")'.format(RFPredictionsCSV))
+r('outTableRF <- cbind(sppAll$X,rfProbs[,(1)],rfPredBin,sppBin)')
+r('colnames(outTableRF)[1] <- "GRIDCODE"')
+r('colnames(outTableRF)[2] <- "HABPROB"')
+r('colnames(outTableRF)[3] <- "PREDICTION"')
+r('colnames(outTableRF)[4] <- "OBSERVED"')
+r('write.csv(outTableRF,"{}")'.format(RFPredictionsCSV))
 
-
-#Remove the R object from memory
-#del pyper
-
+#Save the workspace
+msg("Saving the workspace to {}".format(RDataFile))
+r('save.image()')
