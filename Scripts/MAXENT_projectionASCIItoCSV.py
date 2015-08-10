@@ -72,3 +72,5 @@ writer.writerow(("GRIDCODE", "HabProb"))
 for i in range(2,len(featureIDs)):
     writer.writerow((featureIDs[i-1],valueIDs[i-1]))
 file.close()
+
+#Merge with 
