@@ -14,8 +14,8 @@ import sys, os, arcpy, csv
 arcpy.env.overwriteOutput = True
 
 # Input variables
-respvarTbl = r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\WU_ResponseVars' #arcpy.GetParameterAsText(0)  
-prjFolder = r'C:\WorkSpace\EEP_Tool\MaxEnt\Uplift_WetlandExpansion\WUprj' #arcpy.GetParameterAsText(1)
+respvarTbl = arcpy.GetParameterAsText(0)
+prjFolder = arcpy.GetParameterAsText(1)
 
 ## ---Functions---
 def msg(txt,type="message"):
