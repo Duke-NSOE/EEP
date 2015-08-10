@@ -161,7 +161,7 @@ for item in lineString.split(" "):
         varList.remove(layerName)
 
 #Initialize the habData object with the first column
-r('habData <- sppAll[("{}")]'.format(varList[0]))
+#r('habData <- sppAll[("{}")]'.format(varList[0]))
 
 #Create the R command to set the habData data frame
 commandString = "habData <- sppAll[c("
