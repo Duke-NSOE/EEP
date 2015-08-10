@@ -11,8 +11,8 @@
 import sys, os, arcpy
 
 #User variables
-origRVTbl = r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\ResponseVars'
-upliftTbl = r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\ResponseVars_BU'
+origRVTbl = arcpy.GetParameterAsText(0)
+upliftTbl = arcpy.GetParameterAsText(1)
 
 #Set environments
 arcpy.env.overwriteOutput = True
