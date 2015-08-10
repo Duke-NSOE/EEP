@@ -32,12 +32,12 @@ def msg(txt,type="message"):
 msg("Copying original data to ResponseVarsBU")
 upliftTbl = arcpy.CopyRows_management(origRVTbl,upliftTbl)
 
-#Increase Forest(4) flowlength to sum of Barren(3), Shrubland(5), Herbaceious(7), Cultivated(8), and Wetland(9)
-msg("Adding lengths in Barren(3), Shrubland(5), Herbaceious(7), Cultivated(8), and Wetland(9) to existing Forest(4)")
+#Increase Forest(4) flowlength to sum of Barren(3), Shrubland(5), Herbaceous(7), Cultivated(8), and Wetland(9)
+msg("Adding lengths in Barren(3), Shrubland(5), Herbaceous(7), Cultivated(8), and Wetland(9) to existing Forest(4)")
 arcpy.CalculateField_management(upliftTbl,"FLNLCD_4","[FLNLCD_4] + [FLNLCD_3] + [FLNLCD_5] + [FLNLCD_7] + [FLNLCD_8]+ [FLNLCD_9]")
 
 #Zero out current values
-msg("Zeroing out existing lenths in Barren(3), Shrubland(5), Herbaceious(7), Cultivated(8), and Wetland(9)")
+msg("Zeroing out existing lenths in Barren(3), Shrubland(5), Herbaceous(7), Cultivated(8), and Wetland(9)")
 arcpy.CalculateField_management(upliftTbl,"FLNLCD_3","0")
 arcpy.CalculateField_management(upliftTbl,"FLNLCD_5","0")
 arcpy.CalculateField_management(upliftTbl,"FLNLCD_7","0")
