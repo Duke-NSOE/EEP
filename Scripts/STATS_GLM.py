@@ -40,6 +40,7 @@ cutoffROCR = os.path.join(rlibPath,"cutoff.ROCR.R")     # ROCR subscript
 statsFolder = statsFolder.replace("\\","/")                      # Folder containing MaxEnt data
 speciesCSV = '{0}/{1}/{1}_SWD.csv'.format(statsFolder,sppName)   # Maxent SWD file containing all data to run the models
 maxentFile = '{0}/{1}/RunMaxent.bat'.format(statsFolder,sppName) # MaxEnt batch file, containing response vars to exclude
+correlationsCSV = '{0}/{1}/SH_Correlations.csv'.format(statsFolder,sppName) # List of response variables correlated with presence/absence
 
 RLogFile = '{0}/{1}/{1}.R'.format(statsFolder,sppName)
 RDataFile = '{0}/{1}/.RData'.format(statsFolder,sppName)
@@ -129,7 +130,6 @@ r('sppBin <- replace(sppBin, sppBin == 2, 1)')
 
 #Make a dictionary of correlation values from the Correlations.csv file
 msg("Reading in variable correlations with presence-absence")
-correlationsCSV = os.path.join(statsFolder,sppName,"SH_Correlations.csv")
 corDict = {}
 f = open(correlationsCSV,'rt')
 reader = csv.reader(f)
@@ -159,9 +159,6 @@ for item in lineString.split(" "):
         msg("    {} is redundant".format(layerName))
         #Remove the item in the varList, if it's there
         varList.remove(layerName)
-
-#Initialize the habData object with the first column
-#r('habData <- sppAll[("{}")]'.format(varList[0]))
 
 #Create the R command to set the habData data frame
 commandString = "habData <- sppAll[c("
