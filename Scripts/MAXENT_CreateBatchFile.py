@@ -84,6 +84,10 @@ runString += " jackknife=true"
 msg("Disabling drawing pictures")
 runString += " pictures=false"
 
+# enable 4 threads to speed processing
+msg("Running Maxent on 4 processors")
+runString += " threads=4"
+
 # turn off background spp
 msg('Toggling "background" species')
 runString += " togglespeciesselected=background"
