@@ -11,20 +11,14 @@ import arcpy, sys, os, csv
 arcpy.env.overwriteOutput = 1
 
 # Input variables
-sppName = arcpy.GetParameterAsText(0)
-currentFolder = arcpy.GetParameterAsText(1)
-resultFolder = arcpy.GetParameterAsText(2)
-scenario = resultFolder[-2:]
-respVarTbl = arcpy.GetParameterAsText(3)
-
-##sppName = "Nocomis_leptocephalus"
-##currentFolder = r"C:\WorkSpace\EEP_Tool\HabitatStats\Nocomis_leptocephalus\Output_HUC"
-##resultFolder = r"C:\WorkSpace\EEP_Tool\HabitatStats\Nocomis_leptocephalus\Output_BU"
-##scenario = resultFolder[-2:]
-##respVarTbl = r"C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\ResponseVars"
+sppName = arcpy.GetParameterAsText(0)       #Species name, used to find species model results
+curFolder = arcpy.GetParameterAsText(1)     #Folder containing maxent output for current conditions
+altFolder = arcpy.GetParameterAsText(2)     #Folder containing maxent output for alternate conditions
+scenario = altFolder[-2:]                   #Scenario code, last two chars in result folder
+respVarTbl = arcpy.GetParameterAsText(3)    #Response variable table listing all the catchments
 
 # Output
-upliftCSV = arcpy.GetParameterAsText(4)
+upliftCSV = arcpy.GetParameterAsText(4)     #Output table of uplift values for the scenario
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -37,37 +31,33 @@ def msg(txt,type="message"):
         arcpy.AddError(txt)
 
 ## ---Processes---
-#-- Get the MaxEnt projections files---
-#Current conditions file
-curFile = os.path.join(currentFolder,"{}_HUC_prj.asc".format(sppName,scenario))
+#---Get the MaxEnt projections files---
+#Current conditions file (maxent projection)
+curFile = os.path.join(curFolder,"{}_HUC_prj.asc".format(sppName,scenario))
 if not os.path.exists(curFile):
-    msg("Cannot find current file: {}\nExiting.".format(ascFile),"error")
+    msg("Cannot find current file: {}\nExiting.".format(altFile),"error")
     sys.exit(1)
-#Future conditions file
-ascFile = os.path.join(resultFolder,"{}_{}_prj.asc".format(sppName,scenario))
-if not os.path.exists(ascFile):
-    msg("Cannot find projection file: {}\nExiting.".format(ascFile),"error")
+#Alternate conditions file (maxent projection)
+altFile = os.path.join(altFolder,"{}_{}_prj.asc".format(sppName,scenario))
+if not os.path.exists(altFile):
+    msg("Cannot find projection file: {}\nExiting.".format(altFile),"error")
     sys.exit(1)
 msg("ASCII files found. Reading records")
 
-#--Get the lines of the current projection file (likelihood under current conditions)
+#---Read in the lines of the current projection file---
+#Current conditions
 f = open(curFile, 'r')
 curLines = f.readlines()
 f.close()
-curRecords = len(curLines)
-msg("  {} current records extracted".format(curRecords - 6))
-
-#--Get the lines of the  future projection file (likelihood under alternate scenarios)
-f = open(ascFile, 'r')
-prjLines = f.readlines()
+#Alternate conditions
+f = open(altFile, 'r')
+altLines = f.readlines()
 f.close()
-prjRecords = len(prjLines)
-msg("  {} future records extracted".format(prjRecords - 6))
 
-#Initialize the output file
+#Initialize the output file and write column headers, named with scenario and "ME" for Maxent
 msg("Initializing output CSV")
 f = open(upliftCSV,'w')
-f.write("GRIDCODE, {0}_current, {0}_alternate, {0}_uplift\n".format(scenario))
+f.write("GRIDCODE, current_ME, {0}_ME, {0}_uplift_ME\n".format(scenario))
 
 #Loop through catchment records in the response var table
 msg("Writing records to output CSV")
@@ -77,11 +67,11 @@ for rec in recs:
     gridCode = rec[0]               #GRIDCODE of catchment
     curProb = curLines[lineIdx]     #value from current projection ASCII
     curVal = float(curProb)         # convert to number
-    prjLine = prjLines[lineIdx]     #value from future projection ASCII
-    prjVal = float(prjLine)         # convert to number
-    uplift = prjVal - curVal        # Uplift=difference between future and current
+    altLine = altLines[lineIdx]     #value from future projection ASCII
+    altVal = float(altLine)         # convert to number
+    uplift = altVal - curVal        #Uplift = difference between future and current
     #write the record to the output CSV
-    f.write("%s,%2.5f,%2.5f,%2.5f\n" %(gridCode,curVal,prjVal,uplift))
+    f.write("%s,%2.5f,%2.5f,%2.5f\n" %(gridCode,curVal,altVal,uplift))
     #Increase lineIdx to read next line
     lineIdx += 1
 
