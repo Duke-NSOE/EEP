@@ -9,8 +9,8 @@ import sys, os, arcpy
 arcpy.CheckOutExtension("spatial")
 
 #User variables
-NLCDRaster = r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\nlcd_2011'
-outRaster =  r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\wetlanduplift'
+NLCDRaster = arcpy.GetParameterAsText(0)
+outRaster =  arcpy.GetParameterAsText(0)
 
 #Set environments
 arcpy.env.overwriteOutput = True
