@@ -10,12 +10,12 @@ import sys, os, arcpy, csv, tempfile
 arcpy.env.overwriteOutput = 1
 
 # Input variables
-scenarioPrefix = "BU"
-scenarioFldr = r'C:\WorkSpace\EEP_Tool\HabitatStats\Scenarios'
-catchmentsFC = r'C:\WorkSpace\EEP_Tool\Data\EEP_030501.gdb\NHDCatchments'
+scenarioPrefix = arcpy.GetParameterAsText(0)
+scenarioFldr = arcpy.GetParameterAsText(1)
+catchmentsFC = arcpy.GetParameterAsText(2)
 
 # Output variables
-outCSV = r'C:\WorkSpace\EEP_Tool\HabitatStats\Scenarios\CombinedUpliftBU.csv'
+outCSV = arcpy.GetParameterAsText(3)
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -30,7 +30,7 @@ def msg(txt,type="message"):
 ## ---Processes---
 #Get a list of scenario uplift files
 arcpy.env.workspace = scenarioFldr
-meFiles = arcpy.ListFiles("*{}_maxent.csv".format(scenarioPrefix))      #Maxent results
+meFiles = arcpy.ListFiles("*{}_maxent.csv".format(scenarioPrefix)) #Maxent results
 glmFiles = arcpy.ListFiles("*{}_glmrf.csv".format(scenarioPrefix)) #GLM/RF results
 
 # Make a copy of the master variables table
@@ -45,27 +45,52 @@ varTbl = arcpy.CopyRows_management(catchmentsFC,"in_memory/vars")
 outFields = ["GRIDCODE"]
 
 # Loop through each CSV and join it to the copy
-msg("...looping through Maxent uplift files")
+msg("...looping through uplift files")
 for meFile in meFiles:
     #Extract the species name
     sppName = meFile[7:-14]
-    msg("      processing {}".format(sppName))
+    #Shorten the spp name
+    sppNames = sppName.split("_")
+    sppName = sppNames[0][0]+"_"+sppNames[1][:5]
+    msg("      processing {} (Maxent)".format(sppName))
     #Make a local copy (for joining)
     sppTbl = arcpy.CopyRows_management(meFile, "in_memory/spp")
-    #Join the fields
+    #Join the maxent fields
     arcpy.JoinField_management(varTbl,"GRIDCODE",sppTbl,"GRIDCODE","{0}_ME;{0}_uplift_ME".format(scenarioPrefix))
     #Rename the joined fields
-    arcpy.AlterField_management(varTbl,"{0}_ME".format(scenarioPrefix),"{0}_LogProb".format(sppName))
-    arcpy.AlterField_management(varTbl,"{0}_uplift_ME".format(scenarioPrefix),"{0}_Uplift".format(sppName))
+    arcpy.AlterField_management(varTbl,"{0}_ME".format(scenarioPrefix),"{0}_LogProb_ME".format(sppName))
+    arcpy.AlterField_management(varTbl,"{0}_uplift_ME".format(scenarioPrefix),"{0}_Uplift_ME".format(sppName))
     #Add fields to output field list
-    outFields.append("{0}_LogProb".format(sppName))
-    outFields.append("{0}_Uplift".format(sppName))
+    outFields.append("{0}_LogProb_ME".format(sppName))
+    outFields.append("{0}_Uplift_ME".format(sppName))
+
+    #Get the corresponding GLM file
+    glmFile = meFile.replace("maxent","glmrf")
+    #Raise error if file not found
+    if not glmFile in glmFiles:
+        msg("{} file not found".format(glmFile),"error")
+        sys.exit(1)
+    msg("      processing {} (GLM/RF)".format(sppName))
+    #Make a local copy (for joining)
+    sppTbl = arcpy.CopyRows_management(glmFile, "in_memory/spp")
+    #Join the GLM fields
+    arcpy.JoinField_management(varTbl,"GRIDCODE",sppTbl,"GRIDCODE","{0}_GLM;{0}_Uplift_GLM;{0}_RF;{0}_uplift_RF".format(scenarioPrefix))
+    #Rename the joined fields
+    arcpy.AlterField_management(varTbl,"{0}_GLM".format(scenarioPrefix),"{0}_LogProb_GLM".format(sppName))
+    arcpy.AlterField_management(varTbl,"{0}_uplift_GLM".format(scenarioPrefix),"{0}_Uplift_GLM".format(sppName))
+    arcpy.AlterField_management(varTbl,"{0}_RF".format(scenarioPrefix),"{0}_LogProb_RF".format(sppName))
+    arcpy.AlterField_management(varTbl,"{0}_uplift_RF".format(scenarioPrefix),"{0}_Uplift_RF".format(sppName))
+    #Add fields to output field list
+    outFields.append("{0}_LogProb_GLM".format(sppName))
+    outFields.append("{0}_Uplift_GLM".format(sppName))
+    outFields.append("{0}_LogProb_RF".format(sppName))
+    outFields.append("{0}_Uplift_RF".format(sppName))
 
 # Initialize the output CSV file
 msg("...initializing output CSV")
 f = open(outCSV,'wb')
 writer = csv.writer(f)
-writer.writerow(["GRIDCODE","mean_LogProb","mean_Uplift"]+outFields[1:])
+writer.writerow(["GRIDCODE","mean_UpliftME","mean_UpliftGLM","mean_UpliftRF"]+outFields[1:])
 
 # Write the data to the file
 msg("...writing data to CSV")
@@ -73,27 +98,43 @@ cur = arcpy.da.SearchCursor(varTbl,outFields)
 for row in cur:
     #Get the gridcode
     gridcode = row[0]
+    
     #Replace null values with zeros
     outValues = []
     for val in row:
         if not val: outValues.append(0)
         else: outValues.append(val)
-    #Initialize output variables
-    LogProbSum = 0
-    UpliftSum = 0
+        
+    #Initialize running sum variables
+    ME_LogProbSum = 0
+    ME_UpliftSum = 0
+    GLM_LogProbSum = 0
+    GLM_UpliftSum = 0
+    RF_LogProbSum = 0
+    RF_UpliftSum = 0
     counter = 0
-    #Calculate running sums by looping through columns, skipping the 1st (Gridcode)
-    # and skipping every other one. 
-    for ColIdx in range(1,len(outValues),2):
+    offSet = len(meFiles)*2 #Number of columns between 1st Maxent and 1st GLM column
+
+    #Calculate running sums by looping through columns
+    for ColIdx in range(1,len(outValues),6):
         #Running sums of LogProb values, Uplift values, and a counter to calc averages
-        LogProbSum += float(outValues[ColIdx])
-        UpliftSum += float(outValues[ColIdx + 1]) #index offest = 1
+        ME_LogProbSum += float(outValues[ColIdx])
+        ME_UpliftSum += float(outValues[ColIdx + 1]) #index offest = 1
+        GLM_LogProbSum += float(outValues[ColIdx + 2])
+        GLM_UpliftSum += float(outValues[ColIdx + 3]) #index offest = 1
+        RF_LogProbSum += float(outValues[ColIdx + 4])
+        RF_UpliftSum += float(outValues[ColIdx + 5]) #index offest = 1        
         counter += 1
+                              
     #Calculate averages from the sums
-    LogProbAvg = LogProbSum / counter
-    UpliftAvg = UpliftSum / counter
+    ME_LogProbAvg = ME_LogProbSum / counter
+    ME_UpliftAvg = ME_UpliftSum / counter
+    GLM_LogProbAvg = GLM_LogProbSum / counter
+    GLM_UpliftAvg = GLM_UpliftSum / counter
+    RF_LogProbAvg = RF_LogProbSum / counter
+    RF_UpliftAvg = RF_UpliftSum / counter
 
     #Write values to CSV
-    writer.writerow([gridcode,LogProbAvg,UpliftAvg]+outValues[1:])
+    writer.writerow([gridcode,ME_UpliftAvg,GLM_UpliftAvg,RF_UpliftAvg]+outValues[1:])
     
 f.close()
