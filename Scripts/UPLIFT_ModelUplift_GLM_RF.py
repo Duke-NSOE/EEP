@@ -17,14 +17,13 @@ altCSV = arcpy.GetParameterAsText(3)#r'C:\WorkSpace\EEP_Tool\HabitatStats\BU_Res
 statsFolder = arcpy.GetParameterAsText(4)#r'C:\WorkSpace\EEP_Tool\HabitatStats'
 rPath = arcpy.GetParameterAsText(5)#r'C:/Program Files/R/R-3.1.1/bin/i386/R'
 
+# Output variables
+PredictionsCSV = arcpy.GetParameterAsText(6)
+
 # Replace backslashes with forward slashes to work with R
 currentCSV = currentCSV.replace("\\","/")
 altCSV = altCSV.replace("\\","/")
 statsFolder = statsFolder.replace("\\","/") 
-
-# Output variables
-PredictionsCSV = os.path.join(statsFolder,"{}_{}.csv".format(upliftPrefix,sppName))
-arcpy.SetParameterAsText(6,PredictionsCSV)
 
 # Script variables
 sppFolder = '{0}/{1}'.format(statsFolder,sppName)               #Folder containing species stats
@@ -133,7 +132,14 @@ r('{}_upliftRF <- altPredictionRF[,1] - currentPredictionRF[,1]'.format(upliftPr
 #Create output table
 msg("Forming output table")
 r('GRIDCODE <- currentAll$GRIDCODE')
-r('upliftTbl <- cbind(GRIDCODE, {0}_upliftGLM, {0}_upliftRF)'.format(upliftPrefix))
+r('upliftTbl <- cbind(GRIDCODE,currentPredictionGLM,altPredictionGLM,{0}_upliftGLM,currentPredictionRF[,1],altPredictionRF[,1],{0}_upliftRF)'.format(upliftPrefix))
+#Rename columns
+r('colnames(upliftTbl)[2] <- "Current_GLM"')
+r('colnames(upliftTbl)[3] <- "{}_GLM"'.format(upliftPrefix))
+r('colnames(upliftTbl)[4] <- "{}_Uplift_GLM"'.format(upliftPrefix))
+r('colnames(upliftTbl)[5] <- "Current_RF"'.format(upliftPrefix))
+r('colnames(upliftTbl)[6] <- "{}_RF"'.format(upliftPrefix))
+r('colnames(upliftTbl)[7] <- "{}_uplift_RF"'.format(upliftPrefix))
 
 #Write output table
 msg("Writing output to {}".format(PredictionsCSV))
