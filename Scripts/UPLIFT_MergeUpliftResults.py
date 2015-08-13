@@ -47,11 +47,20 @@ outFields = ["GRIDCODE"]
 # Loop through each CSV and join it to the copy
 msg("...looping through uplift files")
 for meFile in meFiles:
+    #Get the corresponding GLM file; skip if not found
+    glmFile = meFile.replace("maxent","glmrf")
+    #Raise error if file not found
+    if not glmFile in glmFiles:
+        msg("     {} file not found".format(glmFile),"warning")
+        continue
+    
     #Extract the species name
     sppName = meFile[7:-14]
     #Shorten the spp name
     sppNames = sppName.split("_")
     sppName = sppNames[0][0]+"_"+sppNames[1][:5]
+
+    #--MAXENT--
     msg("      processing {} (Maxent)".format(sppName))
     #Make a local copy (for joining)
     sppTbl = arcpy.CopyRows_management(meFile, "in_memory/spp")
@@ -64,12 +73,7 @@ for meFile in meFiles:
     outFields.append("{0}_LogProb_ME".format(sppName))
     outFields.append("{0}_Uplift_ME".format(sppName))
 
-    #Get the corresponding GLM file
-    glmFile = meFile.replace("maxent","glmrf")
-    #Raise error if file not found
-    if not glmFile in glmFiles:
-        msg("{} file not found".format(glmFile),"error")
-        sys.exit(1)
+    #--GLM RF---
     msg("      processing {} (GLM/RF)".format(sppName))
     #Make a local copy (for joining)
     sppTbl = arcpy.CopyRows_management(glmFile, "in_memory/spp")
