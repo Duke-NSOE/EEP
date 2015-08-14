@@ -25,7 +25,9 @@ prjFolder = arcpy.GetParameterAsText(3)         # Folder containing ASCII projec
 runMaxent = arcpy.GetParameterAsText(4)         # Boolean whether to run MaxEnt when finished
 
 # Output variables
-maxentFile = arcpy.GetParameterAsText(5)        # BAT file to write
+#maxentFile = arcpy.GetParameterAsText(5)        # BAT file to write
+maxentFile = os.path.join(os.path.dirname(swdFile),"RunMaxent.bat")
+arcpy.SetParameterAsText(5,maxentFile)
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -86,7 +88,11 @@ runString += " pictures=false"
 
 # enable 4 threads to speed processing
 msg("Running Maxent on 4 processors")
-runString += " threads=4"
+runString += " threads=8"
+
+# setting to autorun
+msg("Disabling drawing pictures")
+runString += " autorun=true"
 
 # turn off background spp
 msg('Toggling "background" species')
