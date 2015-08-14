@@ -64,6 +64,7 @@ for fld in fldList:
     records = arcpy.da.SearchCursor(respvarTbl,fld)
     for rec in records:
         outVal = rec[0]
+        if outVal is None: outVal = -9999
         file.write("{}\n".format(outVal))
     ##Close the file
     file.close()
