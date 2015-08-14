@@ -81,6 +81,7 @@ for fileLoc in fileLocs:
     #Set to autorrun
     outFile.write(' autorun=true')
     outFile.write(' threads=4')
+    outFile.write(' askoverwrite=false')
 
     outFile.close()
 
