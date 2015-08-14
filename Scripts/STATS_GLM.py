@@ -27,10 +27,15 @@ statsFolder = arcpy.GetParameterAsText(1)
 rPath = arcpy.GetParameterAsText(2) #r'C:/Program Files/R/R-3.1.1/bin/i386/R' 
 
 # Output variables
-GLMVarImportanceCSV = arcpy.GetParameterAsText(3)   #GLM variable importance table (Jackknife results)
+GLMAnovaCSV = arcpy.GetParameterAsText(3)           #GLM ANOVA Table
 GLMPredictionsCSV = arcpy.GetParameterAsText(4)     #GLM Predictions
 RFVarImportanceCSV = arcpy.GetParameterAsText(5)    #RF variable importance table
 RFPredictionsCSV = arcpy.GetParameterAsText(6)      #RF Predictions
+
+# Static outputs
+GLMconfusionCSV = os.path.dirname(GLMAnovaCSV) + "\\GLMconfusion.csv"   #Stores the GLM confusion matrix
+GLMsummaryCSV = os.path.dirname(GLMAnovaCSV) + "\\GLMsummary.csv"       #Stores the GLM deviance and the cutoff
+RFconfusionCSV = os.path.dirname(GLMAnovaCSV) + "\\RFconfusion.csv"     #Stores the RF confusion matrix
 
 # Script variables
 rlibPath = os.path.join(sys.path[0],"RScripts")         # Location of all R subscripts
@@ -171,22 +176,27 @@ commandString += ")]"
 msg("Creating the response variable data frame")
 r(commandString)
 
-#Create the SHcor function
-msg("Loading jackGLM script")
-r('source("{}")'.format(jackGLM))
+#Load the jackknife scripe
+#msg("Loading jackGLM script")
+#r('source("{}")'.format(jackGLM))
 
 #Run the GLM
 msg("Running the GLM")
 r('sppGLM <- glm(as.factor(spp)~., data=habData, family=binomial)')
 #r('summary(sppGLM'))
-#r('sppGLMAnova <- anova(sppGLM, test="Chi")')
-#r('sppGLMd2 <- 1-(sppGLM$deviance/sppGLM$null.deviance)')
+msg("Computing ANOVA on GLM model and saving to file...")
+r('sppGLMAnova <- anova(sppGLM, test="Chi")')
+r('write.csv(sppGLMAnova, "{}")'.format(GLMAnovaCSV))
+msg("Computing model deviance")
+r('sppGLMd2 <- 1-(sppGLM$deviance/sppGLM$null.deviance)')
+#Get the deviance as a Python variable
+GLMDeviance = runR['sppGLMd2']
 #r('sppGLMd2')
-r('sppJtable <- jackGLM(spp,habData)')
-r('colnames(sppJtable)[0] <- "Variable"')
+#r('sppJtable <- jackGLM(spp,habData)')
+#r('colnames(sppJtable)[0] <- "Variable"')
 
-msg("Writing jackknife results to {}".format(GLMVarImportanceCSV))
-r('write.csv(sppJtable$jtable, "{}")'.format(GLMVarImportanceCSV))
+#msg("Writing jackknife results to {}".format(GLMVarImportanceCSV))
+#r('write.csv(sppJtable$jtable, "{}")'.format(GLMVarImportanceCSV))
 
 #Run GLM predictions on current conditions
 msg("Running predictions on current conditions")
@@ -197,10 +207,17 @@ msg("Loading the cutoffROCR script")
 r('source("{}")'.format(cutoffROCR))
 msg("Predicting values on all catchments")
 r('sppPred <- prediction(sppGLM$fitted.values,spp)')
-msg("Finding and applying probability cutoff (via ROC)") 
+msg("Finding and applying probability cutoff (via ROC)")
+#Save the cutoff as a Python variable
 r('cutoff <- cutoff.ROCR(sppPred, "tpr", target=0.95)')
+GLMCutoff = runR['cutoff']
 r('sppPredGLM[sppPredGLM < cutoff] <- 0')
 r('sppPredGLM[sppPredGLM >= cutoff] <- 1')
+
+#Generate the confusion matrix
+r('cfGLM <- table(sppPredGLM,spp)')
+msg("Writing GLM confusion matrix to {}".format(GLMconfusionCSV))
+r('write.csv(cfGLM,"{}")'.format(GLMconfusionCSV))
 
 msg("Writing GLM predictions to {}".format(GLMPredictionsCSV))
 #Merge the sppAll gridcode, predictions, and thresholded values
@@ -213,6 +230,14 @@ r('colnames(outTableGLM)[3] <- "PREDICTION"')
 r('colnames(outTableGLM)[4] <- "OBSERVED"')
 #Write the output
 r('write.csv(outTable,"{}")'.format(GLMPredictionsCSV))
+
+#Write the model summary
+msg("Writing model summary: {}".format(GLMsummaryCSV))
+f = open(GLMsummaryCSV,'w')
+f.write("GLM Model, {}\n".format(sppName))
+f.write("Model deviance, %2.6f\n" %GLMDeviance)
+f.write("Model cutoff, %2.6f\n" %GLMCutoff)
+f.close()
 
 ##-- RANDOM FOREST --
 msg("Running random forest analysis")
@@ -241,6 +266,11 @@ r('colnames(outTableRF)[2] <- "HABPROB"')
 r('colnames(outTableRF)[3] <- "PREDICTION"')
 r('colnames(outTableRF)[4] <- "OBSERVED"')
 r('write.csv(outTableRF,"{}")'.format(RFPredictionsCSV))
+
+#Generate the confusion matrix
+r('cfRF <- table(sppPredGLM,spp)')
+msg("Writing RF confusion matrix to {}".format(RFconfusionCSV))
+r('write.csv(cfRF,"{}")'.format(RFconfusionCSV))
 
 #Save the workspace
 msg("Saving the workspace to {}".format(RDataFile))
