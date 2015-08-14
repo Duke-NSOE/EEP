@@ -24,31 +24,29 @@ import sys, os, arcpy, csv, datetime
 # Input variables
 sppName = arcpy.GetParameterAsText(0)
 statsFolder = arcpy.GetParameterAsText(1)
-rPath = arcpy.GetParameterAsText(2) #r'C:/Program Files/R/R-3.1.1/bin/i386/R' 
+rPath = arcpy.GetParameterAsText(2) #r'C:/Program Files/R/R-3.1.1/bin/i386/R'
 
+# Static inputs in species folder
+sppPath = os.path.join(statsFolder,sppName)
+speciesCSV = os.path.join(sppPath,'{0}_SWD.csv'.format(sppName))   # Maxent SWD file containing all data to run the models
+maxentFile = os.path.join(sppPath,'RunMaxent.bat')                  # MaxEnt batch file, containing response vars to exclude
+correlationsCSV = os.path.join(sppPath,'SH_Correlations.csv')      # List of response variables correlated with presence/absence
+                          
 # Output variables
-GLMAnovaCSV = arcpy.GetParameterAsText(3)           #GLM ANOVA Table
-GLMPredictionsCSV = arcpy.GetParameterAsText(4)     #GLM Predictions
-RFVarImportanceCSV = arcpy.GetParameterAsText(5)    #RF variable importance table
-RFPredictionsCSV = arcpy.GetParameterAsText(6)      #RF Predictions
-
-# Static outputs
-GLMconfusionCSV = os.path.dirname(GLMAnovaCSV) + "\\GLMconfusion.csv"   #Stores the GLM confusion matrix
-GLMsummaryCSV = os.path.dirname(GLMAnovaCSV) + "\\GLMsummary.csv"       #Stores the GLM deviance and the cutoff
-RFconfusionCSV = os.path.dirname(GLMAnovaCSV) + "\\RFconfusion.csv"     #Stores the RF confusion matrix
-
+GLMAnovaCSV = os.path.join(sppPath,"GLMAnova.csv")              #GLM ANOVA Table
+GLMPredictionsCSV = os.path.join(sppPath,"GLMPredictions.csv")  #GLM Predictions
+RFVarImportanceCSV = os.path.join(sppPath,"RVariables.csv")     #RF variable importance table
+RFPredictionsCSV = os.path.join(sppPath,"RFPredictions.csv")    #RF Predictions
+GLMconfusionCSV = os.path.join(sppPath,"GLMconfusion.csv")      #Stores the GLM confusion matrix
+GLMsummaryCSV = os.path.join(sppPath,"GLMsummary.csv")          #Stores the GLM deviance and the cutoff
+RFconfusionCSV = os.path.join(sppPath,"RFconfusion.csv")        #Stores the RF confusion matrix
+RLogFile = os.path.join(sppPath,"{}.R".format(sppName))         #R Log file; can be open in R to re-run model
+RDataFile = os.path.join(sppPath,"{}.RData".format(sppName))    #R workspace; used later to run projections
+                              
 # Script variables
 rlibPath = os.path.join(sys.path[0],"RScripts")         # Location of all R subscripts
 jackGLM = os.path.join(rlibPath,"jackGLM.R")            # Jackkinifing subscript
 cutoffROCR = os.path.join(rlibPath,"cutoff.ROCR.R")     # ROCR subscript
-
-statsFolder = statsFolder.replace("\\","/")                      # Folder containing MaxEnt data
-speciesCSV = '{0}/{1}/{1}_SWD.csv'.format(statsFolder,sppName)   # Maxent SWD file containing all data to run the models
-maxentFile = '{0}/{1}/RunMaxent.bat'.format(statsFolder,sppName) # MaxEnt batch file, containing response vars to exclude
-correlationsCSV = '{0}/{1}/SH_Correlations.csv'.format(statsFolder,sppName) # List of response variables correlated with presence/absence
-
-RLogFile = '{0}/{1}/{1}.R'.format(statsFolder,sppName)
-RDataFile = '{0}/{1}/.RData'.format(statsFolder,sppName)
 
 ## ---Functions---
 def msg(txt,type="message"):
@@ -242,7 +240,7 @@ f.close()
 ##-- RANDOM FOREST --
 msg("Running random forest analysis")
 r('library(randomForest)')
-r('sppForest <- randomForest(as.factor(spp)~., data=habData, ntree=2501, importance=TRUE)')
+r('sppForest <- randomForest(as.factor(spp)~., data=habData, ntree=501, importance=TRUE)')
 msg("Compiling variable importances to {}".format(RFVarImportanceCSV))
 r('outTableRFVars <- sppForest$importance')
 #r('colnames(outTableRFVars)[0] <- "VARIABLE"')
