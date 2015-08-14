@@ -10,7 +10,7 @@ arcpy.CheckOutExtension("spatial")
 
 #User variables
 NLCDRaster = arcpy.GetParameterAsText(0)
-outRaster =  arcpy.GetParameterAsText(0)
+outRaster =  arcpy.GetParameterAsText(1)
 
 #Set environments
 arcpy.env.overwriteOutput = True
