@@ -33,13 +33,13 @@ maxentFile = os.path.join(sppPath,'RunMaxent.bat')                  # MaxEnt bat
 correlationsCSV = os.path.join(sppPath,'SH_Correlations.csv')      # List of response variables correlated with presence/absence
                           
 # Output variables
-GLMAnovaCSV = os.path.join(sppPath,"GLMAnova.csv")              #GLM ANOVA Table
-GLMPredictionsCSV = os.path.join(sppPath,"GLMPredictions.csv")  #GLM Predictions
-RFVarImportanceCSV = os.path.join(sppPath,"RVariables.csv")     #RF variable importance table
-RFPredictionsCSV = os.path.join(sppPath,"RFPredictions.csv")    #RF Predictions
-GLMconfusionCSV = os.path.join(sppPath,"GLMconfusion.csv")      #Stores the GLM confusion matrix
-GLMsummaryCSV = os.path.join(sppPath,"GLMsummary.csv")          #Stores the GLM deviance and the cutoff
-RFconfusionCSV = os.path.join(sppPath,"RFconfusion.csv")        #Stores the RF confusion matrix
+GLMAnovaCSV = os.path.join(sppPath,"GLM_Anova.csv")              #GLM ANOVA Table
+GLMPredictionsCSV = os.path.join(sppPath,"GLM_Predictions.csv")  #GLM Predictions
+RFVarImportanceCSV = os.path.join(sppPath,"RF_VarImportance.csv")     #RF variable importance table
+RFPredictionsCSV = os.path.join(sppPath,"RF_Predictions.csv")    #RF Predictions
+GLMconfusionCSV = os.path.join(sppPath,"GLM_Confusion.csv")      #Stores the GLM confusion matrix
+GLMsummaryCSV = os.path.join(sppPath,"GLM_Summary.csv")          #Stores the GLM deviance and the cutoff
+RFconfusionCSV = os.path.join(sppPath,"RF_Confusion.csv")        #Stores the RF confusion matrix
 RLogFile = os.path.join(sppPath,"{}.R".format(sppName))         #R Log file; can be open in R to re-run model
 RDataFile = os.path.join(sppPath,"{}.RData".format(sppName))    #R workspace; used later to run projections
                               
@@ -110,6 +110,7 @@ try:
     runR = pyper.R(RCMD=rPath)
 except:
     msg("The PyPer module is not installed.\nExiting.","error")
+    msg("Check the path: {}".format(rPath))
     sys.exit()
 
 ## -- Procedures --
