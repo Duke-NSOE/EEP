@@ -267,7 +267,7 @@ r('colnames(outTableRF)[4] <- "OBSERVED"')
 r('write.csv(outTableRF,"{}")'.format(RFPredictionsCSV))
 
 #Generate the confusion matrix
-r('cfRF <- table(sppPredGLM,spp)')
+r('cfRF <- table(rfPredictions,spp)')
 msg("Writing RF confusion matrix to {}".format(RFconfusionCSV))
 r('write.csv(cfRF,"{}")'.format(RFconfusionCSV))
 
