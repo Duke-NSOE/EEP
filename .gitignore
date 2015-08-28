@@ -23,3 +23,6 @@ HabitatStats.7z
 TarPamStats/*
 Data/NC_copy.gdb.zip
 Data/NHD_copy.gdb.zip
+Data/NHDrasters/*
+Data/NLCDdata/*
+Scratch/*
