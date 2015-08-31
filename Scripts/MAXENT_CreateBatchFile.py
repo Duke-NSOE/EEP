@@ -76,11 +76,11 @@ runString += " outputdirectory={}".format(outDir)
 
 # enable response curves
 msg("Enabling response curves")
-runString += " responsecurves=true"
+runString += " responsecurves=false"
 
 # enable jackknifing
 msg("Enabling jackknifing")
-runString += " jackknife=true"
+runString += " jackknife=false"
 
 # disable pictures
 msg("Disabling drawing pictures")
