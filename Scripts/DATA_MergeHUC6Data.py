@@ -14,13 +14,13 @@ dataPth = os.path.abspath(sys.path[0]+ "\\..\\Data")
 
 # Program variables
 outCSV = r"C:\Workspace\EEP\Scratch\AllData.csv"
+outFC = r"C:\Workspace\EEP\Scratch\Scratch.gdb\AllCatchments"
 
 # Input variables
 
 
 # Environment variables
 arcpy.env.overwriteOutput = True
-
 
 # ---Functions---
 def msg(txt,type="message"):
@@ -36,6 +36,17 @@ def msg(txt,type="message"):
 #Get a list of the HUC6 GDBs
 arcpy.env.workspace = dataPth
 gdbs = arcpy.ListWorkspaces("EEP_*")
+
+#From them, make a list of rv feature classes
+rvFCs = []
+for gdb in gdbs:
+    rvFCs.append(os.path.join(gdb,"ResponseVars"))
+
+#Merge all response variables
+msg("Merging {} datasets".format(len(rvFCs)))
+arcpy.Merge_management(rvFCs,outFC)
+
+sys.exit(0)
 
 #Create a list of fields from the first responsevars feature class
 rvFC = os.path.join(gdbs[0],"ResponseVars")
