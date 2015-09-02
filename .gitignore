@@ -12,7 +12,6 @@ Scripts/RScripts/habitat_suitability.docx
 Scripts/RScripts/MaxEnt_Shiner2.zip
 Docs/Endries_Data.xlsx
 Scripts/UTIL_ListFields.py
-MaxEnt/Nocomis_leptocephalus.txt.xml
 Scripts/Biomod2Scripts/Simple_species_modelling.pdf
 Docs/Task300Report_Draft_DMS_ND_Comments_JFAY.docx
 Docs/DMS - Management Scenarios draft JPF.docx
@@ -20,10 +19,12 @@ Scripts/RScripts/.Rhistory
 HabitatStats/*
 HabStats030501/*
 HabStats_Piedmont/*
-HabitatStats.7z
-TarPamStats/*
 Data/NC_copy.gdb.zip
 Data/NHD_copy.gdb.zip
 Data/NHDrasters/*
 Data/NLCDdata/*
+Data/UNC/output_tables/*
 Scratch/*
+HabStats_Piedmont.zip
+HabStats_Piedmont2.zip
+HabStats_Piedmont2/*

@@ -24,7 +24,7 @@ import sys, os, arcpy, csv, datetime
 # Input variables
 sppName = arcpy.GetParameterAsText(0)
 statsFolder = arcpy.GetParameterAsText(1)
-rPath = arcpy.GetParameterAsText(2) #r'C:/Program Files/R/R-3.1.1/bin/i386/R'
+rPath = arcpy.GetParameterAsText(2) #r'C:/Program Files/R/R-3.2.1/bin/i386/R'
 
 # Static inputs in species folder
 sppPath = os.path.join(statsFolder,sppName)
@@ -252,14 +252,23 @@ msg("Running predictions on catchments")
 #Calculate RF Predictions (continuous)
 r('rfProbs <- predict(sppForest, type="prob")')
 #Calculate Responses (binary)
-r('rfPredictions <- predict(sppForest, type="response")')
-#--Convert rfPredictions to binary
-r('rfPredBin = c(rfPredictions)')
-#--Replace 1s with 0s and 2s with 1s
-r('rfPredBin <- replace(rfPredBin, rfPredBin == 1, 0)')
-r('rfPredBin <- replace(rfPredBin, rfPredBin == 2, 1)')
+#r('rfPredictions <- predict(sppForest, type="response")')
+##Calculate ROCR cutoff; see http://scg.sdsu.edu/rf_r/
+r('rfProb <- predict(sppForest,type="prob")[,2]')
+r('rfPred <- prediction(rfProb,spp)')
+r('rfPerf <- performance(rfPred,"tpr","fpr")')
+r('rfCutoff <- cutoff.ROCR(rfPred,"tpr",target=0.95)')
+r('rfCutoff')
+r('rfProb[rfProb < rfCutoff] <- 0')
+r('rfProb[rfProb >= rfCutoff] <- 1')
+
+###--Convert rfPredictions to binary
+##r('rfPredBin = c(rfPredictions)')
+###--Replace 1s with 0s and 2s with 1s
+##r('rfPredBin <- replace(rfPredBin, rfPredBin == 1, 0)')
+##r('rfPredBin <- replace(rfPredBin, rfPredBin == 2, 1)')
 #Write to a table
-r('outTableRF <- cbind(sppAll$X,rfProbs[,(2)],rfPredBin,sppBin)')
+r('outTableRF <- cbind(sppAll$X,rfProbs[,(2)],rfProb,sppBin)')
 r('colnames(outTableRF)[1] <- "GRIDCODE"')
 r('colnames(outTableRF)[2] <- "HABPROB"')
 r('colnames(outTableRF)[3] <- "PREDICTION"')
@@ -267,7 +276,7 @@ r('colnames(outTableRF)[4] <- "OBSERVED"')
 r('write.csv(outTableRF,"{}")'.format(RFPredictionsCSV))
 
 #Generate the confusion matrix
-r('cfRF <- table(rfPredictions,spp)')
+r('cfRF <- table(rfProb,spp)')
 msg("Writing RF confusion matrix to {}".format(RFconfusionCSV))
 r('write.csv(cfRF,"{}")'.format(RFconfusionCSV))
 
