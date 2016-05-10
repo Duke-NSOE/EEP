@@ -1,6 +1,6 @@
 # UPLIFT_StreamCoolingScenario.py
 #
-# Description: Modfies the response variables to represent a scenario of stream
+# Description: Copies and modfies the response variables to represent a scenario of stream
 #  cooling. It does so by moving percentages in each catchment classified as "warm" into
 #  the "cool" category. Percentages classified as cool remains cool and those classified
 #  as "cold" remain cold.
